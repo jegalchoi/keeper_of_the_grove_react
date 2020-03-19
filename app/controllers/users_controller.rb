@@ -56,7 +56,10 @@ class UsersController < ApplicationController
         errors: ['Could not locate user'] 
       }
     else
-      render json: @user.errors.full_messages, status: 401
+      render json: {
+        status: 401,
+        @user.errors.full_messages
+      }
     end
   end
 
@@ -78,7 +81,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :email, :password)
     end
 
     def selected_user
