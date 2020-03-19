@@ -80,7 +80,7 @@ class Api::V1::PlantsController < ApplicationController
   private
 
   def plant_params
-    params.require(:plant).permit(:name, :notes, :water, :private, :image)
+    params.require(:plant).permit(:name, :notes, :water, :private, :image, :user_id)
   end
 
   def selected_plant
