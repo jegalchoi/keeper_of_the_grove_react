@@ -38,7 +38,7 @@ export const Home = props => {
             <p className='lead'>Keep your plants properly watered.</p>
             <hr className='my-4' />
             <Link
-              to='/recipes'
+              to='/plants'
               className='btn btn-lg btn-primary'
               role='button'
             >

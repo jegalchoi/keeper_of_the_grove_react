@@ -1,4 +1,4 @@
-class Api::V1::PlantsController < ApplicationController
+class PlantsController < ApplicationController
   def index
     @plants = Plant.all.order(created_at: :desc)
     if @plants
@@ -57,7 +57,7 @@ class Api::V1::PlantsController < ApplicationController
     else
       render json: {
         status: 401,
-        @plant.errors.full_messages
+        errors: @plant.errors.full_messages
       }
     end
   end
@@ -84,8 +84,7 @@ class Api::V1::PlantsController < ApplicationController
   end
 
   def selected_plant
-      Plant.find(params[:id])
-    end
-
+    Plant.find(params[:id])
+  end
+  
 end
-

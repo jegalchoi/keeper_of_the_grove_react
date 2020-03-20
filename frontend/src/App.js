@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Home } from './components/Home'
 import Login from './components/registrations/Login'
 import Signup from './components/registrations/Signup'
+import { Plants } from './components/Plants'
 
 export default class App extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ export default class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
+            <Route exact path='/plants' component={Plants} />
             <Route
               exact path='/'
               render={props => (
