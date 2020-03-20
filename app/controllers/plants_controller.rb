@@ -17,7 +17,7 @@ class PlantsController < ApplicationController
     @plant = selected_plant
     if @plant
       render json: {
-        user: @plant
+        plant: @plant
       }
     else
       render json: {
@@ -32,7 +32,7 @@ class PlantsController < ApplicationController
     if @plant.save
       render json: {
         status: :created,
-        user: @plant
+        plant: @plant
       }
     else
       render json: {
@@ -47,7 +47,7 @@ class PlantsController < ApplicationController
     if @plant && @plant.update_attributes(plant_params)
       render json: {
         status: :updated,
-        user: @plant
+        plant: @plant
       }
     elsif !@plant
       render json: {

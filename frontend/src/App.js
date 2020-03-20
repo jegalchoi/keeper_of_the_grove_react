@@ -5,6 +5,7 @@ import { Home } from './components/Home'
 import Login from './components/registrations/Login'
 import Signup from './components/registrations/Signup'
 import { Plants } from './components/Plants'
+import { Plant } from './components/Plant'
 
 export default class App extends Component {
   constructor(props) {
@@ -33,13 +34,11 @@ export default class App extends Component {
   }
 
   handleLogin = data => {
-    console.log(data.user)
     this.setState({
       isLoggedIn: 'LOGGED_IN',
       user: data.user,
       username: data.user.username
     })
-    console.log(this.state)
   }
 
   handleLogout = () => {
@@ -55,6 +54,7 @@ export default class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route exact path='/plants' component={Plants} />
+            <Route exact path='/plant/:id' component={Plant} />
             <Route
               exact path='/'
               render={props => (
