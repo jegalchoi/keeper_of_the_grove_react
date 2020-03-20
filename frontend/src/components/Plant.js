@@ -14,31 +14,29 @@ export class Plant extends Component {
       .replace(/&gt;/g, '>')
   }
 
-  // deletePlant = () => {
-  //   const {
-  //     match: {
-  //       params: { id }
-  //     }
-  //   } = this.props;
-  //   const url = `http://localhost:3001/plants/${id}`;
-  //   const token = document.querySelector('meta[name="csrf-token"]').content;
+  deletePlant = () => {
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
+    const url = `http://localhost:3001/plants/${id}`;
 
-  //   fetch(url, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "X-CSRF-Token": token,
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //     .then(response => {
-  //       if (response.ok) {
-  //         return response.json()
-  //       }
-  //       throw new Error('Network response was not ok.')
-  //     })
-  //     .then(() => this.props.history.push('http://localhost:3001/plants/'))
-  //     .catch(error => console.log(error.message))
-  // }
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Network response was not ok.')
+      })
+      .then(() => this.props.history.push('/plants'))
+      .catch(error => console.log(error.message))
+  }
 
   componentDidMount() {
     const {
@@ -46,7 +44,6 @@ export class Plant extends Component {
         params: { id }
       }
     } = this.props;
-
     const url = `http://localhost:3001/plants/${id}`;
 
     fetch(url)
@@ -65,7 +62,6 @@ export class Plant extends Component {
   render() {
     const { plant } = this.state;
     let notes = 'N/A';
-
     if (plant.notes !== null) {
       notes = plant.notes
         .split(',')
@@ -75,7 +71,6 @@ export class Plant extends Component {
           </li>
         ))
     }
-
     const plantWater = this.addHtmlEntities((plant.water) ? 'needs water' : 'does not need water');
 
     return (
