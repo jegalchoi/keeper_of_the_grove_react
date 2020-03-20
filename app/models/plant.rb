@@ -19,9 +19,9 @@ class Plant < ApplicationRecord
   validates :user_id, presence: true
   # validate :image_type
 
-  belongs_to :keeper,
-    class_name: :User,
-    foreign_key: :user_id
+  belongs_to :user
+
+  default_scope { order(created_at: :desc) }
 
   def last_watered
     if water

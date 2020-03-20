@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
   def index
     @users = User.all
     if @users
@@ -14,7 +15,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = selected_user
     if @user
       render json: {
         user: @user
@@ -44,7 +44,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = selected_user
     if @user && @user.update_attributes(user_params)
       render json: {
         status: :updated,
@@ -58,13 +57,12 @@ class UsersController < ApplicationController
     else
       render json: {
         status: 401,
-        @user.errors.full_messages
+        errors: @user.errors.full_messages
       }
     end
   end
 
   def destroy
-    @user = selected_user
     if @user
       @user.destroy
       render json: {
@@ -84,7 +82,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email, :password)
     end
 
-    def selected_user
+    def set_user
       User.find(params[:id])
     end
 

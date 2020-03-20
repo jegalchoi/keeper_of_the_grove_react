@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 export class Plants extends Component {
@@ -7,23 +8,29 @@ export class Plants extends Component {
   }
 
   componentDidMount() {
-    const url = 'http://localhost:3001/plants/';
-    fetch(url)
+    const url = `http://localhost:3001/users/${this.props.user.id}/plants/`;
+    axios
+      .get(url, { withCredentials: true })
       .then(response => {
-        if (response.ok) {          
-          return response.json();
+        console.log(response)
+        if (response.statusText == 'OK') {          
+          return response.data;
         }
         throw new Error('Network response was not ok.');
       })
       .then(json => {
-        this.setState({
-        plants: json.plants
-        })
+        console.log(json)
+        
+          this.setState({
+            plants: json.plants
+          })
+        
       })
       .catch(() => this.props.history.push('/'))
   }
 
   render() {
+    console.log(this.state)
     const { plants } = this.state;
     const allPlants = plants.map(plant => (
       <div key={plant.id} className='col-md-6 col-lg-4'>

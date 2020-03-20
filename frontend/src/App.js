@@ -53,8 +53,19 @@ export default class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path='/plants' component={Plants} />
             <Route exact path='/plant/:id' component={Plant} />
+            {/* <Route exact path='/plant' component={NewPlant} /> */}
+            <Route
+              exact path='/plants'
+              render={props => (
+                <Plants
+                  {...props}
+                  handleLogout={this.handleLogout}
+                  loggedInStatus={this.state.isLoggedIn}
+                  user={this.state.user}
+                />
+              )}
+            />
             <Route
               exact path='/'
               render={props => (

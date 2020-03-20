@@ -1,9 +1,19 @@
 class PlantsController < ApplicationController
-  def index
-    @plants = Plant.all.order(created_at: :desc)
-    if @plants
+  rescue_from Exception, with: :exeception_handler
+  before_action :require_owner!, only: [:show, :edit, :update, :destroy]
+  before_action :find_plant_by_params_id, only: [:show, :edit, :update, :destroy]
+  
+  def authorized_index
+    @user = User.find(params[:user_id])
+    @plants = @user.plants
+    if @plants && authorized_user?
       render json: {
         plants: @plants
+      }
+    elsif @plants && !authorized_user?
+      render json: {
+        status: 401,
+        errors: ['You are not authorized to perform this action']
       }
     else
       render json: {
@@ -13,8 +23,12 @@ class PlantsController < ApplicationController
     end
   end
 
+  def index
+    @plants = Plant.all
+    render json: @plants
+  end
+
   def show
-    @plant = selected_plant
     if @plant
       render json: {
         plant: @plant
@@ -43,7 +57,6 @@ class PlantsController < ApplicationController
   end
 
   def update
-    @plant = selected_plant
     if @plant && @plant.update_attributes(plant_params)
       render json: {
         status: :updated,
@@ -63,7 +76,6 @@ class PlantsController < ApplicationController
   end
 
   def destroy
-    @plant = selected_plant
     if @plant
       @plant.destroy
       render json: {
@@ -83,8 +95,31 @@ class PlantsController < ApplicationController
     params.require(:plant).permit(:name, :notes, :water, :private, :image, :user_id)
   end
 
-  def selected_plant
-    Plant.find(params[:id])
+  def find_plant_by_params_id
+    @plant = Plant.find(params[:id])
+  end
+
+  def handle_unauthorized
+    unless authorized_user?
+      render json: {
+        status: 401,
+        errors: ['You are not authorized to perform this action']
+      }
+    end
+  end
+
+  def require_owner!
+    redirect_to '/plants' unless current_user_id == find_plant_by_params_id.user_id
+  end
+
+  def exeception_handler(exception)
+    case exception
+    when ActiveRecord::RecordNotFound
+      render json: {
+        status: 400,
+        errors: ['Not found']
+      }
+    end
   end
   
 end
