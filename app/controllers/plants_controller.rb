@@ -1,6 +1,6 @@
 class PlantsController < ApplicationController
   before_action :find_plant_by_params_id, only: [:authorized_show, :show, :edit, :update, :destroy]
-  before_action :require_owner!, only: [:authorized_show, :show, :edit, :update, :destroy]
+  before_action :require_owner!, only: [:authorized_show, :edit, :update, :destroy]
   rescue_from Exception, with: :exeception_handler
   
   def authorized_index
@@ -33,13 +33,11 @@ class PlantsController < ApplicationController
       render json: {
         plant: @plant
       }
-    elsif !@plants
+    else
       render json: {
         status: 500,
         errors: ['Could not locate plant']
       }
-
-
     end
   end
 
@@ -128,7 +126,6 @@ class PlantsController < ApplicationController
   # end
 
   def require_owner!
-    
     unless find_user_by_params_user_id.id == find_plant_by_params_id.user_id
       render json: {
         status: 401,

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :users do
       get '/plants', to: 'plants#authorized_index'
       get '/plants/:id', to: 'plants#authorized_show'
+      delete '/plants/:id', to: 'plants#destroy'
     end
 
     resources :plants, only: [:create, :show, :index, :update, :destroy]

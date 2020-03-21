@@ -20,7 +20,7 @@ export class Plant extends Component {
         params: { id }
       }
     } = this.props;
-    const url = `http://localhost:3001/plants/${id}`;
+    const url = `http://localhost:3001/users/${this.props.user.id}/plants/${id}`;
 
     fetch(url, {
       method: "DELETE",
@@ -45,10 +45,8 @@ export class Plant extends Component {
       }
     } = this.props;
     const url = `http://localhost:3001/users/${this.props.user.id}/plants/${id}`;
-
     fetch(url)
       .then(response => {
-        console.log(response)
         if (response.ok) {
           return response.json()
         }
