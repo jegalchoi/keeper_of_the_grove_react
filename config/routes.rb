@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   defaults format: :json do
     resources :users do
       get '/plants', to: 'plants#authorized_index'
+      get '/plants/:id', to: 'plants#authorized_show'
     end
 
     resources :plants, only: [:create, :show, :index, :update, :destroy]

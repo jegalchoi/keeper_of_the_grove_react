@@ -44,18 +44,20 @@ export class Plant extends Component {
         params: { id }
       }
     } = this.props;
-    const url = `http://localhost:3001/plants/${id}`;
+    const url = `http://localhost:3001/users/${this.props.user.id}/plants/${id}`;
 
     fetch(url)
       .then(response => {
+        console.log(response)
         if (response.ok) {
           return response.json()
         }
         throw new Error('Network response was not ok.')
       })
-      .then(json => this.setState({
+      .then(json => {
+        this.setState({
         plant: json.plant
-      }))
+      })})
       .catch(() => this.props.history.push('/plants'))
   }
 

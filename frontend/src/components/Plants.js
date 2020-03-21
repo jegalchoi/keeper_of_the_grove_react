@@ -12,25 +12,20 @@ export class Plants extends Component {
     axios
       .get(url, { withCredentials: true })
       .then(response => {
-        console.log(response)
         if (response.statusText == 'OK') {          
           return response.data;
         }
         throw new Error('Network response was not ok.');
       })
       .then(json => {
-        console.log(json)
-        
           this.setState({
             plants: json.plants
           })
-        
       })
       .catch(() => this.props.history.push('/'))
   }
 
   render() {
-    console.log(this.state)
     const { plants } = this.state;
     const allPlants = plants.map(plant => (
       <div key={plant.id} className='col-md-6 col-lg-4'>
@@ -43,7 +38,7 @@ export class Plants extends Component {
           <div className='card-body'>
             <h5 className='card-title'>{plant.name}</h5>
             <Link
-              to={`/plant/${plant.id}`}
+              to={`/users/${this.props.user.id}/plants/${plant.id}`}
               className='btn custom-button'
             >
               View Plant

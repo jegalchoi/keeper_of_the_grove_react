@@ -1,7 +1,7 @@
 class PlantsController < ApplicationController
+  before_action :find_plant_by_params_id, only: [:authorized_show, :show, :edit, :update, :destroy]
+  before_action :require_owner!, only: [:authorized_show, :show, :edit, :update, :destroy]
   rescue_from Exception, with: :exeception_handler
-  before_action :require_owner!, only: [:show, :edit, :update, :destroy]
-  before_action :find_plant_by_params_id, only: [:show, :edit, :update, :destroy]
   
   def authorized_index
     @user = User.find(params[:user_id])
@@ -26,6 +26,21 @@ class PlantsController < ApplicationController
   def index
     @plants = Plant.all
     render json: @plants
+  end
+
+  def authorized_show
+    if @plant
+      render json: {
+        plant: @plant
+      }
+    elsif !@plants
+      render json: {
+        status: 500,
+        errors: ['Could not locate plant']
+      }
+
+
+    end
   end
 
   def show
@@ -99,17 +114,27 @@ class PlantsController < ApplicationController
     @plant = Plant.find(params[:id])
   end
 
-  def handle_unauthorized
-    unless authorized_user?
+  def find_user_by_params_user_id
+    @user = User.find(params[:user_id])
+  end
+
+  # def handle_unauthorized
+  #   unless authorized_user?
+      # render json: {
+      #   status: 401,
+      #   errors: ['You are not authorized to perform this action']
+      # }
+  #   end
+  # end
+
+  def require_owner!
+    
+    unless find_user_by_params_user_id.id == find_plant_by_params_id.user_id
       render json: {
         status: 401,
         errors: ['You are not authorized to perform this action']
       }
     end
-  end
-
-  def require_owner!
-    redirect_to '/plants' unless current_user_id == find_plant_by_params_id.user_id
   end
 
   def exeception_handler(exception)
