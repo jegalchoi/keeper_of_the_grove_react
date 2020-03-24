@@ -87,7 +87,7 @@ export default class Login extends Component {
           <button
             placeholder='submit'
             type='submit'
-            className='btn-primary btn-lg rounded'
+            className='btn-primary btn-lg mt-3'
           >
             Log In
           </button>

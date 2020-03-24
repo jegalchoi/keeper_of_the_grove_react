@@ -1,14 +1,18 @@
 Rails.application.routes.draw do
 
   defaults format: :json do
-    resources :users do
-      get '/plants', to: 'plants#authorized_index'
-      get '/plants/:id', to: 'plants#authorized_show'
-      delete '/plants/:id', to: 'plants#destroy'
-      post '/plants', to: 'plants#create'
-    end
+    namespace :api do
+      namespace :v1 do
+        resources :users do
+          get '/plants', to: 'plants#authorized_index'
+          get '/plants/:id', to: 'plants#authorized_show'
+          delete '/plants/:id', to: 'plants#destroy'
+          post '/plants', to: 'plants#create'
+        end
 
-    resources :plants, only: [:create, :show, :index, :update, :destroy]
+          resources :plants, only: [:create, :show, :index, :update, :destroy]
+      end
+    end
 
     post :login, to: 'sessions#create'
     delete :logout, to: 'sessions#destroy'

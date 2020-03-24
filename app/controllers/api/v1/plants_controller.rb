@@ -1,4 +1,4 @@
-class PlantsController < ApplicationController
+class Api::V1::PlantsController < ApplicationController
   before_action :find_plant_by_params_id, only: [:authorized_show, :show, :edit, :update, :destroy]
   before_action :require_owner!, only: [:authorized_show, :edit, :update, :destroy]
   rescue_from Exception, with: :exeception_handler
@@ -105,7 +105,14 @@ class PlantsController < ApplicationController
   private
 
   def plant_params
-    params.require(:plant).permit(:name, :notes, :water, :hidden, :image, :user_id)
+    params.require(:plant).permit(
+      :name, 
+      :notes, 
+      :water, 
+      :hidden, 
+      :image, 
+      :user_id
+    )
   end
 
   def find_plant_by_params_id

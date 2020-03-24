@@ -8,7 +8,7 @@ export class Plants extends Component {
   }
 
   componentDidMount() {
-    const url = `http://localhost:3001/users/${this.props.user.id}/plants/`;
+    const url = `http://localhost:3001/api/v1/users/${this.props.user.id}/plants/`
     axios
       .get(url, { withCredentials: true })
       .then(response => {
@@ -38,19 +38,19 @@ export class Plants extends Component {
           <div className='card-body'>
             <h5 className='card-title'>{plant.name}</h5>
             <Link
-              to={`/users/${this.props.user.id}/plants/${plant.id}`}
-              className='btn custom-button'
+              to={`/api/v1/users/${this.props.user.id}/plants/${plant.id}`}
+              className='btn'
             >
               View Plant
-          </Link>
+            </Link>
           </div>
         </div>
       </div>
-    ));
+    ))
     const noPlant = (
       <div className='vw-100 vh-50 d-flex align-items-center justify-content-center'>
         <h4>
-          No plants yet.  Why not <Link to='/new_plant'>create one</Link>
+          No plants yet. Why not <Link to='/api/v1/new_plant'>create one</Link>
         </h4>
       </div>
     )
@@ -68,16 +68,17 @@ export class Plants extends Component {
         <div className='py-5'>
           <main className='container'>
             <div className='text-right mb-3'>
-              <Link to={`/users/${this.props.user.id}/plant`} className='btn btn-lg btn-primary'>
+              <Link
+                to={`/api/v1/users/${this.props.user.id}/plant`}
+                className='btn btn-lg btn-primary'
+              >
                 Create New Plant
               </Link>
             </div>
-            <div className='row'>
-              {plants.length > 0 ? allPlants : noPlant}
-            </div>
+            <div className='row'>{plants.length > 0 ? allPlants : noPlant}</div>
             <Link to='/' className='btn btn-link'>
               Home
-              </Link>
+            </Link>
           </main>
         </div>
       </>

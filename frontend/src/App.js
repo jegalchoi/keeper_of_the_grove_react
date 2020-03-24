@@ -55,7 +55,8 @@ export default class App extends Component {
         <BrowserRouter>
           <Switch>
             <Route
-              exact path={`/users/${this.state.user.id}/plants/:id`}
+              exact
+              path={`/api/v1/users/${this.state.user.id}/plants/:id`}
               render={props => (
                 <Plant
                   {...props}
@@ -66,7 +67,8 @@ export default class App extends Component {
               )}
             />
             <Route
-              exact path={`/users/${this.state.user.id}/plant`}
+              exact
+              path={`/api/v1/users/${this.state.user.id}/plant`}
               render={props => (
                 <NewPlant
                   {...props}
@@ -80,7 +82,8 @@ export default class App extends Component {
               exact path='/plant'
             /> */}
             <Route
-              exact path='/plants'
+              exact
+              path='/api/v1/plants'
               render={props => (
                 <Plants
                   {...props}
@@ -91,7 +94,8 @@ export default class App extends Component {
               )}
             />
             <Route
-              exact path='/'
+              exact
+              path='/'
               render={props => (
                 <Home
                   {...props}
@@ -102,7 +106,8 @@ export default class App extends Component {
               )}
             />
             <Route
-              exact path='/login'
+              exact
+              path='/login'
               render={props => (
                 <Login
                   {...props}
@@ -112,7 +117,8 @@ export default class App extends Component {
               )}
             />
             <Route
-              exact path='/signup'
+              exact
+              path='/signup'
               render={props => (
                 <Signup
                   {...props}

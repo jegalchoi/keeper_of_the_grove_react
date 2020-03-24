@@ -36,7 +36,7 @@ export const Home = props => {
             <h1 className='display-4'>Grove Guardian</h1>
             <p className='lead'>Keep your plants properly watered.</p>
             <hr className='my-4' />
-            <Link to='/plants' className='btn btn-lg btn-primary'>
+            <Link to='/api/v1/plants' className='btn btn-lg btn-primary'>
               View Plants
             </Link>
           </div>

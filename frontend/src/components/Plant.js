@@ -20,13 +20,13 @@ export class Plant extends Component {
         params: { id }
       }
     } = this.props;
-    const url = `http://localhost:3001/users/${this.props.user.id}/plants/${id}`;
+    const url = `http://localhost:3001/api/v1/users/${this.props.user.id}/plants/${id}`
 
     fetch(url, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then(response => {
         if (response.ok) {
@@ -34,7 +34,7 @@ export class Plant extends Component {
         }
         throw new Error('Network response was not ok.')
       })
-      .then(() => this.props.history.push('/plants'))
+      .then(() => this.props.history.push('/api/v1/plants'))
       .catch(error => console.log(error.message))
   }
 
@@ -44,7 +44,7 @@ export class Plant extends Component {
         params: { id }
       }
     } = this.props;
-    const url = `http://localhost:3001/users/${this.props.user.id}/plants/${id}`;
+    const url = `http://localhost:3001/api/v1/users/${this.props.user.id}/plants/${id}`
     fetch(url)
       .then(response => {
         if (response.ok) {
@@ -54,9 +54,10 @@ export class Plant extends Component {
       })
       .then(json => {
         this.setState({
-        plant: json.plant
-      })})
-      .catch(() => this.props.history.push('/plants'))
+          plant: json.plant,
+        })
+      })
+      .catch(() => this.props.history.push('/api/v1/plants'))
   }
 
   render() {
@@ -98,17 +99,21 @@ export class Plant extends Component {
               <h5 className='mb-2'>Watered</h5>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: `${plantWater}`
+                  __html: `${plantWater}`,
                 }}
               />
             </div>
             <div className='col-sm-12 col-lg-2'>
-              <button type='button' className='btn btn-danger' onClick={this.deletePlant}>
+              <button
+                type='button'
+                className='btn btn-danger'
+                onClick={this.deletePlant}
+              >
                 Delete Plant
-                </button>
+              </button>
             </div>
           </div>
-          <Link to='/plants' className='btn btn-link'>
+          <Link to='/api/v1/plants' className='btn btn-link'>
             Back to plants
           </Link>
         </div>

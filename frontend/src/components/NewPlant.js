@@ -52,7 +52,7 @@ export class NewPlant extends Component {
 
   onSubmit = e => {
     e.preventDefault()
-    const url = 'http://localhost:3001/plants';
+    const url = 'http://localhost:3001/api/v1/plants'
     const { name, notes, water, hidden, image } = this.state;
     if (name.length == 0 || this.props.user.id == 0) return;
     const body = {
@@ -80,7 +80,9 @@ export class NewPlant extends Component {
       })
       .then(json => {
         console.log(json)
-        this.props.history.push(`/users/${this.props.user.id}/plants/${json.plant.id}`)
+        this.props.history.push(
+          `/api/v1/users/${this.props.user.id}/plants/${json.plant.id}`
+        )
       })
       .catch(error => console.log(error.message))
   }
@@ -180,7 +182,7 @@ export class NewPlant extends Component {
                 Create Plant
               </button>
               <br />
-              <Link to='/plants' className='btn btn-link mt-3'>
+              <Link to='/api/v1/plants' className='btn btn-link mt-3'>
                 Back to plants
               </Link>
             </form>
