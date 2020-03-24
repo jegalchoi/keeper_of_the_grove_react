@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import TimeAgo from 'react-timeago'
 
 export class Plant extends Component {
   state = {
@@ -95,14 +96,22 @@ export class Plant extends Component {
                 {notes}
               </ul>
             </div>
-            <div className='col-sm-12 col-lg-7'>
-              <h5 className='mb-2'>Watered</h5>
-              <div
+            {plant.water !== null ? (
+              <div className='col-sm-12 col-lg-7'>
+                <h5 className='mb-2'>Last watered</h5>
+                <TimeAgo date={plant.water} />
+              </div>
+            ) : (
+              <div className='col-sm-12 col-lg-7'>
+                <h5 className='mb-2'>Never been watered...</h5>
+              </div>
+            )}
+            {/* <div
                 dangerouslySetInnerHTML={{
                   __html: `${plantWater}`,
                 }}
-              />
-            </div>
+              /> */}
+
             <div className='col-sm-12 col-lg-2'>
               <button
                 type='button'

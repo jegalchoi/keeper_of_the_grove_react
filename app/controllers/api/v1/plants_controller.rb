@@ -24,8 +24,7 @@ class Api::V1::PlantsController < ApplicationController
   end
 
   def index
-    @plants = Plant.where(private: false)
-    render json: @plants
+    respond_with Plant.where(private: false)
   end
 
   def authorized_show
@@ -122,15 +121,6 @@ class Api::V1::PlantsController < ApplicationController
   def find_user_by_params_user_id
     @user = User.find(params[:user_id])
   end
-
-  # def handle_unauthorized
-  #   unless authorized_user?
-      # render json: {
-      #   status: 401,
-      #   errors: ['You are not authorized to perform this action']
-      # }
-  #   end
-  # end
 
   def require_owner!
     unless find_user_by_params_user_id.id == find_plant_by_params_id.user_id

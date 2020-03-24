@@ -10,7 +10,7 @@ Rails.application.routes.draw do
           post '/plants', to: 'plants#create'
         end
 
-          resources :plants, only: [:create, :show, :index, :update, :destroy]
+        resources :plants, only: [:create, :show, :index, :update, :destroy]
       end
     end
 
