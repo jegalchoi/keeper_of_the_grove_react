@@ -1,14 +1,35 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import Pikaday from 'pikaday'
+import 'pikaday/css/pikaday.css'
 
-export default class NewPlant extends Component {
+export class NewPlant extends Component {
   state = {
     name: '',
     notes: '',
-    water: null,
-    private: true,
-    image: '',
-    user_id: ''
+    water: '',
+    hidden: true,
+    image: ''
+  }
+
+  componentDidMount() {
+    new Pikaday({
+      field: this.dateInput.current,
+      onSelect: date => {
+        const formattedDate = this.formatDate(date);
+        this.dateInput.current.value = formattedDate;
+        this.updatePlant('water', formattedDate)
+      },
+    })
+  }
+
+  dateInput = React.createRef()
+
+  formatDate = d => {
+    const YYYY = d.getFullYear();
+    const MM = `0${d.getMonth() + 1}`.slice(-2);
+    const DD = `0${d.getDate()}`.slice(-2);
+    return `${YYYY}-${MM}-${DD}`
   }
 
   stripHtmlEntities = str => {
@@ -17,33 +38,36 @@ export default class NewPlant extends Component {
       .replace(/>/g, '&gt;')
   }
 
-  onChange = e => {
+  updatePlant = (key, value) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [key]: value
     })
+  }
+
+  onChange = e => {
+    const { name, type, value, checked } = e.target;
+    const plantValue = type === 'checkbox' ? checked : value
+    this.updatePlant(name, plantValue)
   }
 
   onSubmit = e => {
     e.preventDefault()
     const url = 'http://localhost:3001/plants';
-    const { name, notes, water, private, image, user_id } = this.state;
-    if (name.length == 0 || user_id == 0) {
-      return;
-    }
+    const { name, notes, water, hidden, image } = this.state;
+    if (name.length == 0 || this.props.user.id == 0) return;
     const body = {
       name,
-      notes: instruction.replace(/\n/g, '<br />'),
-      water,
-      private,
-      image,
-      user_id
+      notes: notes.replace(/\n/g, '<br />'),
+      water: (water == '') ? null : water,
+      hidden,
+      image: (image == '') ? 'https://placeimg.com/320/240/nature' : image,
+      user_id: this.props.user.id
     };
+    console.log(body)
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
       method: 'POST',
       headers: {
-        'X-CSRF-Token': token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
@@ -54,7 +78,10 @@ export default class NewPlant extends Component {
         }
         throw new Error('Network response was not ok.')
       })
-      .then(json => this.props.history.push(`/recipe/${json.id}`))
+      .then(json => {
+        console.log(json)
+        this.props.history.push(`/users/${this.props.user.id}/plants/${json.plant.id}`)
+      })
       .catch(error => console.log(error.message))
   }
 
@@ -63,36 +90,84 @@ export default class NewPlant extends Component {
       <div className='container mt-5'>
         <div className='row'>
           <div className='col-sm-12 col-lg-6 offset-lg-3'>
-            <h1 className='font-weight-normal mb-5'>
-              Add new recipe
-            </h1>
+            <h1 className='font-weight-normal mb-5'>Add New Plant</h1>
             <form onSubmit={this.onSubmit}>
               <div className='form-group'>
-                <label htmlFor='recipeName'>Recipe name</label>
+                <label htmlFor='plantName'>
+                  <strong>Plant Name</strong>
+                </label>
                 <input
+                  className='form-control form-control-lg'
                   type='text'
+                  value={this.state.name}
                   name='name'
-                  id='recipeName'
-                  className='form-control'
-                  required
+                  placeholder='Name'
                   onChange={this.onChange}
+                  id='plantName'
+                  required
                 />
               </div>
               <div className='form-group'>
-                <label htmlFor='recipeIngredients'>Ingredients</label>
+                <label htmlFor='plantWater'>
+                  <strong>Last Date Watered</strong>
+                </label>
                 <input
+                  className='form-control form-control-lg'
                   type='text'
-                  name='ingredients'
-                  id='recipeIngredients'
-                  className='form-control'
-                  required
+                  id='plantWater'
+                  name='water'
+                  placeholder='YYYY-MM-DD'
+                  value={this.state.water}
                   onChange={this.onChange}
+                  ref={this.dateInput}
+                  autoComplete='off'
                 />
-                <small id='ingredientHelp' className='form-text text-muted'>
-                  Separate each ingredient with a comma.
+              </div>
+              {/* <div className='form-group'>
+                <label htmlFor='plantWater'>
+                  <strong>Last Watered</strong>
+                </label>
+                <input
+                  className='form-control form-control-lg'
+                  type='date'
+                  value={this.state.water}
+                  name='water'
+                  onChange={this.onChange}
+                  id='plantWater'
+                />
+              </div> */}
+              <div className='form-group'>
+                <label htmlFor='plantNotes'>
+                  <strong>Notes</strong>
+                </label>
+                <input
+                  className='form-control form-control-lg'
+                  type='text'
+                  value={this.state.notes}
+                  name='notes'
+                  placeholder='Notes'
+                  onChange={this.onChange}
+                  id='plantNotes'
+                />
+                <small id='notesHelp' className='form-text text-muted'>
+                  Separate each note with a comma.
                 </small>
               </div>
-              <label htmlFor='instruction'>Preparation Instructions</label>
+              <div className='form-check'>
+                <input
+                  className='form-check-input'
+                  type='checkbox'
+                  name='hidden'
+                  checked={this.state.hidden}
+                  onChange={this.onChange}
+                  id='plantHidden'
+                />
+                <label className='form-check-label' htmlFor='plantHidden'>
+                  <strong>Private</strong>
+                </label>
+              </div>
+
+              {/* <label htmlFor='instruction'>Preparation Instructions</label>
               <textarea
                 name='instruction'
                 id='instruction'
@@ -100,13 +175,14 @@ export default class NewPlant extends Component {
                 row='5'
                 required
                 onChange={this.onChange}
-              />
-              <button type='submit' className='btn custom-button mt-3'>
-                Create Recipe
+              /> */}
+              <button type='submit' className='btn btn-primary mt-3'>
+                Create Plant
               </button>
-              <Link to='/recipes' className='btn btn-link mt-3'>
-                Back to recipes
-                </Link>
+              <br />
+              <Link to='/plants' className='btn btn-link mt-3'>
+                Back to plants
+              </Link>
             </form>
           </div>
         </div>

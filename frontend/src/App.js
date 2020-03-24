@@ -6,6 +6,7 @@ import Login from './components/registrations/Login'
 import Signup from './components/registrations/Signup'
 import { Plants } from './components/Plants'
 import { Plant } from './components/Plant'
+import { NewPlant } from './components/NewPlant'
 
 export default class App extends Component {
   constructor(props) {
@@ -58,11 +59,26 @@ export default class App extends Component {
               render={props => (
                 <Plant
                   {...props}
+                  handleLogout={this.handleLogout}
+                  loggedInStatus={this.state.isLoggedIn}
                   user={this.state.user}
                 />
               )}
             />
-            {/* <Route exact path='/plant' component={NewPlant} /> */}
+            <Route
+              exact path={`/users/${this.state.user.id}/plant`}
+              render={props => (
+                <NewPlant
+                  {...props}
+                  handleLogout={this.handleLogout}
+                  loggedInStatus={this.state.isLoggedIn}
+                  user={this.state.user}
+                />
+              )}
+            />
+            {/* <Route
+              exact path='/plant'
+            /> */}
             <Route
               exact path='/plants'
               render={props => (

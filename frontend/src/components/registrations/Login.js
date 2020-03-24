@@ -70,26 +70,30 @@ export default class Login extends Component {
         <h1>Log In</h1>
         <form onSubmit={this.handleSubmit}>
           <input
-            placeholder='username'
+            placeholder='Enter username'
             type='text'
             name='username'
             value={username}
             onChange={this.handleChange}
           />
           <input
-            placeholder='password'
+            placeholder='Enter password'
             type='password'
             name='password'
             value={password}
             onChange={this.handleChange}
           />
-
-          <button placeholder='submit' type='submit'>
+          <br />
+          <button
+            placeholder='submit'
+            type='submit'
+            className='btn-primary btn-lg rounded'
+          >
             Log In
           </button>
 
           <div>
-            or <Link to='/signup'>sign up</Link>
+            <Link to='/signup'>Create Account</Link>
           </div>
         </form>
         <div>{this.state.errors ? this.handleErrors() : null}</div>

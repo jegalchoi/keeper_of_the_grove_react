@@ -24,7 +24,7 @@ class PlantsController < ApplicationController
   end
 
   def index
-    @plants = Plant.all
+    @plants = Plant.where(private: false)
     render json: @plants
   end
 
@@ -105,7 +105,7 @@ class PlantsController < ApplicationController
   private
 
   def plant_params
-    params.require(:plant).permit(:name, :notes, :water, :private, :image, :user_id)
+    params.require(:plant).permit(:name, :notes, :water, :hidden, :image, :user_id)
   end
 
   def find_plant_by_params_id

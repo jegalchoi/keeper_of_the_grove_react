@@ -62,7 +62,7 @@ export class Plant extends Component {
   render() {
     const { plant } = this.state;
     let notes = 'N/A';
-    if (plant.notes !== null) {
+    if (plant.notes != null) {
       notes = plant.notes
         .split(',')
         .map((note, idx) => (

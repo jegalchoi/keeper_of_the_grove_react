@@ -68,8 +68,8 @@ export class Plants extends Component {
         <div className='py-5'>
           <main className='container'>
             <div className='text-right mb-3'>
-              <Link to='/plant' className='btn custom-button'>
-                Create New PLant
+              <Link to={`/users/${this.props.user.id}/plant`} className='btn btn-lg btn-primary'>
+                Create New Plant
               </Link>
             </div>
             <div className='row'>

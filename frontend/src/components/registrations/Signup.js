@@ -70,7 +70,7 @@ export default class Signup extends Component {
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
           <input
-            placeholder='username'
+            placeholder='Username'
             type='text'
             name='username'
             value={username}
@@ -78,7 +78,7 @@ export default class Signup extends Component {
             required
           />
           <input
-            placeholder='email'
+            placeholder='Email'
             type='email'
             name='email'
             value={email}
@@ -86,7 +86,7 @@ export default class Signup extends Component {
             required
           />
           <input
-            placeholder='password'
+            placeholder='Password'
             type='password'
             name='password'
             value={password}
@@ -94,7 +94,7 @@ export default class Signup extends Component {
             required
           />
           <input
-            placeholder='password_confirmation'
+            placeholder='Confirm Password'
             type='password'
             name='password_confirmation'
             value={password_confirmation}
@@ -102,8 +102,12 @@ export default class Signup extends Component {
             required
           />
           <br />
-          <button placeholder='submit' type='submit'>
-            Sign Up
+          <button
+            placeholder='submit'
+            type='submit'
+            className='btn-primary btn-lg rounded'
+          >
+            Create Account
           </button>
 
           <div>
