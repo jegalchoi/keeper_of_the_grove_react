@@ -24,7 +24,17 @@ class Api::V1::PlantsController < ApplicationController
   end
 
   def index
-    respond_with Plant.where(private: false)
+    @plants = Plant.where(hidden: false)
+    if @plants
+      render json: {
+        plants: @plants
+      }
+    else
+      render json: {
+        status: 500,
+        errors: ['Could not locate any plants']
+      }
+    end
   end
 
   def authorized_show
