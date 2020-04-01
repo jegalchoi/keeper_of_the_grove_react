@@ -13,6 +13,39 @@ class PlantProvider extends Component {
     user: {},
   }
 
+  componentDidMount() {
+    this.loginStatus()
+  }
+
+  loginStatus = () => {
+    axios
+      .get('http://localhost:3001/logged_in', { withCredentials: true })
+      .then(response => {
+        if (response.data.logged_in) {
+          this.handleLogin(response.data)
+        } else {
+          this.handleLogout()
+        }
+      })
+      .catch(error => console.log('check login api errors:', error))
+  }
+
+  handleLogin = data => {
+    this.setState({
+      isLoggedIn: 'LOGGED_IN',
+      user: data.user,
+      displayUserPlants: false,
+    })
+  }
+
+  handleLogout = () => {
+    this.setState({
+      isLoggedIn: 'NOT_LOGGED_IN',
+      displayUserPlants: false,
+      user: {},
+    })
+  }
+
   
 
   render() {
@@ -20,6 +53,8 @@ class PlantProvider extends Component {
       <PlantContext.Provider
         value={{
           ...this.state,
+          handleLogin: this.handleLogin,
+          handleLogout: this.handleLogout,
           
         }}
       >
