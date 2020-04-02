@@ -84,13 +84,16 @@ export default class Login extends Component {
           />
           <br />
           <button
+            placeholder='submit'
             type='submit'
             className='btn-primary btn-lg mt-3'
           >
             Log In
           </button>
           <div>
-            <Link to='/signup'>Create Account</Link>
+            <Link to='/signup'>
+              <strong>Create Account</strong>
+            </Link>
           </div>
         </form>
         <div>

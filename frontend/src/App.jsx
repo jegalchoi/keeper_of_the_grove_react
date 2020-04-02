@@ -5,6 +5,7 @@ import Default from './components/Default.jsx'
 import Navbar from './components/Navbar.jsx'
 import Login from './components/registrations/Login.jsx'
 import Signup from './components/registrations/Signup.jsx'
+import EditUser from './components/registrations/EditUser.jsx'
 
 class App extends Component {
   render() {
@@ -35,6 +36,17 @@ class App extends Component {
                     {...props}
                     handleLogin={value.handleLogin}
                     loggedInStatus={value.isLoggedIn}
+                  />
+                )}
+              />
+              <Route
+                exact path='/editUser'
+                render={props => (
+                  <EditUser
+                    {...props}
+                    username={value.user.username}
+                    email={value.user.email}
+                    id={value.user.id}
                   />
                 )}
               />

@@ -38,9 +38,11 @@ export default class Navbar extends Component {
             <div className="ml-auto">
               <div className='mr-2'>
                 {value.isLoggedIn === 'LOGGED_IN' && (
-                  <h5>
-                    <strong>{value.user.username}</strong>
-                  </h5>
+                  <Link to='/editUser'>
+                    <h5>
+                      <strong>{value.user.username}</strong>
+                    </h5>
+                  </Link>
                 )}
                 {value.isLoggedIn === 'LOGGED_IN' ? (
                   <Link to='/' onClick={this.handleClickLogout}>

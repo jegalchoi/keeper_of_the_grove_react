@@ -14,6 +14,26 @@ export default class Signup extends Component {
     }
   }
 
+  componentDidMount() {
+    let user = {
+      username: this.props.username,
+      email: this.props.email,
+      id: this.props.id,
+    };
+    // console.log('mounted edituser')
+    this.getUser(user)
+    // console.log(user)
+  }
+
+  getUser = ({ username, email, id }) => {
+    this.setState({
+      username,
+      email,
+      id,
+    })
+    // setTimeout(() => console.log(this.state), 5000)
+  }
+
   handleChange = e => {
     const { name, value } = e.target
     this.setState({
@@ -23,7 +43,7 @@ export default class Signup extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log('form submitted')
+    // console.log('form submitted')
     const { username, email, password, password_confirmation } = this.state
 
     let user = {
@@ -34,10 +54,10 @@ export default class Signup extends Component {
     }
 
     axios
-      .post('http://localhost:3001/users', { user }, { withCredentials: true })
+      .patch(`http://localhost:3001/users/${this.props.id}`, { user }, { withCredentials: true })
       .then(response => {
-        if (response.data.status === 'created') {
-          this.props.handleLogin(response.data)
+        console.log(response)
+        if (response.data.status === 'updated') {
           this.redirect()
         } else {
           this.setState({
@@ -45,7 +65,7 @@ export default class Signup extends Component {
           })
         }
       })
-      .catch(error => console.log('signup api errors:', error))
+      .catch(error => console.log('edit user api errors:', error))
   }
 
   redirect = () => this.props.history.push('/')
@@ -67,7 +87,7 @@ export default class Signup extends Component {
 
     return (
       <div>
-        <h1>Sign Up</h1>
+        <h1>Edit Account</h1>
         <form onSubmit={this.handleSubmit}>
           <input
             placeholder='Username'
@@ -107,11 +127,11 @@ export default class Signup extends Component {
             type='submit'
             className='btn-primary btn-lg mt-3'
           >
-            Create Account
+            Update Account
           </button>
           <div>
-            <Link to='/login'>
-              <strong>Log In</strong>
+            <Link to='/'>
+              <strong>Home</strong>
             </Link>
           </div>
         </form>
