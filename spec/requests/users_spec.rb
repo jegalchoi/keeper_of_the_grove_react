@@ -49,3 +49,49 @@ describe 'user login', :type => :request do
     end
   end  
 end
+
+describe 'user logout', :type => :request do
+  describe 'logout a user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      delete '/logout'
+
+    end
+
+    it 'returns a logged_in status of false' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['logged_in']).to eq(false)
+    end
+  end
+end
+
+describe 'user logged in?', :type => :request do
+  describe 'user is logged in', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      get '/logged_in'
+    end
+
+    it 'returns a logged_in status of true' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['logged_in']).to eq(true)
+    end
+  end
+
+  describe 'user is logged out', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      delete '/logout'
+      get '/logged_in'
+    end
+
+    it 'returns a logged_in status of true' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['logged_in']).to eq(false)
+    end
+  end
+
+end
