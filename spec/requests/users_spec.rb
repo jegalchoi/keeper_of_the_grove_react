@@ -24,6 +24,52 @@ describe 'user signup', :type => :request do
   end
 end
 
+describe 'edit user account', :type => :request do
+  describe 'edit a user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      
+      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '12345', password_confirmation: '12345'}}
+    end
+
+    it 'returns an updated status' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['status']).to eq('updated')
+    end
+  end
+
+  describe 'fail to edit a user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      
+      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+    end
+
+    it 'returns a 401 error' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['status']).to eq(401)
+    end
+  end
+
+  describe 'fail to find user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      
+      patch "/users/10", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+    end
+
+    it 'returns a 400 error' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['status']).to eq(400)
+    end
+  end
+end
+
 describe 'user login', :type => :request do
   describe 'login a user', :type => :request do
     before do
@@ -88,7 +134,7 @@ describe 'user logged in?', :type => :request do
       get '/logged_in'
     end
 
-    it 'returns a logged_in status of true' do
+    it 'returns a logged_in status of false' do
       expect(response.content_type).to eq('application/json; charset=utf-8')
       expect(JSON.parse(response.body)['logged_in']).to eq(false)
     end

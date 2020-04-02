@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user && @user.update_attributes(user_params)
+    if @user && @user.update(user_params)
       render json: {
         status: :updated,
         user: @user
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
     end
 
     def set_user
-      @user = User.find(params[:id])
+      @user ||= User.find_by(id: params[:id])
     end
 
 end
