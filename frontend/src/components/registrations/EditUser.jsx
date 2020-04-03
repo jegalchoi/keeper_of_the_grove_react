@@ -109,65 +109,74 @@ export default class Signup extends Component {
     const { username, email, password, password_confirmation } = this.state;
 
     return (
-      <div>
-        <h1>Edit Account</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder='Username'
-            type='text'
-            name='username'
-            value={username}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            placeholder='Email'
-            type='email'
-            name='email'
-            value={email}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            placeholder='Password'
-            type='password'
-            name='password'
-            value={password}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            placeholder='Confirm Password'
-            type='password'
-            name='password_confirmation'
-            value={password_confirmation}
-            onChange={this.handleChange}
-            required
-          />
-          <br />
-          <button
-            placeholder='submit'
-            type='submit'
-            className='btn-success btn-lg mt-3 text-capitalize'
-          >
-            update account
-          </button>
-          <br />
-          <button
-            placeholder='delete'
-            onClick={this.deleteUser}
-            className='btn-danger btn-lg mt-3 text-uppercase'
-          >
-            delete account
-          </button>
-          <div>
-            <Link to='/'>
-              <strong>Home</strong>
-            </Link>
-          </div>
-        </form>
+      <div className='d-flex justify-content-center'>
         <div>
-          {this.state.errors ? this.handleErrors() : null}
+          <h1 className='text-capitalize'><strong>edit account</strong></h1>
+          <form onSubmit={this.handleSubmit}>
+            <input
+              placeholder='Username'
+              type='text'
+              name='username'
+              value={username}
+              onChange={this.handleChange}
+              required
+            />
+            <br /><br />
+            <input
+              placeholder='Email'
+              type='email'
+              name='email'
+              value={email}
+              onChange={this.handleChange}
+              required
+            />
+            <br /><br />
+            <input
+              placeholder='Password'
+              type='password'
+              name='password'
+              value={password}
+              onChange={this.handleChange}
+              required
+            />
+            <br /><br />
+            <input
+              placeholder='Confirm Password'
+              type='password'
+              name='password_confirmation'
+              value={password_confirmation}
+              onChange={this.handleChange}
+              required
+            />
+            <br />
+            <button
+              placeholder='submit'
+              type='submit'
+              className='btn-success btn-lg mt-3 text-capitalize'
+            >
+              <strong>update account</strong>
+          </button>
+            <br />
+            <button
+              placeholder='delete'
+              onClick={this.deleteUser}
+              className='btn-danger btn-lg mt-3 text-uppercase'
+            >
+              <strong>delete account</strong>
+          </button>
+          <br />
+            <Link to='/'>
+              <button
+                placeholder='home'
+                className='btn-primary btn-lg mt-3 text-capitalize'
+              >
+                <strong>home</strong>
+              </button>
+            </Link>
+          </form>
+          <div>
+            {this.state.errors ? this.handleErrors() : null}
+          </div>
         </div>
       </div>
     )

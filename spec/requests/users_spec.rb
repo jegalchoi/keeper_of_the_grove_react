@@ -29,7 +29,6 @@ describe 'edit user account', :type => :request do
     before do
       post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
       post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      
       patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '12345', password_confirmation: '12345'}}
     end
 
@@ -44,7 +43,6 @@ describe 'edit user account', :type => :request do
       post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
       post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
       post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      
       patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
     end
 
@@ -59,8 +57,35 @@ describe 'edit user account', :type => :request do
       post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
       post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
       post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      
       patch "/users/10", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+    end
+
+    it 'returns a 400 error' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['status']).to eq(400)
+    end
+  end
+end
+
+describe 'delete user account', :type => :request do
+  describe 'delete a user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      delete "/users/#{User.find_by(username: 'jay_test').id}"
+    end
+
+    it 'returns an destroyed status' do
+      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(JSON.parse(response.body)['status']).to eq('destroyed')
+    end
+  end
+
+  describe 'fail to find user', :type => :request do
+    before do
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      delete "/users/10"
     end
 
     it 'returns a 400 error' do
@@ -139,5 +164,4 @@ describe 'user logged in?', :type => :request do
       expect(JSON.parse(response.body)['logged_in']).to eq(false)
     end
   end
-
 end

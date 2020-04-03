@@ -116,7 +116,7 @@ export default class Signup extends Component {
             <br />
             <Link to='/login'>
               <button
-                placeholder='create account'
+                placeholder='login'
                 className='btn-primary btn-lg mt-3 text-capitalize'
               >
                 <strong>log in</strong>

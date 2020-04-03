@@ -71,7 +71,7 @@ class UsersController < ApplicationController
       }
     else
       render json: {
-        status: 500,
+        status: 400,
         errors: ['Could not locate user']
       }
     end
