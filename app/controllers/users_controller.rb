@@ -65,6 +65,7 @@ class UsersController < ApplicationController
   def destroy
     if @user
       @user.destroy
+      logout!
       render json: {
         status: :destroyed
       }

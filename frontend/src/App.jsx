@@ -47,6 +47,7 @@ class App extends Component {
                     username={value.user.username}
                     email={value.user.email}
                     id={value.user.id}
+                    handleLogout={value.handleLogout}
                   />
                 )}
               />

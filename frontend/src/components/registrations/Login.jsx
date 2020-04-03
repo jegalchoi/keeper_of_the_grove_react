@@ -65,39 +65,46 @@ export default class Login extends Component {
     const { username, password } = this.state;
 
     return (
-      <div>
-        <h1>Log In</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder='Enter username'
-            type='text'
-            name='username'
-            value={username}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder='Enter password'
-            type='password'
-            name='password'
-            value={password}
-            onChange={this.handleChange}
-          />
-          <br />
-          <button
-            placeholder='submit'
-            type='submit'
-            className='btn-primary btn-lg mt-3'
-          >
-            Log In
-          </button>
-          <div>
-            <Link to='/signup'>
-              <strong>Create Account</strong>
-            </Link>
-          </div>
-        </form>
+      <div className='d-flex justify-content-center'>
         <div>
-          {this.state.errors ? this.handleErrors() : null}
+          <h1 className='text-capitalize'><strong>log in</strong></h1>
+          <form onSubmit={this.handleSubmit}>
+            <input
+              placeholder='Enter username'
+              type='text'
+              name='username'
+              value={username}
+              onChange={this.handleChange}
+            />
+            <br /><br />
+            <input
+              placeholder='Enter password'
+              type='password'
+              name='password'
+              value={password}
+              onChange={this.handleChange}
+            />
+            <br />
+            <button
+              placeholder='submit'
+              type='submit'
+              className='btn-success btn-lg mt-3 text-capitalize'
+            >
+              <strong>log in</strong>
+            </button>
+            <br />
+            <Link to='/signup'>
+              <button
+                placeholder='create account'
+                className='btn-primary btn-lg mt-3 text-capitalize'
+              >
+                <strong>create account</strong>
+              </button>
+            </Link>
+          </form>
+          <div>
+            {this.state.errors ? this.handleErrors() : null}
+          </div>
         </div>
       </div>
     )

@@ -68,6 +68,29 @@ export default class Signup extends Component {
       .catch(error => console.log('edit user api errors:', error))
   }
 
+  deleteUser = () => {
+    const url = `http://localhost:3001/users/${this.props.id}`
+
+    const confirmation = confirm('Are you sure?');
+    if (confirmation) {
+      console.log('user deletion submitted')
+      axios
+        .delete(url, { withCredentials: true })
+        .then(response => {
+          // console.log(response)
+          if (response.data.status === 'destroyed') {
+            this.props.handleLogout()
+            this.redirect()
+          } else {
+            this.setState({
+              errors: response.data.errors,
+            })
+          }
+        })
+        .catch(error => console.log('delete user api errors:', error))
+    }          
+  }
+
   redirect = () => this.props.history.push('/')
 
   handleErrors = () => {
@@ -125,9 +148,17 @@ export default class Signup extends Component {
           <button
             placeholder='submit'
             type='submit'
-            className='btn-primary btn-lg mt-3'
+            className='btn-success btn-lg mt-3 text-capitalize'
           >
-            Update Account
+            update account
+          </button>
+          <br />
+          <button
+            placeholder='delete'
+            onClick={this.deleteUser}
+            className='btn-danger btn-lg mt-3 text-uppercase'
+          >
+            delete account
           </button>
           <div>
             <Link to='/'>
