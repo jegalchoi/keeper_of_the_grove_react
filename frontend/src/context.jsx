@@ -10,53 +10,20 @@ const initialState = {
   email: '',
   password: '',
   password_confirmation: '',
-  isLoading: false,
-  error: null,
+  isLoading: true,
+  errors: null,
   displayUserPlants: false,
   plants: [],
   detailPlant: {},
 }
 
-// componentDidMount() {
-//   this.loginStatus()
-// }
-
-// export const loginStatus = () => {
-//   const data = await axios
-//     .get('http://localhost:3001/logged_in', { withCredentials: true })
-//     .then(response => {
-//       if (response.data.logged_in) {
-//         this.handleLogin(response.data);
-//       } else {
-//         this.handleLogout();
-//       }
-//     })
-//     .catch(error => console.log('check login api errors:', error));
-// };
-
-// handleLogin = data => {
-//   this.setState({
-//     isLoggedIn: 'LOGGED_IN',
-//     user: data.user,
-//     displayUserPlants: false,
-//   })
-// }
-
-// handleLogout = () => {
-//   this.setState({
-//     isLoggedIn: 'NOT_LOGGED_IN',
-//     displayUserPlants: false,
-//     user: {},
-//   })
-// }
-
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'AUTH_LOGIN':
+    case 'LOADING':
       return {
         ...state,
         isLoading: true,
-        error: null,
+        errors: null,
       }
     case 'AUTH_SUCCESS':
       return {
@@ -65,16 +32,9 @@ const reducer = (state, action) => {
         user_id: action.payload.user.id,
         username: action.payload.user.username,
         permissions: 'LOGGED_IN',
-        error: null,
+        errors: null,
       }
     case 'AUTH_FAILURE':
-      return {
-        isLoading: false,
-        username: '',
-        permissions: 'NOT_LOGGED_IN',
-        error: action.payload.errors,
-      }
-    case 'AUTH_LOGOUT':
       return {
         ...state,
         isLoading: false,
@@ -84,15 +44,26 @@ const reducer = (state, action) => {
         password: '',
         password_confirmation: '',
         permissions: 'NOT_LOGGED_IN',
-        error: null,
+        errors: action.payload.errors,
+      }
+    case 'AUTH_LOGOUT':
+      return {
+        isLoading: false,
+        permissions: 'NOT_LOGGED_IN',
+        user_id: '',
+        username: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        errors: null,
         displayUserPlants: false,
         detailPlant: {},
       }
-    case 'EDIT_USER_FAILURE':
+    case 'AUTH_EDIT_USER_FAILURE':
       return {
         ...state,
         isLoading: false,
-        error: action.payload.errors,
+        errors: action.payload.errors,
       }
     case 'field': {
       return {
@@ -115,7 +86,7 @@ export const PlantProvider = props => {
 
   useEffect(() => {
     // setState(state => ({ data: state.data, loading: true }))
-    dispatch({ type: 'AUTH_LOGIN' })
+    dispatch({ type: 'LOADING' })
     axios
       .get(url, {
         withCredentials: true,
@@ -128,7 +99,7 @@ export const PlantProvider = props => {
           payload: response.data,
         })
       })
-      .catch(error => console.log('check login api errors:', error))
+      .catch(errors => console.log('check login api errors:', errors))
   }, [])
 
   return (

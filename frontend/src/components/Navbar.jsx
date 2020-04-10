@@ -10,7 +10,7 @@ export const Navbar = () => {
 
   const [state, dispatch] = useContext(PlantContext)
 
-  const { username, isLoading, error, permissions } = state
+  const { username, isLoading, errors, permissions } = state
 
   const handleLogout = () => {
     axios
@@ -39,24 +39,40 @@ export const Navbar = () => {
 
       <div className='ml-auto'>
         <div className='mr-2'>
-          {permissions === 'LOGGED_IN' && (
-            <Link to='/editUser'>
-              <h5>
-                <strong>{username}</strong>
-              </h5>
-            </Link>
+          {isLoading ? (
+            <strong>
+              <h5>loading...</h5>
+            </strong>
+          ) : (
+            permissions === 'LOGGED_IN' && (
+              <Link to='/editUser'>
+                <h5>
+                  <strong>{username}</strong>
+                </h5>
+              </Link>
+            )
           )}
-          {permissions === 'LOGGED_IN' ? (
-            <Link to='/' onClick={handleLogout}>
-              Log Out
+          {isLoading ? null : permissions === 'LOGGED_IN' ? (
+            <Link
+              to='/'
+              className='text-capitalize'
+              onClick={handleLogout}
+            >
+              log out
             </Link>
           ) : (
-            <Link to='/login'>Log In</Link>
+            <Link to='/login' className='text-capitalize'>
+              log in
+            </Link>
           )}
           <br />
-          {permissions === 'NOT_LOGGED_IN' && (
-            <Link to='/signup'>Create Account</Link>
-          )}
+          {isLoading
+            ? null
+            : permissions === 'NOT_LOGGED_IN' && (
+                <Link to='/signup' className='text-capitalize'>
+                  create account
+                </Link>
+              )}
           <br />
         </div>
       </div>

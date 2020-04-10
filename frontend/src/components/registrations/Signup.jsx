@@ -12,7 +12,7 @@ export const Signup = () => {
     password,
     password_confirmation,
     isLoading,
-    error,
+    errors,
     permissions,
   } = state
 
@@ -24,7 +24,7 @@ export const Signup = () => {
   const handleSubmit = e => {
     e.preventDefault()
 
-    dispatch({ type: 'AUTH_LOGIN' })
+    dispatch({ type: 'LOADING' })
 
     let user = {
       username,
@@ -61,7 +61,7 @@ export const Signup = () => {
     return (
       <div>
         <ul>
-          {error.map(error => {
+          {errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -158,7 +158,7 @@ export const Signup = () => {
           </Link>
         </form>
         <br />
-        <div>{error && handleErrors()}</div>
+        <div>{errors && handleErrors()}</div>
       </div>
     </div>
   )

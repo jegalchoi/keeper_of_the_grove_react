@@ -6,7 +6,7 @@ import { PlantContext } from '../../context'
 export const Login = () => {
   const [state, dispatch] = useContext(PlantContext)
 
-  const { username, password, isLoading, error, permissions } = state
+  const { username, password, isLoading, errors, permissions } = state
 
   useEffect(() => {
     console.log('login useEffect triggering')
@@ -16,7 +16,7 @@ export const Login = () => {
   const handleSubmit = e => {
     e.preventDefault()
 
-    dispatch({ type: 'AUTH_LOGIN' })
+    dispatch({ type: 'LOADING' })
 
     let user = {
       username,
@@ -51,7 +51,7 @@ export const Login = () => {
     return (
       <div>
         <ul>
-          {error.map(error => {
+          {errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -114,7 +114,7 @@ export const Login = () => {
           </Link>
         </form>
         <br />
-        <div>{error && handleErrors()}</div>
+        <div>{errors && handleErrors()}</div>
       </div>
     </div>
   )
