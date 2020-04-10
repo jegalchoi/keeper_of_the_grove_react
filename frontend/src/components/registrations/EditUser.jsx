@@ -17,10 +17,10 @@ export const EditUser = () => {
     permissions,
   } = state
 
-  useEffect(() => {
-    console.log('edituser useEffect triggering')
-    return permissions !== 'LOGGED_IN' ? history.push('/') : undefined
-  }, [permissions])
+  // useEffect(() => {
+  //   console.log('edituser useEffect triggering')
+  //   return permissions !== 'LOGGED_IN' ? history.push('/') : undefined
+  // }, [permissions])
 
   const handleSubmit = e => {
     e.preventDefault()

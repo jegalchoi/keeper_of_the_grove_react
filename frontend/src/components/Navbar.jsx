@@ -13,6 +13,9 @@ export const Navbar = () => {
   const { username, isLoading, errors, permissions } = state
 
   const handleLogout = () => {
+    console.log('logging out')
+
+    dispatch({ type: 'LOADING' })
     axios
       .delete('http://localhost:3001/logout', {
         withCredentials: true,

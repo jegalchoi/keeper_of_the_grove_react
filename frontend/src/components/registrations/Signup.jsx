@@ -16,14 +16,15 @@ export const Signup = () => {
     permissions,
   } = state
 
-  useEffect(() => {
-    console.log('signup useEffect triggering')
-    return permissions === 'LOGGED_IN' ? history.push('/') : undefined
-  }, [permissions])
+  // useEffect(() => {
+  //   console.log('signup useEffect triggering')
+  //   return permissions === 'LOGGED_IN' ? history.push('/') : undefined
+  // }, [permissions])
 
   const handleSubmit = e => {
     e.preventDefault()
 
+    console.log('signing up')
     dispatch({ type: 'LOADING' })
 
     let user = {

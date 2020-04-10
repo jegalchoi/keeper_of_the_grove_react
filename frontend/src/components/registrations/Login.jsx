@@ -8,10 +8,10 @@ export const Login = () => {
 
   const { username, password, isLoading, errors, permissions } = state
 
-  useEffect(() => {
-    console.log('login useEffect triggering')
-    return permissions === 'LOGGED_IN' ? history.push('/') : undefined
-  })
+  // useEffect(() => {
+  //   console.log('login useEffect triggering')
+  //   return permissions === 'LOGGED_IN' ? history.push('/') : undefined
+  // })
 
   const handleSubmit = e => {
     e.preventDefault()

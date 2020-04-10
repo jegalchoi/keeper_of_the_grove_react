@@ -65,6 +65,11 @@ const reducer = (state, action) => {
         isLoading: false,
         errors: action.payload.errors,
       }
+    case 'CLEAR_ERRORS':
+      return {
+        ...state,
+        errors: null,
+      }
     case 'field': {
       return {
         ...state,
@@ -78,15 +83,16 @@ const reducer = (state, action) => {
 
 export const PlantProvider = props => {
   console.log('context')
+
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  console.log('fetching login status')
-
-  const url = 'http://localhost:3001/logged_in'
-
   useEffect(() => {
-    // setState(state => ({ data: state.data, loading: true }))
+    console.log('fetching login status')
+
     dispatch({ type: 'LOADING' })
+
+    const url = 'http://localhost:3001/logged_in'
+
     axios
       .get(url, {
         withCredentials: true,

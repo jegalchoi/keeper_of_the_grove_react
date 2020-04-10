@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { PlantContext } from './context'
 import { Default } from './components/Default.jsx'
 import { Navbar } from './components/Navbar.jsx'
@@ -12,17 +12,51 @@ export const App = () => {
 
   const [state, dispatch] = useContext(PlantContext)
 
+  const { isLoading, permissions } = state
+
   return (
     <React.Fragment>
-      <h1>{state.isLoading ? 'loading' : 'not loading'}</h1>
+      <h1>{isLoading ? 'loading' : 'not loading'}</h1>
       <Navbar />
-      <Switch>
-        <Route exact path='/' />
-        <Route exact path='/login' component={Login} />
-        <Route exact path='/signup' component={Signup} />
-        <Route exact path='/edituser' component={EditUser} />
-        <Route component={Default} />
-      </Switch>
+      {isLoading ? null : (
+        <Switch>
+          <Route exact path='/' />
+          <Route
+            exact
+            path='/login'
+            render={() =>
+              permissions !== 'LOGGED_IN' ? (
+                <Login />
+              ) : (
+                <Redirect to='/' />
+              )
+            }
+          />
+          <Route
+            exact
+            path='/signup'
+            render={() =>
+              permissions !== 'LOGGED_IN' ? (
+                <Signup />
+              ) : (
+                <Redirect to='/' />
+              )
+            }
+          />
+          <Route
+            exact
+            path='/edituser'
+            render={() =>
+              permissions === 'LOGGED_IN' ? (
+                <EditUser />
+              ) : (
+                <Redirect to='/' />
+              )
+            }
+          />
+          <Route component={Default} />
+        </Switch>
+      )}
     </React.Fragment>
   )
 }
