@@ -1,50 +1,31 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { PlantContext } from '../../context'
 
-export default class Signup extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
-      errors: '',
-    }
-  }
+export const EditUser = () => {
+  const [state, dispatch] = useContext(PlantContext)
 
-  componentDidMount() {
-    let user = {
-      username: this.props.username,
-      email: this.props.email,
-      id: this.props.id,
-    };
-    // console.log('mounted edituser')
-    this.getUser(user)
-    // console.log(user)
-  }
+  const {
+    username,
+    user_id,
+    email,
+    password,
+    password_confirmation,
+    isLoading,
+    error,
+    permissions,
+  } = state
 
-  getUser = ({ username, email, id }) => {
-    this.setState({
-      username,
-      email,
-      id,
-    })
-    // setTimeout(() => console.log(this.state), 5000)
-  }
+  useEffect(() => {
+    console.log('edituser useEffect triggering')
+    return permissions !== 'LOGGED_IN' ? history.push('/') : undefined
+  }, [permissions])
 
-  handleChange = e => {
-    const { name, value } = e.target
-    this.setState({
-      [name]: value,
-    })
-  }
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault()
-    // console.log('form submitted')
-    const { username, email, password, password_confirmation } = this.state
+
+    dispatch({ type: 'AUTH_LOGIN' })
 
     let user = {
       username,
@@ -53,51 +34,60 @@ export default class Signup extends Component {
       password_confirmation,
     }
 
+    const url = `http://localhost:3001/users/${user_id}`
+
     axios
-      .patch(`http://localhost:3001/users/${this.props.id}`, { user }, { withCredentials: true })
+      .patch(url, { user }, { withCredentials: true })
       .then(response => {
-        console.log(response)
         if (response.data.status === 'updated') {
-          this.redirect()
+          dispatch({
+            type: 'AUTH_SUCCESS',
+            payload: response.data,
+          })
+          history.push('/')
         } else {
-          this.setState({
-            errors: response.data.errors,
+          dispatch({
+            type: 'EDIT_USER_FAILURE',
+            payload: response.data,
           })
         }
       })
       .catch(error => console.log('edit user api errors:', error))
   }
 
-  deleteUser = () => {
-    const url = `http://localhost:3001/users/${this.props.id}`
+  const deleteUser = () => {
+    const url = `http://localhost:3001/users/${user_id}`
 
-    const confirmation = confirm('Are you sure?');
+    const confirmation = confirm('Are you sure?')
     if (confirmation) {
       console.log('user deletion submitted')
       axios
         .delete(url, { withCredentials: true })
         .then(response => {
-          // console.log(response)
           if (response.data.status === 'destroyed') {
-            this.props.handleLogout()
-            this.redirect()
+            dispatch({
+              type: 'AUTH_LOGOUT',
+            })
+            history.push('/')
           } else {
-            this.setState({
-              errors: response.data.errors,
+            dispatch({
+              type: 'AUTH_FAILURE',
+              payload: response.data,
             })
           }
         })
         .catch(error => console.log('delete user api errors:', error))
-    }          
+    }
   }
 
-  redirect = () => this.props.history.push('/')
+  const history = useHistory()
 
-  handleErrors = () => {
+  const handleErrors = () => {
+    console.log('rendering errors')
     return (
       <div>
         <ul>
-          {this.state.errors.map(error => {
+          {error.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -105,80 +95,105 @@ export default class Signup extends Component {
     )
   }
 
-  render() {
-    const { username, email, password, password_confirmation } = this.state;
+  console.log('edit user')
 
-    return (
-      <div className='d-flex justify-content-center'>
-        <div>
-          <h1 className='text-capitalize'><strong>edit account</strong></h1>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              placeholder='Username'
-              type='text'
-              name='username'
-              value={username}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Email'
-              type='email'
-              name='email'
-              value={email}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Password'
-              type='password'
-              name='password'
-              value={password}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Confirm Password'
-              type='password'
-              name='password_confirmation'
-              value={password_confirmation}
-              onChange={this.handleChange}
-              required
-            />
-            <br />
-            <button
-              placeholder='submit'
-              type='submit'
-              className='btn-success btn-lg mt-3 text-capitalize'
-            >
-              <strong>update account</strong>
-          </button>
-            <br />
-            <button
-              placeholder='delete'
-              onClick={this.deleteUser}
-              className='btn-danger btn-lg mt-3 text-uppercase'
-            >
-              <strong>delete account</strong>
+  return (
+    <div className='d-flex justify-content-center'>
+      <div>
+        <h1 className='text-capitalize'>
+          <strong>edit account</strong>
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            placeholder='Username'
+            value={username}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'username',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='email'
+            placeholder='Email'
+            value={email}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'email',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='password'
+            placeholder='Password'
+            value={password}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'password',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='password'
+            placeholder='Confirm Password'
+            value={password_confirmation}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'password_confirmation',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <button
+            type='submit'
+            placeholder='submit'
+            disabled={isLoading}
+            className='btn-success btn-lg mt-3 text-capitalize'
+          >
+            <strong>
+              {isLoading ? 'updating account...' : 'update account'}
+            </strong>
           </button>
           <br />
-            <Link to='/'>
-              <button
-                placeholder='home'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-              >
-                <strong>home</strong>
-              </button>
-            </Link>
-          </form>
-          <div>
-            {this.state.errors ? this.handleErrors() : null}
-          </div>
-        </div>
+          <button
+            placeholder='delete'
+            onClick={deleteUser}
+            className='btn-danger btn-lg mt-3 text-uppercase'
+          >
+            <strong>delete account</strong>
+          </button>
+          <br />
+          <Link to='/'>
+            <button
+              placeholder='home'
+              className='btn-primary btn-lg mt-3 text-capitalize'
+            >
+              <strong>home</strong>
+            </button>
+          </Link>
+        </form>
+        <br />
+        <div>{error && handleErrors()}</div>
       </div>
-    )
-  }
+    </div>
+  )
 }

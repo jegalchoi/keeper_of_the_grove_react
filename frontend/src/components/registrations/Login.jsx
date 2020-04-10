@@ -1,59 +1,57 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { PlantContext } from '../../context'
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: '',
-      errors: '',
-    }
-  }
+export const Login = () => {
+  const [state, dispatch] = useContext(PlantContext)
 
-  componentWillMount() {
-    return this.props.loggedInStatus === 'LOGGED_IN' ? this.redirect() : null
-  }
+  const { username, password, isLoading, error, permissions } = state
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    })
-  }
+  useEffect(() => {
+    console.log('login useEffect triggering')
+    return permissions === 'LOGGED_IN' ? history.push('/') : undefined
+  })
 
-  handleSubmit = e => {
-    const { username, password } = this.state;
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    dispatch({ type: 'AUTH_LOGIN' })
+
     let user = {
       username,
       password,
-    };
+    }
+
+    const url = 'http://localhost:3001/login'
 
     axios
-      .post('http://localhost:3001/login', { user }, { withCredentials: true })
+      .post(url, { user }, { withCredentials: true })
       .then(response => {
         if (response.data.logged_in) {
-          this.props.handleLogin(response.data)
-          this.redirect()
+          dispatch({
+            type: 'AUTH_SUCCESS',
+            payload: response.data,
+          })
+          history.push('/')
         } else {
-          this.setState({
-            errors: response.data.errors,
+          dispatch({
+            type: 'AUTH_FAILURE',
+            payload: response.data,
           })
         }
       })
       .catch(error => console.log('login api errors:', error))
-
-    e.preventDefault()
   }
 
-  redirect = () => this.props.history.push('/')
+  const history = useHistory()
 
-  handleErrors = () => {
+  const handleErrors = () => {
+    console.log('rendering errors')
     return (
       <div>
         <ul>
-          {this.state.errors.map(error => {
+          {error.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -61,52 +59,63 @@ export default class Login extends Component {
     )
   }
 
-  render() {
-    const { username, password } = this.state;
+  console.log('login')
 
-    return (
-      <div className='d-flex justify-content-center'>
-        <div>
-          <h1 className='text-capitalize'><strong>log in</strong></h1>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              placeholder='Enter username'
-              type='text'
-              name='username'
-              value={username}
-              onChange={this.handleChange}
-            />
-            <br /><br />
-            <input
-              placeholder='Enter password'
-              type='password'
-              name='password'
-              value={password}
-              onChange={this.handleChange}
-            />
-            <br />
+  return (
+    <div className='d-flex justify-content-center'>
+      <div>
+        <h1 className='text-capitalize'>
+          <strong>log in</strong>
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            placeholder='Enter username'
+            value={username}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'username',
+                payload: e.target.value,
+              })
+            }
+          />
+          <br />
+          <br />
+          <input
+            type='password'
+            placeholder='Enter password'
+            value={password}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'password',
+                payload: e.target.value,
+              })
+            }
+          />
+          <br />
+          <button
+            type='submit'
+            placeholder='submit'
+            disabled={isLoading}
+            className='btn-success btn-lg mt-3 text-capitalize'
+          >
+            <strong>{isLoading ? 'logging in...' : 'log in'}</strong>
+          </button>
+          <br />
+          <Link to='/signup'>
             <button
-              placeholder='submit'
-              type='submit'
-              className='btn-success btn-lg mt-3 text-capitalize'
+              placeholder='create account'
+              className='btn-primary btn-lg mt-3 text-capitalize'
             >
-              <strong>log in</strong>
+              <strong>create account</strong>
             </button>
-            <br />
-            <Link to='/signup'>
-              <button
-                placeholder='create account'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-              >
-                <strong>create account</strong>
-              </button>
-            </Link>
-          </form>
-          <div>
-            {this.state.errors ? this.handleErrors() : null}
-          </div>
-        </div>
+          </Link>
+        </form>
+        <br />
+        <div>{error && handleErrors()}</div>
       </div>
-    )
-  }
+    </div>
+  )
 }

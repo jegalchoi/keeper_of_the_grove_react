@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode-development"
+    "start": "webpack-dev-server --config ./webpack.config.js --mode-development",
+    "test": "jest --config ./jest.config.json",
+    "test:watch": "npm run test -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,7 @@
     "babel-loader": "^8.0.6",
     "bootstrap": "^4.4.1",
     "pikaday": "^1.8.0",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
     "react-alert": "^7.0.0",
     "react-alert-template-basic": "^1.0.0",
     "react-datepicker": "^2.14.1",
@@ -36,8 +37,10 @@
     "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {
+    "eslint-plugin-react-hooks": "^3.0.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
-    "popper.js": "^1.16.1"
+    "popper.js": "^1.16.1",
+    "react-test-renderer": "^16.13.1"
   }
 }

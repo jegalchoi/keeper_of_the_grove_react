@@ -1,30 +1,30 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { PlantContext } from '../../context'
 
-export default class Signup extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
-      errors: '',
-    }
-  }
+export const Signup = () => {
+  const [state, dispatch] = useContext(PlantContext)
 
-  handleChange = e => {
-    const { name, value } = e.target
-    this.setState({
-      [name]: value,
-    })
-  }
+  const {
+    username,
+    email,
+    password,
+    password_confirmation,
+    isLoading,
+    error,
+    permissions,
+  } = state
 
-  handleSubmit = e => {
+  useEffect(() => {
+    console.log('signup useEffect triggering')
+    return permissions === 'LOGGED_IN' ? history.push('/') : undefined
+  }, [permissions])
+
+  const handleSubmit = e => {
     e.preventDefault()
-    console.log('form submitted')
-    const { username, email, password, password_confirmation } = this.state
+
+    dispatch({ type: 'AUTH_LOGIN' })
 
     let user = {
       username,
@@ -33,28 +33,35 @@ export default class Signup extends Component {
       password_confirmation,
     }
 
+    const url = 'http://localhost:3001/users'
+
     axios
-      .post('http://localhost:3001/users', { user }, { withCredentials: true })
+      .post(url, { user }, { withCredentials: true })
       .then(response => {
         if (response.data.status === 'created') {
-          this.props.handleLogin(response.data)
-          this.redirect()
+          dispatch({
+            type: 'AUTH_SUCCESS',
+            payload: response.data,
+          })
+          history.push('/')
         } else {
-          this.setState({
-            errors: response.data.errors,
+          dispatch({
+            type: 'AUTH_FAILURE',
+            payload: response.data,
           })
         }
       })
       .catch(error => console.log('signup api errors:', error))
   }
 
-  redirect = () => this.props.history.push('/')
+  const history = useHistory()
 
-  handleErrors = () => {
+  const handleErrors = () => {
+    console.log('rendering errors')
     return (
       <div>
         <ul>
-          {this.state.errors.map(error => {
+          {error.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -62,72 +69,97 @@ export default class Signup extends Component {
     )
   }
 
-  render() {
-    const { username, email, password, password_confirmation } = this.state;
+  console.log('signup')
 
-    return (
-      <div className='d-flex justify-content-center'>
-        <div>
-          <h1 className='text-capitalize'><strong>sign up</strong></h1>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              placeholder='Username'
-              type='text'
-              name='username'
-              value={username}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Email'
-              type='email'
-              name='email'
-              value={email}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Password'
-              type='password'
-              name='password'
-              value={password}
-              onChange={this.handleChange}
-              required
-            />
-            <br /><br />
-            <input
-              placeholder='Confirm Password'
-              type='password'
-              name='password_confirmation'
-              value={password_confirmation}
-              onChange={this.handleChange}
-              required
-            />
-            <br />
+  return (
+    <div className='d-flex justify-content-center'>
+      <div>
+        <h1 className='text-capitalize'>
+          <strong>sign up</strong>
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            placeholder='Username'
+            value={username}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'username',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='email'
+            placeholder='Email'
+            value={email}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'email',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='password'
+            placeholder='Password'
+            value={password}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'password',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <br />
+          <input
+            type='password'
+            placeholder='Confirm Password'
+            value={password_confirmation}
+            onChange={e =>
+              dispatch({
+                type: 'field',
+                fieldName: 'password_confirmation',
+                payload: e.target.value,
+              })
+            }
+            required
+          />
+          <br />
+          <button
+            type='submit'
+            placeholder='submit'
+            disabled={isLoading}
+            className='btn-success btn-lg mt-3 text-capitalize'
+          >
+            <strong>
+              {isLoading ? 'creating account...' : 'create account'}
+            </strong>
+          </button>
+          <br />
+          <Link to='/login'>
             <button
-              placeholder='submit'
-              type='submit'
-              className='btn-success btn-lg mt-3 text-capitalize'
+              placeholder='login'
+              className='btn-primary btn-lg mt-3 text-capitalize'
             >
-              <strong>create account</strong>
+              <strong>log in</strong>
             </button>
-            <br />
-            <Link to='/login'>
-              <button
-                placeholder='login'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-              >
-                <strong>log in</strong>
-              </button>
-            </Link>
-          </form>
-          <div>
-            {this.state.errors ? this.handleErrors() : null}
-          </div>
-        </div>
+          </Link>
+        </form>
+        <br />
+        <div>{error && handleErrors()}</div>
       </div>
-    )
-  }
+    </div>
+  )
 }
