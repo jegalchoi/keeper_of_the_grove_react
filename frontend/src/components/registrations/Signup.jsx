@@ -1,25 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
+import { formReducer } from './useForm'
 
 export const Signup = () => {
   const [state, dispatch] = useContext(PlantContext)
+
+  const { isLoading, errors } = state
+
+  const [formState, formDispatch] = useReducer(formReducer, {
+    username: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  })
 
   const {
     username,
     email,
     password,
     password_confirmation,
-    isLoading,
-    errors,
-    permissions,
-  } = state
-
-  // useEffect(() => {
-  //   console.log('signup useEffect triggering')
-  //   return permissions === 'LOGGED_IN' ? history.push('/') : undefined
-  // }, [permissions])
+  } = formState
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -47,7 +49,7 @@ export const Signup = () => {
           history.push('/')
         } else {
           dispatch({
-            type: 'AUTH_FAILURE',
+            type: 'AUTH_SIGNUP_FAILURE',
             payload: response.data,
           })
         }
@@ -60,9 +62,9 @@ export const Signup = () => {
   const handleErrors = () => {
     console.log('rendering errors')
     return (
-      <div>
-        <ul>
-          {errors.map(error => {
+      <div className='text-center'>
+        <ul className='p-0'>
+          {errors.signup.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -73,94 +75,98 @@ export const Signup = () => {
   console.log('signup')
 
   return (
-    <div className='d-flex justify-content-center'>
-      <div>
-        <h1 className='text-capitalize'>
-          <strong>sign up</strong>
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type='text'
-            placeholder='Username'
-            value={username}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'username',
-                payload: e.target.value,
-              })
-            }
-            required
-          />
-          <br />
-          <br />
-          <input
-            type='email'
-            placeholder='Email'
-            value={email}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'email',
-                payload: e.target.value,
-              })
-            }
-            required
-          />
-          <br />
-          <br />
-          <input
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'password',
-                payload: e.target.value,
-              })
-            }
-            required
-          />
-          <br />
-          <br />
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            value={password_confirmation}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'password_confirmation',
-                payload: e.target.value,
-              })
-            }
-            required
-          />
-          <br />
-          <button
-            type='submit'
-            placeholder='submit'
-            disabled={isLoading}
-            className='btn-success btn-lg mt-3 text-capitalize'
-          >
-            <strong>
-              {isLoading ? 'creating account...' : 'create account'}
-            </strong>
-          </button>
-          <br />
-          <Link to='/login'>
+    <React.Fragment>
+      <div className='d-flex justify-content-center'>
+        <div>
+          <h1 className='text-capitalize'>
+            <strong>sign up</strong>
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type='text'
+              placeholder='Username'
+              value={username}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'username',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
+            <br />
+            <br />
+            <input
+              type='email'
+              placeholder='Email'
+              value={email}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'email',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
+            <br />
+            <br />
+            <input
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'password',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
+            <br />
+            <br />
+            <input
+              type='password'
+              placeholder='Confirm Password'
+              value={password_confirmation}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'password_confirmation',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
+            <br />
+
             <button
-              placeholder='login'
-              className='btn-primary btn-lg mt-3 text-capitalize'
+              type='submit'
+              placeholder='submit'
+              disabled={isLoading}
+              className='btn-success btn-lg mt-3 text-capitalize'
             >
-              <strong>log in</strong>
+              <strong>
+                {isLoading ? 'creating account...' : 'create account'}
+              </strong>
             </button>
-          </Link>
-        </form>
-        <br />
-        <div>{errors && handleErrors()}</div>
+            <br />
+            <Link to='/login'>
+              <button
+                placeholder='login'
+                className='btn-primary btn-lg mt-3 text-capitalize'
+                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+              >
+                <strong>log in</strong>
+              </button>
+            </Link>
+          </form>
+          <br />
+        </div>
       </div>
-    </div>
+      <div>{errors.signup && handleErrors()}</div>
+    </React.Fragment>
   )
 }

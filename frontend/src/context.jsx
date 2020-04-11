@@ -11,7 +11,7 @@ const initialState = {
   password: '',
   password_confirmation: '',
   isLoading: true,
-  errors: null,
+  errors: { login: null, signup: null, editUser: null },
   displayUserPlants: false,
   plants: [],
   detailPlant: {},
@@ -23,7 +23,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-        errors: null,
+        errors: { login: null, signup: null, editUser: null },
       }
     case 'AUTH_SUCCESS':
       return {
@@ -32,7 +32,23 @@ const reducer = (state, action) => {
         user_id: action.payload.user.id,
         username: action.payload.user.username,
         permissions: 'LOGGED_IN',
-        errors: null,
+        errors: { login: null, signup: null, editUser: null },
+      }
+    case 'AUTH_SIGNUP_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        user_id: '',
+        username: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        permissions: 'NOT_LOGGED_IN',
+        errors: {
+          login: null,
+          signup: action.payload.errors,
+          editUser: null,
+        },
       }
     case 'AUTH_FAILURE':
       return {
@@ -44,7 +60,11 @@ const reducer = (state, action) => {
         password: '',
         password_confirmation: '',
         permissions: 'NOT_LOGGED_IN',
-        errors: action.payload.errors,
+        errors: {
+          login: action.payload.errors,
+          signup: null,
+          editUser: null,
+        },
       }
     case 'AUTH_LOGOUT':
       return {
@@ -55,7 +75,7 @@ const reducer = (state, action) => {
         email: '',
         password: '',
         password_confirmation: '',
-        errors: null,
+        errors: { login: null, signup: null, editUser: null },
         displayUserPlants: false,
         detailPlant: {},
       }
@@ -63,12 +83,20 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        errors: action.payload.errors,
+        errors: {
+          login: null,
+          signup: null,
+          editUser: action.payload.errors,
+        },
       }
     case 'CLEAR_ERRORS':
       return {
         ...state,
-        errors: null,
+        errors: {
+          login: null,
+          signup: null,
+          editUser: null,
+        },
       }
     case 'field': {
       return {

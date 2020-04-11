@@ -1,17 +1,20 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
+import { formReducer } from './useForm'
 
 export const Login = () => {
   const [state, dispatch] = useContext(PlantContext)
 
-  const { username, password, isLoading, errors, permissions } = state
+  const { isLoading, errors } = state
 
-  // useEffect(() => {
-  //   console.log('login useEffect triggering')
-  //   return permissions === 'LOGGED_IN' ? history.push('/') : undefined
-  // })
+  const [formState, formDispatch] = useReducer(formReducer, {
+    username: '',
+    password: '',
+  })
+
+  const { username, password } = formState
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -49,9 +52,9 @@ export const Login = () => {
   const handleErrors = () => {
     console.log('rendering errors')
     return (
-      <div>
-        <ul>
-          {errors.map(error => {
+      <div className='text-center'>
+        <ul className='p-0'>
+          {errors.login.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -62,60 +65,65 @@ export const Login = () => {
   console.log('login')
 
   return (
-    <div className='d-flex justify-content-center'>
-      <div>
-        <h1 className='text-capitalize'>
-          <strong>log in</strong>
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type='text'
-            placeholder='Enter username'
-            value={username}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'username',
-                payload: e.target.value,
-              })
-            }
-          />
-          <br />
-          <br />
-          <input
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={e =>
-              dispatch({
-                type: 'field',
-                fieldName: 'password',
-                payload: e.target.value,
-              })
-            }
-          />
-          <br />
-          <button
-            type='submit'
-            placeholder='submit'
-            disabled={isLoading}
-            className='btn-success btn-lg mt-3 text-capitalize'
-          >
-            <strong>{isLoading ? 'logging in...' : 'log in'}</strong>
-          </button>
-          <br />
-          <Link to='/signup'>
+    <React.Fragment>
+      <div className='d-flex justify-content-center'>
+        <div>
+          <h1 className='text-capitalize'>
+            <strong>log in</strong>
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type='text'
+              placeholder='Enter username'
+              value={username}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'username',
+                  payload: e.target.value,
+                })
+              }
+            />
+            <br />
+            <br />
+            <input
+              type='password'
+              placeholder='Enter password'
+              value={password}
+              onChange={e =>
+                formDispatch({
+                  type: 'field',
+                  fieldName: 'password',
+                  payload: e.target.value,
+                })
+              }
+            />
+            <br />
             <button
-              placeholder='create account'
-              className='btn-primary btn-lg mt-3 text-capitalize'
+              type='submit'
+              placeholder='submit'
+              disabled={isLoading}
+              className='btn-success btn-lg mt-3 text-capitalize'
             >
-              <strong>create account</strong>
+              <strong>
+                {isLoading ? 'logging in...' : 'log in'}
+              </strong>
             </button>
-          </Link>
-        </form>
-        <br />
-        <div>{errors && handleErrors()}</div>
+            <br />
+            <Link to='/signup'>
+              <button
+                placeholder='create account'
+                className='btn-primary btn-lg mt-3 text-capitalize'
+                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+              >
+                <strong>create account</strong>
+              </button>
+            </Link>
+          </form>
+          <br />
+        </div>
       </div>
-    </div>
+      <div>{errors.login && handleErrors()}</div>
+    </React.Fragment>
   )
 }

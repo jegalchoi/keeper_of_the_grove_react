@@ -31,7 +31,7 @@ export const Navbar = () => {
 
   return (
     <nav className='navbar navbar-dark bg-success navbar-expand-sm px-sm-5'>
-      <Link to='/'>
+      <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
         <img
           src='https://placeimg.com/320/240/nature'
           alt='watercan'
@@ -48,7 +48,10 @@ export const Navbar = () => {
             </strong>
           ) : (
             permissions === 'LOGGED_IN' && (
-              <Link to='/editUser'>
+              <Link
+                to='/editUser'
+                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+              >
                 <h5>
                   <strong>{username}</strong>
                 </h5>
@@ -64,7 +67,11 @@ export const Navbar = () => {
               log out
             </Link>
           ) : (
-            <Link to='/login' className='text-capitalize'>
+            <Link
+              to='/login'
+              className='text-capitalize'
+              onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+            >
               log in
             </Link>
           )}
@@ -72,7 +79,11 @@ export const Navbar = () => {
           {isLoading
             ? null
             : permissions === 'NOT_LOGGED_IN' && (
-                <Link to='/signup' className='text-capitalize'>
+                <Link
+                  to='/signup'
+                  className='text-capitalize'
+                  onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                >
                   create account
                 </Link>
               )}
