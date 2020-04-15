@@ -5,15 +5,17 @@ export const PlantContext = createContext()
 const initialState = {
   user: null,
   permissions: 'NOT_LOGGED_IN',
-  user_id: '',
+  userId: '',
   username: '',
   email: '',
   password: '',
-  password_confirmation: '',
+  passwordConfirmation: '',
   isLoading: true,
+  authIsLoading: false,
   errors: { login: null, signup: null, editUser: null, plants: null },
   displayUserPlants: false,
   plants: [],
+  userPlants: [],
   detailPlant: {},
 }
 
@@ -30,11 +32,22 @@ const reducer = (state, action) => {
           plants: null,
         },
       }
+    case 'AUTH_LOADING':
+      return {
+        ...state,
+        authIsLoading: true,
+        errors: {
+          login: null,
+          signup: null,
+          editUser: null,
+          plants: null,
+        },
+      }
     case 'AUTH_SUCCESS':
       return {
         ...state,
-        isLoading: false,
-        user_id: action.payload.user.id,
+        authIsLoading: false,
+        userId: action.payload.user.id,
         username: action.payload.user.username,
         permissions: 'LOGGED_IN',
         errors: {
@@ -47,12 +60,12 @@ const reducer = (state, action) => {
     case 'AUTH_SIGNUP_FAILURE':
       return {
         ...state,
-        isLoading: false,
-        user_id: '',
+        authIsLoading: false,
+        userId: '',
         username: '',
         email: '',
         password: '',
-        password_confirmation: '',
+        passwordConfirmation: '',
         permissions: 'NOT_LOGGED_IN',
         errors: {
           login: null,
@@ -64,12 +77,12 @@ const reducer = (state, action) => {
     case 'AUTH_FAILURE':
       return {
         ...state,
-        isLoading: false,
-        user_id: '',
+        authIsLoading: false,
+        userId: '',
         username: '',
         email: '',
         password: '',
-        password_confirmation: '',
+        passwordConfirmation: '',
         permissions: 'NOT_LOGGED_IN',
         errors: {
           login: action.payload.errors,
@@ -80,13 +93,13 @@ const reducer = (state, action) => {
       }
     case 'AUTH_LOGOUT':
       return {
-        isLoading: false,
+        authIsLoading: false,
         permissions: 'NOT_LOGGED_IN',
-        user_id: '',
+        userId: '',
         username: '',
         email: '',
         password: '',
-        password_confirmation: '',
+        passwordConfirmation: '',
         errors: {
           login: null,
           signup: null,
@@ -99,7 +112,7 @@ const reducer = (state, action) => {
     case 'AUTH_EDIT_USER_FAILURE':
       return {
         ...state,
-        isLoading: false,
+        authIsLoading: false,
         errors: {
           login: null,
           signup: null,
@@ -173,7 +186,7 @@ export const PlantProvider = props => {
 
     // dispatch({ type: 'LOADING' })
 
-    const urlMyPlants = `http://localhost:3001/api/v1/users/${initialState.user_id}/plants/`
+    const urlMyPlants = `http://localhost:3001/api/v1/users/${initialState.userId}/plants/`
     const urlAllPlants = `http://localhost:3001/api/v1/plants/`
     const urlPlants = initialState.displayUserPlants
       ? urlMyPlants

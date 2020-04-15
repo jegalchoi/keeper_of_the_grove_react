@@ -7,7 +7,7 @@ import { formReducer } from './useForm'
 export const Login = () => {
   const [state, dispatch] = useContext(PlantContext)
 
-  const { isLoading, errors } = state
+  const { authIsLoading, errors } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
     username: '',
@@ -17,9 +17,9 @@ export const Login = () => {
   const { username, password } = formState
 
   const handleSubmit = e => {
-    e.preventDefault()
+    console.log('logging in')
 
-    dispatch({ type: 'LOADING' })
+    dispatch({ type: 'AUTH_LOADING' })
 
     let user = {
       username,
@@ -45,6 +45,8 @@ export const Login = () => {
         }
       })
       .catch(error => console.log('login api errors:', error))
+
+    e.preventDefault()
   }
 
   const history = useHistory()
@@ -99,26 +101,35 @@ export const Login = () => {
               }
             />
             <br />
-            <button
-              type='submit'
-              placeholder='submit'
-              disabled={isLoading}
-              className='btn-success btn-lg mt-3 text-capitalize'
-            >
-              <strong>
-                {isLoading ? 'logging in...' : 'log in'}
-              </strong>
-            </button>
-            <br />
-            <Link to='/signup'>
+            {authIsLoading ? (
               <button
-                placeholder='create account'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                disabled={authIsLoading}
+                className='btn-success btn-lg mt-3 text-capitalize'
               >
-                <strong>create account</strong>
+                processing
               </button>
-            </Link>
+            ) : (
+              <React.Fragment>
+                <button
+                  type='submit'
+                  placeholder='submit'
+                  disabled={authIsLoading}
+                  className='btn-success btn-lg mt-3 text-capitalize'
+                >
+                  <strong>log in</strong>
+                </button>
+                <br />
+                <Link to='/signup'>
+                  <button
+                    placeholder='create account'
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                  >
+                    <strong>create account</strong>
+                  </button>
+                </Link>
+              </React.Fragment>
+            )}
           </form>
           <br />
         </div>

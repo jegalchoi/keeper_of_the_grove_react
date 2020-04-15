@@ -7,33 +7,32 @@ import { formReducer } from './useForm'
 export const Signup = () => {
   const [state, dispatch] = useContext(PlantContext)
 
-  const { isLoading, errors } = state
+  const { authIsLoading, errors } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
-    password_confirmation: '',
+    passwordConfirmation: '',
   })
 
   const {
     username,
     email,
     password,
-    password_confirmation,
+    passwordConfirmation,
   } = formState
 
   const handleSubmit = e => {
-    e.preventDefault()
-
     console.log('signing up')
-    dispatch({ type: 'LOADING' })
+
+    dispatch({ type: 'AUTH_LOADING' })
 
     let user = {
       username,
       email,
       password,
-      password_confirmation,
+      passwordConfirmation,
     }
 
     const url = 'http://localhost:3001/users'
@@ -55,6 +54,8 @@ export const Signup = () => {
         }
       })
       .catch(error => console.log('signup api errors:', error))
+
+    e.preventDefault()
   }
 
   const history = useHistory()
@@ -130,38 +131,47 @@ export const Signup = () => {
             <input
               type='password'
               placeholder='Confirm Password'
-              value={password_confirmation}
+              value={passwordConfirmation}
               onChange={e =>
                 formDispatch({
                   type: 'field',
-                  fieldName: 'password_confirmation',
+                  fieldName: 'passwordConfirmation',
                   payload: e.target.value,
                 })
               }
               required
             />
             <br />
-
-            <button
-              type='submit'
-              placeholder='submit'
-              disabled={isLoading}
-              className='btn-success btn-lg mt-3 text-capitalize'
-            >
-              <strong>
-                {isLoading ? 'creating account...' : 'create account'}
-              </strong>
-            </button>
-            <br />
-            <Link to='/login'>
+            {authIsLoading ? (
               <button
-                placeholder='login'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                disabled={authIsLoading}
+                className='btn-success btn-lg mt-3 text-capitalize'
               >
-                <strong>log in</strong>
+                processing
               </button>
-            </Link>
+            ) : (
+              <React.Fragment>
+                <button
+                  type='submit'
+                  placeholder='submit'
+                  disabled={authIsLoading}
+                  className='btn-success btn-lg mt-3 text-capitalize'
+                >
+                  <strong>create account</strong>
+                </button>
+                <br />
+                <Link to='/login'>
+                  <button
+                    placeholder='login'
+                    disabled={authIsLoading}
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                  >
+                    <strong>log in</strong>
+                  </button>
+                </Link>
+              </React.Fragment>
+            )}
           </form>
           <br />
         </div>

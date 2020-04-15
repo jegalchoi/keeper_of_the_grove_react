@@ -29,7 +29,7 @@ export const App = () => {
             exact
             path='/'
             render={() =>
-              plants.length !== 0 ? <PlantList /> : null
+              plants !== undefined ? <PlantList /> : null
             }
           />
           <Route

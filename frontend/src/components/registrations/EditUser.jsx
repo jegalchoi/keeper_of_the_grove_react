@@ -7,35 +7,35 @@ import { formReducer } from './useForm'
 export const EditUser = () => {
   const [state, dispatch] = useContext(PlantContext)
 
-  const { user_id, isLoading, errors } = state
+  const { userId, authIsLoading, errors } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
-    password_confirmation: '',
+    passwordConfirmation: '',
   })
 
   const {
     username,
     email,
     password,
-    password_confirmation,
+    passwordConfirmation,
   } = formState
 
   const handleSubmit = e => {
-    e.preventDefault()
+    console.log('editing account')
 
-    dispatch({ type: 'LOADING' })
+    dispatch({ type: 'AUTH_LOADING' })
 
     let user = {
       username,
       email,
       password,
-      password_confirmation,
+      passwordConfirmation,
     }
 
-    const url = `http://localhost:3001/users/${user_id}`
+    const url = `http://localhost:3001/users/${userId}`
 
     axios
       .patch(url, { user }, { withCredentials: true })
@@ -54,15 +54,17 @@ export const EditUser = () => {
         }
       })
       .catch(error => console.log('edit user api errors:', error))
+
+    e.preventDefault()
   }
 
   const deleteUser = () => {
-    const url = `http://localhost:3001/users/${user_id}`
+    const url = `http://localhost:3001/users/${userId}`
 
     const confirmation = confirm('Are you sure?')
     if (confirmation) {
       console.log('user deletion submitted')
-      dispatch({ type: 'LOADING' })
+      dispatch({ type: 'AUTH_LOADING' })
       axios
         .delete(url, { withCredentials: true })
         .then(response => {
@@ -118,7 +120,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={authIsLoading}
             />
             <br />
             <br />
@@ -133,7 +135,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={authIsLoading}
             />
             <br />
             <br />
@@ -148,52 +150,63 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={authIsLoading}
             />
             <br />
             <br />
             <input
               type='password'
               placeholder='Confirm Password'
-              value={password_confirmation}
+              value={passwordConfirmation}
               onChange={e =>
                 formDispatch({
                   type: 'field',
-                  fieldName: 'password_confirmation',
+                  fieldName: 'passwordConfirmation',
                   payload: e.target.value,
                 })
               }
-              required
+              required={authIsLoading}
             />
             <br />
-            <button
-              type='submit'
-              placeholder='submit'
-              disabled={isLoading}
-              className='btn-success btn-lg mt-3 text-capitalize'
-            >
-              <strong>
-                {isLoading ? 'updating account...' : 'update account'}
-              </strong>
-            </button>
-            <br />
-            <button
-              placeholder='delete'
-              onClick={deleteUser}
-              className='btn-danger btn-lg mt-3 text-uppercase'
-            >
-              <strong>delete account</strong>
-            </button>
-            <br />
-            <Link to='/'>
+            {authIsLoading ? (
               <button
-                placeholder='home'
-                className='btn-primary btn-lg mt-3 text-capitalize'
-                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                disabled={authIsLoading}
+                className='btn-success btn-lg mt-3 text-capitalize'
               >
-                <strong>home</strong>
+                processing
               </button>
-            </Link>
+            ) : (
+              <React.Fragment>
+                <button
+                  type='submit'
+                  placeholder='submit'
+                  disabled={authIsLoading}
+                  className='btn-success btn-lg mt-3 text-capitalize'
+                >
+                  <strong>update account</strong>
+                </button>
+                <br />
+                <button
+                  placeholder='delete'
+                  disabled={authIsLoading}
+                  className='btn-danger btn-lg mt-3 text-uppercase'
+                  onClick={deleteUser}
+                >
+                  <strong>delete account</strong>
+                </button>
+                <br />
+                <Link to='/'>
+                  <button
+                    placeholder='home'
+                    disabled={authIsLoading}
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+                  >
+                    <strong>home</strong>
+                  </button>
+                </Link>
+              </React.Fragment>
+            )}
           </form>
           <br />
         </div>

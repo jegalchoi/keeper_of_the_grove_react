@@ -10,12 +10,12 @@ export const Navbar = () => {
 
   const [state, dispatch] = useContext(PlantContext)
 
-  const { username, isLoading, errors, permissions } = state
+  const { username, isLoading, authIsLoading, permissions } = state
 
   const handleLogout = () => {
     console.log('logging out')
 
-    dispatch({ type: 'LOADING' })
+    dispatch({ type: 'AUTH_LOADING' })
     axios
       .delete('http://localhost:3001/logout', {
         withCredentials: true,
@@ -42,7 +42,7 @@ export const Navbar = () => {
 
       <div className='ml-auto'>
         <div className='mr-2'>
-          {isLoading ? (
+          {isLoading || authIsLoading ? (
             <strong>
               <h5>loading...</h5>
             </strong>
@@ -58,7 +58,8 @@ export const Navbar = () => {
               </Link>
             )
           )}
-          {isLoading ? null : permissions === 'LOGGED_IN' ? (
+          {isLoading || authIsLoading ? null : permissions ===
+            'LOGGED_IN' ? (
             <Link
               to='/'
               className='text-capitalize'
@@ -76,7 +77,7 @@ export const Navbar = () => {
             </Link>
           )}
           <br />
-          {isLoading
+          {isLoading || authIsLoading
             ? null
             : permissions === 'NOT_LOGGED_IN' && (
                 <Link
