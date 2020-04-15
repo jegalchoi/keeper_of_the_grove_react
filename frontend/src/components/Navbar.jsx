@@ -4,13 +4,15 @@ import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../context'
 
 export const Navbar = () => {
-  // constructor(props) {
-  //   super(props)
-  // }
-
   const [state, dispatch] = useContext(PlantContext)
 
-  const { username, isLoading, authIsLoading, permissions } = state
+  const {
+    username,
+    isLoading,
+    authIsLoading,
+    permissions,
+    displayUserPlants,
+  } = state
 
   const handleLogout = () => {
     console.log('logging out')
@@ -39,7 +41,40 @@ export const Navbar = () => {
           style={{ width: 64, height: 48 }}
         />
       </Link>
-
+      {isLoading || authIsLoading ? null : (
+        <React.Fragment>
+          <ul className='navbar-nav align-items-center'>
+            {permissions === 'LOGGED_IN' && (
+              <li className='nav-item ml-auto'>
+                <Link to='/' className='nav-link'>
+                  <button
+                    className='text-capitalize'
+                    onClick={() =>
+                      dispatch({
+                        type: 'PLANT_DISPLAY_TOGGLE',
+                        payload: !displayUserPlants,
+                      })
+                    }
+                  >
+                    {displayUserPlants
+                      ? 'view all plants'
+                      : 'view only your plants'}
+                  </button>
+                </Link>
+              </li>
+            )}
+            {permissions === 'LOGGED_IN' && (
+              <li className='nav-item ml-auto'>
+                <Link to={'/new'} className='nav-link'>
+                  {/* <button className='text-capitalize' onClick={this.togglePlants}> */}
+                  create new plant
+                  {/* </button> */}
+                </Link>
+              </li>
+            )}
+          </ul>
+        </React.Fragment>
+      )}
       <div className='ml-auto'>
         <div className='mr-2'>
           {isLoading || authIsLoading ? (

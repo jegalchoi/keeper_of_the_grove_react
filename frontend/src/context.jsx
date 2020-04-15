@@ -143,6 +143,17 @@ const reducer = (state, action) => {
           plants: action.payload.errors,
         },
       }
+    case 'PLANT_DISPLAY_TOGGLE':
+      return {
+        ...state,
+        displayUserPlants: action.payload,
+        errors: {
+          login: null,
+          signup: null,
+          editUser: null,
+          plants: null,
+        },
+      }
     case 'CLEAR_ERRORS':
       return {
         ...state,
@@ -181,7 +192,9 @@ export const PlantProvider = props => {
         })
       })
       .catch(errors => console.log('check login api errors:', errors))
+  }, [])
 
+  useEffect(() => {
     console.log('fetching plants')
 
     // dispatch({ type: 'LOADING' })
@@ -207,7 +220,7 @@ export const PlantProvider = props => {
       .catch(errors =>
         console.log('check plants api errors:', errors)
       )
-  }, [])
+  }, [initialState.displayUserPlants])
 
   return (
     <PlantContext.Provider value={[state, dispatch]}>

@@ -8,7 +8,7 @@ export const PlantList = () => {
 
   const [state, dispatch] = useContext(PlantContext)
 
-  const { plants, isLoading, errors } = state
+  const { plants } = state
 
   console.log(plants)
 
