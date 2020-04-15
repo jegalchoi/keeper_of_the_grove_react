@@ -23,12 +23,6 @@ class Plant < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
-  def last_watered
-    if water
-      time_ago_in_words(water)
-    end
-  end
-
 #   has_many_attached :images
 #   scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
 

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'user signup', :type => :request do
   describe 'create a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
     end
 
     it 'returns a created status' do
@@ -14,7 +14,7 @@ describe 'user signup', :type => :request do
 
   describe 'fail to create a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: '', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: '', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
     end
 
     it 'returns a 500 error' do
@@ -27,9 +27,9 @@ end
 describe 'edit user account', :type => :request do
   describe 'edit a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '12345', password_confirmation: '12345'}}
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
+      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234567', password_confirmation: '1234567'}}
     end
 
     it 'returns an updated status' do
@@ -40,10 +40,10 @@ describe 'edit user account', :type => :request do
 
   describe 'fail to edit a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
+      patch "/users/#{User.find_by(username: 'jay_test').id}", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
     end
 
     it 'returns a 401 error' do
@@ -54,10 +54,10 @@ describe 'edit user account', :type => :request do
 
   describe 'fail to find user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
-      patch "/users/10", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/users', :params => { :user => { username: 'jay_test2', email: 'jay_test2@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
+      patch "/users/10", :params => { :user => { username: 'jay_test2', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
     end
 
     it 'returns a 400 error' do
@@ -70,8 +70,8 @@ end
 describe 'delete user account', :type => :request do
   describe 'delete a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
       delete "/users/#{User.find_by(username: 'jay_test').id}"
     end
 
@@ -83,8 +83,8 @@ describe 'delete user account', :type => :request do
 
   describe 'fail to find user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
       delete "/users/10"
     end
 
@@ -98,8 +98,8 @@ end
 describe 'user login', :type => :request do
   describe 'login a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
     end
 
     it 'returns a logged_in status of true' do
@@ -110,8 +110,8 @@ describe 'user login', :type => :request do
 
   describe 'fail to login a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '12345'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '1234567'} }
     end
 
     it 'returns a 401 error' do
@@ -124,8 +124,8 @@ end
 describe 'user logout', :type => :request do
   describe 'logout a user', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
       delete '/logout'
 
     end
@@ -140,8 +140,8 @@ end
 describe 'user logged in?', :type => :request do
   describe 'user is logged in', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
       get '/logged_in'
     end
 
@@ -153,8 +153,8 @@ describe 'user logged in?', :type => :request do
 
   describe 'user is logged out', :type => :request do
     before do
-      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '1234', password_confirmation: '1234'}}
-      post '/login', :params => { :user => { username: 'jay_test', password: '1234'} }
+      post '/users', :params => { :user => { username: 'jay_test', email: 'jay_test@email.com', password: '123456', password_confirmation: '123456'}}
+      post '/login', :params => { :user => { username: 'jay_test', password: '123456'} }
       delete '/logout'
       get '/logged_in'
     end

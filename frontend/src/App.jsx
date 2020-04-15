@@ -6,21 +6,32 @@ import { Navbar } from './components/Navbar.jsx'
 import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'
+import { PlantList } from './components/PlantList.jsx'
 
 export const App = () => {
   console.log('app')
 
   const [state, dispatch] = useContext(PlantContext)
 
-  const { isLoading, permissions } = state
+  const { isLoading, permissions, plants } = state
+
+  console.log(state)
 
   return (
     <React.Fragment>
-      <h1>{isLoading ? 'loading' : 'not loading'}</h1>
+      {/* <h1>{isLoading ? 'loading' : 'not loading'}</h1> */}
       <Navbar />
-      {isLoading ? null : (
+      {isLoading ? (
+        <h1>loading...</h1>
+      ) : (
         <Switch>
-          <Route exact path='/' />
+          <Route
+            exact
+            path='/'
+            render={() =>
+              plants.length !== 0 ? <PlantList /> : null
+            }
+          />
           <Route
             exact
             path='/login'
