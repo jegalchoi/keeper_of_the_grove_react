@@ -107,65 +107,66 @@ export const EditUser = () => {
             <strong>edit account</strong>
           </h1>
           <form onSubmit={handleSubmit}>
-            <input
-              type='text'
-              placeholder='Username'
-              value={username}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'username',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
-            <br />
-            <input
-              type='email'
-              placeholder='Email'
-              value={email}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'email',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
-            <br />
-            <input
-              type='password'
-              placeholder='Password'
-              value={password}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'password',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
-            <br />
-            <input
-              type='password'
-              placeholder='Confirm Password'
-              value={passwordConfirmation}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'passwordConfirmation',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
+            <div className='form-group'>
+              <input
+                type='text'
+                placeholder='Username'
+                value={username}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'username',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <input
+                type='email'
+                placeholder='Email'
+                value={email}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'email',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <input
+                type='password'
+                placeholder='Password'
+                value={password}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'password',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <input
+                type='password'
+                placeholder='Confirm Password'
+                value={passwordConfirmation}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'passwordConfirmation',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}

@@ -74,35 +74,36 @@ export const Login = () => {
             <strong>log in</strong>
           </h1>
           <form onSubmit={handleSubmit}>
-            <input
-              type='text'
-              placeholder='Enter username'
-              value={username}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'username',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
-            <br />
-            <input
-              type='password'
-              placeholder='Enter password'
-              value={password}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'password',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
+            <div className='form-group'>
+              <input
+                type='text'
+                placeholder='Enter username'
+                value={username}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'username',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <input
+                type='password'
+                placeholder='Enter password'
+                value={password}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'password',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}
@@ -133,9 +134,9 @@ export const Login = () => {
               </React.Fragment>
             )}
           </form>
-          <br />
         </div>
       </div>
+      <br />
       <div>{errors && handleErrors()}</div>
     </React.Fragment>
   )

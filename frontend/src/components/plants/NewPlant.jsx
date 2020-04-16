@@ -36,10 +36,9 @@ export const NewPlant = () => {
         image === '' ? 'https://placeimg.com/320/240/nature' : image,
       user_id: userId,
     }
+    const url = 'http://localhost:3001/api/v1/plants'
 
     if (name.length === 0 || userId === 0) return
-
-    const url = 'http://localhost:3001/api/v1/plants'
 
     axios
       .post(url, { plant }, { withCredentials: true })
@@ -80,21 +79,11 @@ export const NewPlant = () => {
     )
   }
 
-  const dateInput = React.createRef()
-
-  const formatDate = d => {
-    console.log(d)
-    const YYYY = d.getFullYear()
-    const MM = `0${d.getMonth() + 1}`.slice(-2)
-    const DD = `0${d.getDate()}`.slice(-2)
-    return `${YYYY}-${MM}-${DD}`
-  }
-
-  const stripHtmlEntities = str => {
-    return String(str)
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-  }
+  // const stripHtmlEntities = str => {
+  //   return String(str)
+  //     .replace(/</g, '&lt;')
+  //     .replace(/>/g, '&gt;')
+  // }
 
   console.log('create plant')
 
@@ -106,56 +95,53 @@ export const NewPlant = () => {
             <strong>add new plant</strong>
           </h1>
           <form onSubmit={handleSubmit}>
-            <input
-              type='text'
-              placeholder='Name'
-              value={name}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'name',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
-            <br />
-            <br />
-
-            <br />
-            <br />
-            {/* <input
-              type=''
-              placeholder='Password'
-              value={password}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'password',
-                  payload: e.target.value,
-                })
-              }
-              required
-            /> */}
-            <br />
-            <br />
-            <input
-              type='text'
-              placeholder='Notes'
-              value={notes}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'notes',
-                  payload: e.target.value,
-                })
-              }
-            />
-            <small id='notesHelp' className='form-text text-muted'>
-              Separate each note with a comma.
-            </small>
-            <br />
-            <br />
+            <div className='form-group'>
+              <input
+                type='text'
+                placeholder='Name'
+                value={name}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'name',
+                    payload: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            <div className='form-group'>
+              <DatePicker
+                selected={water}
+                onChange={date =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'water',
+                    payload: date,
+                  })
+                }
+              />
+              <small id='waterHelp' className='form-text text-muted'>
+                Select date that plant was last watered.
+              </small>
+            </div>
+            <div className='form-group'>
+              <input
+                type='text'
+                placeholder='Notes'
+                value={notes}
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'notes',
+                    payload: e.target.value,
+                  })
+                }
+              />
+              <small id='notesHelp' className='form-text text-muted'>
+                Separate each note with a comma.
+              </small>
+            </div>
             <div className='form-check'>
               <input
                 className='form-check-input'
@@ -176,8 +162,10 @@ export const NewPlant = () => {
               >
                 <strong>private</strong>
               </label>
+              <small id='hiddenHelp' className='form-text text-muted'>
+                Everyone can view public plants.
+              </small>
             </div>
-            <br />
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}
