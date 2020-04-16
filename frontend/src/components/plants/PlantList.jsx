@@ -1,16 +1,16 @@
 import React, { useContext } from 'react'
 import { Plant } from './Plant.jsx'
-import { Title } from './Title'
-import { PlantContext } from '../context'
+import { Title } from '../Title'
+import { PlantContext } from '../../context'
 
 export const PlantList = () => {
+  const [state] = useContext(PlantContext)
+  const { plantsPublic, plantsUser, displayUserPlants } = state
+  const plants = displayUserPlants ? plantsUser : plantsPublic
+
+  // console.log(plants)
+
   console.log('plantlist')
-
-  const [state, dispatch] = useContext(PlantContext)
-
-  const { plants } = state
-
-  console.log(plants)
 
   return (
     <React.Fragment>

@@ -2,30 +2,28 @@ import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from './useForm'
+import { formReducer } from '../useForm'
 
 export const Login = () => {
   const [state, dispatch] = useContext(PlantContext)
-
-  const { authIsLoading, errors } = state
+  const { formIsLoading } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
     username: '',
     password: '',
+    errors: null,
   })
-
-  const { username, password } = formState
+  const { username, password, errors } = formState
 
   const handleSubmit = e => {
     console.log('logging in')
 
-    dispatch({ type: 'AUTH_LOADING' })
+    dispatch({ type: 'FORM_START_LOADING' })
 
-    let user = {
+    const user = {
       username,
       password,
     }
-
     const url = 'http://localhost:3001/login'
 
     axios
@@ -33,19 +31,21 @@ export const Login = () => {
       .then(response => {
         if (response.data.logged_in) {
           dispatch({
-            type: 'AUTH_SUCCESS',
+            type: 'AUTH_LOGGED_IN',
             payload: response.data,
           })
           history.push('/')
         } else {
-          dispatch({
-            type: 'AUTH_FAILURE',
+          dispatch({ type: 'FORM_DONE_LOADING' })
+          formDispatch({
+            type: 'AUTH_LOGIN_FAILURE',
             payload: response.data,
           })
         }
       })
       .catch(error => console.log('login api errors:', error))
 
+    e.target.reset()
     e.preventDefault()
   }
 
@@ -56,7 +56,7 @@ export const Login = () => {
     return (
       <div className='text-center'>
         <ul className='p-0'>
-          {errors.login.map(error => {
+          {errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -85,6 +85,7 @@ export const Login = () => {
                   payload: e.target.value,
                 })
               }
+              required
             />
             <br />
             <br />
@@ -99,11 +100,12 @@ export const Login = () => {
                   payload: e.target.value,
                 })
               }
+              required
             />
             <br />
-            {authIsLoading ? (
+            {formIsLoading ? (
               <button
-                disabled={authIsLoading}
+                disabled={formIsLoading}
                 className='btn-success btn-lg mt-3 text-capitalize'
               >
                 processing
@@ -113,7 +115,7 @@ export const Login = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={authIsLoading}
+                  disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>log in</strong>
@@ -122,8 +124,8 @@ export const Login = () => {
                 <Link to='/signup'>
                   <button
                     placeholder='create account'
+                    disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
-                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
                   >
                     <strong>create account</strong>
                   </button>
@@ -134,7 +136,7 @@ export const Login = () => {
           <br />
         </div>
       </div>
-      <div>{errors.login && handleErrors()}</div>
+      <div>{errors && handleErrors()}</div>
     </React.Fragment>
   )
 }

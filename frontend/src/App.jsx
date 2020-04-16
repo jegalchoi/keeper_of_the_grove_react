@@ -1,37 +1,30 @@
 import React, { useContext } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { PlantContext } from './context'
-import { Default } from './components/Default.jsx'
 import { Navbar } from './components/Navbar.jsx'
 import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'
-import { PlantList } from './components/PlantList.jsx'
+import { PlantList } from './components/plants/PlantList'
+import { NewPlant } from './components/plants/NewPlant'
+import { Default } from './components/Default.jsx'
 
 export const App = () => {
   console.log('app')
 
-  const [state, dispatch] = useContext(PlantContext)
-
-  const { isLoading, permissions, plants } = state
+  const [state] = useContext(PlantContext)
+  const { siteIsLoading, permissions } = state
 
   console.log(state)
 
   return (
     <React.Fragment>
-      {/* <h1>{isLoading ? 'loading' : 'not loading'}</h1> */}
       <Navbar />
-      {isLoading ? (
+      {siteIsLoading ? (
         <h1>loading...</h1>
       ) : (
         <Switch>
-          <Route
-            exact
-            path='/'
-            render={() =>
-              plants !== undefined ? <PlantList /> : null
-            }
-          />
+          <Route exact path='/' render={() => <PlantList />} />
           <Route
             exact
             path='/login'
@@ -61,7 +54,18 @@ export const App = () => {
               permissions === 'LOGGED_IN' ? (
                 <EditUser />
               ) : (
-                <Redirect to='/' />
+                <Redirect to='/login' />
+              )
+            }
+          />
+          <Route
+            exact
+            path='/new'
+            render={() =>
+              permissions === 'LOGGED_IN' ? (
+                <NewPlant />
+              ) : (
+                <Redirect to='/login' />
               )
             }
           />

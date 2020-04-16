@@ -3,83 +3,66 @@ import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
 import { formReducer } from '../useForm'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
-export const EditUser = () => {
+export const NewPlant = () => {
   const [state, dispatch] = useContext(PlantContext)
+
   const { userId, formIsLoading } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
-    username: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
+    name: '',
+    notes: '',
+    water: '',
+    hidden: true,
+    image: '',
     errors: null,
   })
-  const {
-    username,
-    email,
-    password,
-    passwordConfirmation,
-    errors,
-  } = formState
+
+  const { name, notes, water, hidden, image, errors } = formState
 
   const handleSubmit = e => {
-    console.log('editing account')
+    console.log('creating plant')
 
     dispatch({ type: 'FORM_START_LOADING' })
 
-    let user = {
-      username,
-      email,
-      password,
-      passwordConfirmation,
+    let plant = {
+      name,
+      notes: notes.replace(/\n/g, '<br />'),
+      water: water === '' ? null : water,
+      hidden,
+      image:
+        image === '' ? 'https://placeimg.com/320/240/nature' : image,
+      user_id: userId,
     }
-    const url = `http://localhost:3001/users/${userId}`
+
+    if (name.length === 0 || userId === 0) return
+
+    const url = 'http://localhost:3001/api/v1/plants'
 
     axios
-      .patch(url, { user }, { withCredentials: true })
+      .post(url, { plant }, { withCredentials: true })
       .then(response => {
-        if (response.data.status === 'updated') {
+        console.log(response.data)
+        if (response.data.status === 'created') {
           dispatch({
-            type: 'AUTH_LOGGED_IN',
-            payload: response.data,
+            type: 'PLANT_NEW_TOGGLE',
           })
-          history.push('/')
+          history.push(`/`)
+          // history.push(`/details/${response.data.plant.id}`)
         } else {
           dispatch({ type: 'FORM_DONE_LOADING' })
           formDispatch({
-            type: 'AUTH_FAILURE',
+            type: 'PLANT_CREATE_FAILURE',
             payload: response.data,
           })
         }
       })
-      .catch(error => console.log('edit user api errors:', error))
+      .catch(error => console.log('create plant api errors:', error))
 
     e.target.reset()
     e.preventDefault()
-  }
-
-  const deleteUser = () => {
-    const url = `http://localhost:3001/users/${userId}`
-    const confirmation = confirm(
-      'Are you sure you want to delete your account?'
-    )
-
-    if (confirmation) {
-      console.log('user deletion submitted')
-      dispatch({ type: 'FORM_START_LOADING' })
-      axios
-        .delete(url, { withCredentials: true })
-        .then(response => {
-          if (response.data.status === 'destroyed') {
-            dispatch({
-              type: 'AUTH_LOGOUT',
-            })
-            history.push('/')
-          }
-        })
-        .catch(error => console.log('delete user api errors:', error))
-    }
   }
 
   const history = useHistory()
@@ -97,24 +80,40 @@ export const EditUser = () => {
     )
   }
 
-  console.log('edit user')
+  const dateInput = React.createRef()
+
+  const formatDate = d => {
+    console.log(d)
+    const YYYY = d.getFullYear()
+    const MM = `0${d.getMonth() + 1}`.slice(-2)
+    const DD = `0${d.getDate()}`.slice(-2)
+    return `${YYYY}-${MM}-${DD}`
+  }
+
+  const stripHtmlEntities = str => {
+    return String(str)
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+  }
+
+  console.log('create plant')
 
   return (
     <React.Fragment>
       <div className='d-flex justify-content-center'>
         <div>
           <h1 className='text-capitalize'>
-            <strong>edit account</strong>
+            <strong>add new plant</strong>
           </h1>
           <form onSubmit={handleSubmit}>
             <input
               type='text'
-              placeholder='Username'
-              value={username}
+              placeholder='Name'
+              value={name}
               onChange={e =>
                 formDispatch({
                   type: 'field',
-                  fieldName: 'username',
+                  fieldName: 'name',
                   payload: e.target.value,
                 })
               }
@@ -122,23 +121,11 @@ export const EditUser = () => {
             />
             <br />
             <br />
-            <input
-              type='email'
-              placeholder='Email'
-              value={email}
-              onChange={e =>
-                formDispatch({
-                  type: 'field',
-                  fieldName: 'email',
-                  payload: e.target.value,
-                })
-              }
-              required
-            />
+
             <br />
             <br />
-            <input
-              type='password'
+            {/* <input
+              type=''
               placeholder='Password'
               value={password}
               onChange={e =>
@@ -149,22 +136,47 @@ export const EditUser = () => {
                 })
               }
               required
-            />
+            /> */}
             <br />
             <br />
             <input
-              type='password'
-              placeholder='Confirm Password'
-              value={passwordConfirmation}
+              type='text'
+              placeholder='Notes'
+              value={notes}
               onChange={e =>
                 formDispatch({
                   type: 'field',
-                  fieldName: 'passwordConfirmation',
+                  fieldName: 'notes',
                   payload: e.target.value,
                 })
               }
-              required
             />
+            <small id='notesHelp' className='form-text text-muted'>
+              Separate each note with a comma.
+            </small>
+            <br />
+            <br />
+            <div className='form-check'>
+              <input
+                className='form-check-input'
+                type='checkbox'
+                checked={hidden}
+                id='plantHidden'
+                onChange={e =>
+                  formDispatch({
+                    type: 'field',
+                    fieldName: 'hidden',
+                    payload: e.target.checked,
+                  })
+                }
+              />
+              <label
+                className='form-check-label text-capitalize'
+                htmlFor='plantHidden'
+              >
+                <strong>private</strong>
+              </label>
+            </div>
             <br />
             {formIsLoading ? (
               <button
@@ -181,16 +193,7 @@ export const EditUser = () => {
                   disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
-                  <strong>update account</strong>
-                </button>
-                <br />
-                <button
-                  placeholder='delete'
-                  disabled={formIsLoading}
-                  className='btn-danger btn-lg mt-3 text-uppercase'
-                  onClick={deleteUser}
-                >
-                  <strong>delete account</strong>
+                  <strong>create plant</strong>
                 </button>
                 <br />
                 <Link to='/'>
@@ -198,6 +201,7 @@ export const EditUser = () => {
                     placeholder='home'
                     disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
+                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
                   >
                     <strong>home</strong>
                   </button>

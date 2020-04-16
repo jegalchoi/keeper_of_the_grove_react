@@ -7,17 +7,17 @@ export const Navbar = () => {
   const [state, dispatch] = useContext(PlantContext)
 
   const {
-    username,
-    isLoading,
-    authIsLoading,
+    siteIsLoading,
+    formIsLoading,
     permissions,
+    username,
     displayUserPlants,
   } = state
 
   const handleLogout = () => {
     console.log('logging out')
 
-    dispatch({ type: 'AUTH_LOADING' })
+    dispatch({ type: 'SITE_START_LOADING' })
     axios
       .delete('http://localhost:3001/logout', {
         withCredentials: true,
@@ -32,7 +32,7 @@ export const Navbar = () => {
   const history = useHistory()
 
   return (
-    <nav className='navbar navbar-dark bg-success navbar-expand-sm px-sm-5'>
+    <nav className='navbar bg-success navbar-expand-sm px-sm-5'>
       <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
         <img
           src='https://placeimg.com/320/240/nature'
@@ -41,7 +41,7 @@ export const Navbar = () => {
           style={{ width: 64, height: 48 }}
         />
       </Link>
-      {isLoading || authIsLoading ? null : (
+      {siteIsLoading || formIsLoading ? null : (
         <React.Fragment>
           <ul className='navbar-nav align-items-center'>
             {permissions === 'LOGGED_IN' && (
@@ -57,18 +57,19 @@ export const Navbar = () => {
                     }
                   >
                     {displayUserPlants
-                      ? 'view all plants'
-                      : 'view only your plants'}
+                      ? 'show all plants'
+                      : 'show only your plants'}
                   </button>
                 </Link>
               </li>
             )}
             {permissions === 'LOGGED_IN' && (
               <li className='nav-item ml-auto'>
-                <Link to={'/new'} className='nav-link'>
-                  {/* <button className='text-capitalize' onClick={this.togglePlants}> */}
-                  create new plant
-                  {/* </button> */}
+                <Link
+                  to={'/new'}
+                  className='nav-link text-capitalize'
+                >
+                  <strong>create new plant</strong>
                 </Link>
               </li>
             )}
@@ -77,7 +78,7 @@ export const Navbar = () => {
       )}
       <div className='ml-auto'>
         <div className='mr-2'>
-          {isLoading || authIsLoading ? (
+          {siteIsLoading || formIsLoading ? (
             <strong>
               <h5>loading...</h5>
             </strong>
@@ -93,7 +94,7 @@ export const Navbar = () => {
               </Link>
             )
           )}
-          {isLoading || authIsLoading ? null : permissions ===
+          {siteIsLoading || formIsLoading ? null : permissions ===
             'LOGGED_IN' ? (
             <Link
               to='/'
@@ -112,7 +113,7 @@ export const Navbar = () => {
             </Link>
           )}
           <br />
-          {isLoading || authIsLoading
+          {siteIsLoading || formIsLoading
             ? null
             : permissions === 'NOT_LOGGED_IN' && (
                 <Link

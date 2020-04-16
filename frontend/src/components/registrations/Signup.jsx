@@ -2,31 +2,31 @@ import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from './useForm'
+import { formReducer } from '../useForm'
 
 export const Signup = () => {
   const [state, dispatch] = useContext(PlantContext)
-
-  const { authIsLoading, errors } = state
+  const { formIsLoading } = state
 
   const [formState, formDispatch] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
     passwordConfirmation: '',
+    errors: null,
   })
-
   const {
     username,
     email,
     password,
     passwordConfirmation,
+    errors,
   } = formState
 
   const handleSubmit = e => {
     console.log('signing up')
 
-    dispatch({ type: 'AUTH_LOADING' })
+    dispatch({ type: 'FORM_START_LOADING' })
 
     let user = {
       username,
@@ -34,7 +34,6 @@ export const Signup = () => {
       password,
       passwordConfirmation,
     }
-
     const url = 'http://localhost:3001/users'
 
     axios
@@ -42,19 +41,21 @@ export const Signup = () => {
       .then(response => {
         if (response.data.status === 'created') {
           dispatch({
-            type: 'AUTH_SUCCESS',
+            type: 'AUTH_LOGGED_IN',
             payload: response.data,
           })
           history.push('/')
         } else {
-          dispatch({
-            type: 'AUTH_SIGNUP_FAILURE',
+          dispatch({ type: 'FORM_DONE_LOADING' })
+          formDispatch({
+            type: 'AUTH_FAILURE',
             payload: response.data,
           })
         }
       })
       .catch(error => console.log('signup api errors:', error))
 
+    e.target.reset()
     e.preventDefault()
   }
 
@@ -65,7 +66,7 @@ export const Signup = () => {
     return (
       <div className='text-center'>
         <ul className='p-0'>
-          {errors.signup.map(error => {
+          {errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -142,9 +143,9 @@ export const Signup = () => {
               required
             />
             <br />
-            {authIsLoading ? (
+            {formIsLoading ? (
               <button
-                disabled={authIsLoading}
+                disabled={formIsLoading}
                 className='btn-success btn-lg mt-3 text-capitalize'
               >
                 processing
@@ -154,7 +155,7 @@ export const Signup = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={authIsLoading}
+                  disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>create account</strong>
@@ -163,9 +164,8 @@ export const Signup = () => {
                 <Link to='/login'>
                   <button
                     placeholder='login'
-                    disabled={authIsLoading}
+                    disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
-                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
                   >
                     <strong>log in</strong>
                   </button>
@@ -176,7 +176,7 @@ export const Signup = () => {
           <br />
         </div>
       </div>
-      <div>{errors.signup && handleErrors()}</div>
+      <div>{errors && handleErrors()}</div>
     </React.Fragment>
   )
 }
