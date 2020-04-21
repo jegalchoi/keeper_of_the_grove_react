@@ -6,12 +6,12 @@ import { formReducer } from '../useForm'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-export const NewPlant = () => {
+export const PlantNew = () => {
   const [state, dispatch] = useContext(PlantContext)
 
   const { userId, formIsLoading } = state
 
-  const [formState, formDispatch] = useReducer(formReducer, {
+  const [plantState, formDispatch] = useReducer(formReducer, {
     name: '',
     notes: '',
     water: '',
@@ -20,9 +20,9 @@ export const NewPlant = () => {
     errors: null,
   })
 
-  const { name, notes, water, hidden, image, errors } = formState
+  const { name, notes, water, hidden, image, errors } = plantState
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     console.log('creating plant')
 
     dispatch({ type: 'FORM_START_LOADING' })
@@ -42,14 +42,14 @@ export const NewPlant = () => {
 
     axios
       .post(url, { plant }, { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         console.log(response.data)
         if (response.data.status === 'created') {
           dispatch({
-            type: 'PLANT_NEW_TOGGLE',
+            type: 'PLANT_NEED_REFRESH',
           })
-          history.push(`/`)
-          // history.push(`/details/${response.data.plant.id}`)
+          history.push(`/details/${response.data.plant.id}`)
+          // history.push(`/`)
         } else {
           dispatch({ type: 'FORM_DONE_LOADING' })
           formDispatch({
@@ -58,7 +58,9 @@ export const NewPlant = () => {
           })
         }
       })
-      .catch(error => console.log('create plant api errors:', error))
+      .catch((error) =>
+        console.log('create plant api errors:', error)
+      )
 
     e.target.reset()
     e.preventDefault()
@@ -71,7 +73,7 @@ export const NewPlant = () => {
     return (
       <div className='text-center'>
         <ul className='p-0'>
-          {errors.map(error => {
+          {errors.map((error) => {
             return <li key={error}>{error}</li>
           })}
         </ul>
@@ -91,7 +93,7 @@ export const NewPlant = () => {
     <React.Fragment>
       <div className='d-flex justify-content-center'>
         <div>
-          <h1 className='text-capitalize'>
+          <h1 className='text-capitalize text-center'>
             <strong>add new plant</strong>
           </h1>
           <form onSubmit={handleSubmit}>
@@ -100,7 +102,7 @@ export const NewPlant = () => {
                 type='text'
                 placeholder='Name'
                 value={name}
-                onChange={e =>
+                onChange={(e) =>
                   formDispatch({
                     type: 'field',
                     fieldName: 'name',
@@ -110,10 +112,10 @@ export const NewPlant = () => {
                 required
               />
             </div>
-            <div className='form-group'>
+            <div>
               <DatePicker
                 selected={water}
-                onChange={date =>
+                onChange={(date) =>
                   formDispatch({
                     type: 'field',
                     fieldName: 'water',
@@ -130,7 +132,7 @@ export const NewPlant = () => {
                 type='text'
                 placeholder='Notes'
                 value={notes}
-                onChange={e =>
+                onChange={(e) =>
                   formDispatch({
                     type: 'field',
                     fieldName: 'notes',
@@ -148,7 +150,7 @@ export const NewPlant = () => {
                 type='checkbox'
                 checked={hidden}
                 id='plantHidden'
-                onChange={e =>
+                onChange={(e) =>
                   formDispatch({
                     type: 'field',
                     fieldName: 'hidden',
@@ -157,10 +159,10 @@ export const NewPlant = () => {
                 }
               />
               <label
-                className='form-check-label text-capitalize'
+                className='form-check-label text-capitalize position-relative mx-auto d-block'
                 htmlFor='plantHidden'
               >
-                <strong>private</strong>
+                private
               </label>
               <small id='hiddenHelp' className='form-text text-muted'>
                 Everyone can view public plants.
@@ -169,7 +171,7 @@ export const NewPlant = () => {
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}
-                className='btn-success btn-lg mt-3 text-capitalize'
+                className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing
               </button>
@@ -179,16 +181,15 @@ export const NewPlant = () => {
                   type='submit'
                   placeholder='submit'
                   disabled={formIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize'
+                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                 >
                   <strong>create plant</strong>
                 </button>
-                <br />
                 <Link to='/'>
                   <button
                     placeholder='home'
                     disabled={formIsLoading}
-                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                     onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
                   >
                     <strong>home</strong>

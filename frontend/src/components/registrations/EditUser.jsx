@@ -5,10 +5,11 @@ import { PlantContext } from '../../context'
 import { formReducer } from '../useForm'
 
 export const EditUser = () => {
-  const [state, dispatch] = useContext(PlantContext)
-  const { userId, formIsLoading } = state
+  const [{ formIsLoading, userId }, dispatch] = useContext(
+    PlantContext
+  )
 
-  const [formState, formDispatch] = useReducer(formReducer, {
+  const [editUserState, editUserDispatch] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
@@ -21,9 +22,9 @@ export const EditUser = () => {
     password,
     passwordConfirmation,
     errors,
-  } = formState
+  } = editUserState
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     console.log('editing account')
 
     dispatch({ type: 'FORM_START_LOADING' })
@@ -38,7 +39,7 @@ export const EditUser = () => {
 
     axios
       .patch(url, { user }, { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         if (response.data.status === 'updated') {
           dispatch({
             type: 'AUTH_LOGGED_IN',
@@ -47,13 +48,13 @@ export const EditUser = () => {
           history.push('/')
         } else {
           dispatch({ type: 'FORM_DONE_LOADING' })
-          formDispatch({
+          editUserDispatch({
             type: 'AUTH_FAILURE',
             payload: response.data,
           })
         }
       })
-      .catch(error => console.log('edit user api errors:', error))
+      .catch((error) => console.log('edit user api errors:', error))
 
     e.target.reset()
     e.preventDefault()
@@ -70,7 +71,7 @@ export const EditUser = () => {
       dispatch({ type: 'FORM_START_LOADING' })
       axios
         .delete(url, { withCredentials: true })
-        .then(response => {
+        .then((response) => {
           if (response.data.status === 'destroyed') {
             dispatch({
               type: 'AUTH_LOGOUT',
@@ -78,7 +79,9 @@ export const EditUser = () => {
             history.push('/')
           }
         })
-        .catch(error => console.log('delete user api errors:', error))
+        .catch((error) =>
+          console.log('delete user api errors:', error)
+        )
     }
   }
 
@@ -89,8 +92,12 @@ export const EditUser = () => {
     return (
       <div className='text-center'>
         <ul className='p-0'>
-          {errors.map(error => {
-            return <li key={error}>{error}</li>
+          {errors.map((error) => {
+            return (
+              <li key={error}>
+                <strong>{error}</strong>
+              </li>
+            )
           })}
         </ul>
       </div>
@@ -103,7 +110,7 @@ export const EditUser = () => {
     <React.Fragment>
       <div className='d-flex justify-content-center'>
         <div>
-          <h1 className='text-capitalize'>
+          <h1 className='text-capitalize text-center'>
             <strong>edit account</strong>
           </h1>
           <form onSubmit={handleSubmit}>
@@ -112,8 +119,9 @@ export const EditUser = () => {
                 type='text'
                 placeholder='Username'
                 value={username}
-                onChange={e =>
-                  formDispatch({
+                className='position-relative mx-auto d-block'
+                onChange={(e) =>
+                  editUserDispatch({
                     type: 'field',
                     fieldName: 'username',
                     payload: e.target.value,
@@ -127,8 +135,9 @@ export const EditUser = () => {
                 type='email'
                 placeholder='Email'
                 value={email}
-                onChange={e =>
-                  formDispatch({
+                className='position-relative mx-auto d-block'
+                onChange={(e) =>
+                  editUserDispatch({
                     type: 'field',
                     fieldName: 'email',
                     payload: e.target.value,
@@ -142,8 +151,9 @@ export const EditUser = () => {
                 type='password'
                 placeholder='Password'
                 value={password}
-                onChange={e =>
-                  formDispatch({
+                className='position-relative mx-auto d-block'
+                onChange={(e) =>
+                  editUserDispatch({
                     type: 'field',
                     fieldName: 'password',
                     payload: e.target.value,
@@ -157,8 +167,9 @@ export const EditUser = () => {
                 type='password'
                 placeholder='Confirm Password'
                 value={passwordConfirmation}
-                onChange={e =>
-                  formDispatch({
+                className='position-relative mx-auto d-block'
+                onChange={(e) =>
+                  editUserDispatch({
                     type: 'field',
                     fieldName: 'passwordConfirmation',
                     payload: e.target.value,
@@ -170,7 +181,7 @@ export const EditUser = () => {
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}
-                className='btn-success btn-lg mt-3 text-capitalize'
+                className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing
               </button>
@@ -180,25 +191,23 @@ export const EditUser = () => {
                   type='submit'
                   placeholder='submit'
                   disabled={formIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize'
+                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                 >
                   <strong>update account</strong>
                 </button>
-                <br />
                 <button
                   placeholder='delete'
                   disabled={formIsLoading}
-                  className='btn-danger btn-lg mt-3 text-uppercase'
+                  className='btn-danger btn-lg mt-3 text-uppercase position-relative mx-auto d-block'
                   onClick={deleteUser}
                 >
                   <strong>delete account</strong>
                 </button>
-                <br />
                 <Link to='/'>
                   <button
                     placeholder='home'
                     disabled={formIsLoading}
-                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                   >
                     <strong>home</strong>
                   </button>

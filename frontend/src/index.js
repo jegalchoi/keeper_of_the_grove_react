@@ -6,11 +6,19 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import { App } from './App.jsx'
 
-ReactDOM.render(
+// ReactDOM.render(
+//   <PlantProvider>
+//     <Router>
+//       <App />
+//     </Router>
+//   </PlantProvider>,
+//   document.getElementById('root')
+// )
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <PlantProvider>
     <Router>
       <App />
     </Router>
-  </PlantProvider>,
-  document.getElementById('root')
+  </PlantProvider>
 )

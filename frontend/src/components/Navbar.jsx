@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../context'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faOilCan } from '@fortawesome/free-solid-svg-icons'
 
 export const Navbar = () => {
   const [state, dispatch] = useContext(PlantContext)
@@ -22,11 +24,11 @@ export const Navbar = () => {
       .delete('http://localhost:3001/logout', {
         withCredentials: true,
       })
-      .then(response => {
+      .then((response) => {
         dispatch({ type: 'AUTH_LOGOUT' })
         history.push('/')
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error))
   }
 
   const history = useHistory()
@@ -34,12 +36,9 @@ export const Navbar = () => {
   return (
     <nav className='navbar bg-success navbar-expand-sm px-sm-5'>
       <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
-        <img
-          src='https://placeimg.com/320/240/nature'
-          alt='watercan'
-          className='navbar-brand img-fluid'
-          style={{ width: 64, height: 48 }}
-        />
+        <div className='spinner fadein'>
+          <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
+        </div>
       </Link>
       {siteIsLoading || formIsLoading ? null : (
         <React.Fragment>
@@ -48,6 +47,7 @@ export const Navbar = () => {
               <li className='nav-item ml-auto'>
                 <Link to='/' className='nav-link'>
                   <button
+                    style={{ width: '200px' }}
                     className='text-capitalize'
                     onClick={() =>
                       dispatch({

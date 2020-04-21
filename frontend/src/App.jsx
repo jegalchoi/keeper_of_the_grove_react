@@ -6,23 +6,22 @@ import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'
 import { PlantList } from './components/plants/PlantList'
-import { NewPlant } from './components/plants/NewPlant'
+import { PlantNew } from './components/plants/PlantNew'
+import { PlantDetail } from './components/plants/PlantDetail'
 import { Default } from './components/Default.jsx'
+import Spinner from './components/Spinner'
 
 export const App = () => {
   console.log('app')
 
-  const [state] = useContext(PlantContext)
-  const { siteIsLoading, permissions } = state
+  const [{ siteIsLoading, permissions }] = useContext(PlantContext)
 
-  console.log(state)
+  // console.log(state)
 
   return (
     <React.Fragment>
       <Navbar />
-      {siteIsLoading ? (
-        <h1>loading...</h1>
-      ) : (
+      {siteIsLoading ? null : (
         <Switch>
           <Route exact path='/' render={() => <PlantList />} />
           <Route
@@ -63,11 +62,16 @@ export const App = () => {
             path='/new'
             render={() =>
               permissions === 'LOGGED_IN' ? (
-                <NewPlant />
+                <PlantNew />
               ) : (
                 <Redirect to='/login' />
               )
             }
+          />
+          <Route
+            exact
+            path='/details/:plantId'
+            render={() => <PlantDetail />}
           />
           <Route component={Default} />
         </Switch>

@@ -146,7 +146,7 @@ class Api::V1::PlantsController < ApplicationController
     when ActiveRecord::RecordNotFound
       render json: {
         status: 400,
-        errors: ['Not found']
+        errors: ['Could not locate plant']
       }
     end
   end

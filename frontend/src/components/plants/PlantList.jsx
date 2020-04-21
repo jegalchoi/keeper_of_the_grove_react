@@ -4,8 +4,9 @@ import { Title } from '../Title'
 import { PlantContext } from '../../context'
 
 export const PlantList = () => {
-  const [state] = useContext(PlantContext)
-  const { plantsPublic, plantsUser, displayUserPlants } = state
+  const [
+    { plantsPublic, plantsUser, displayUserPlants },
+  ] = useContext(PlantContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
   // console.log(plants)

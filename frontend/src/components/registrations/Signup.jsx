@@ -5,10 +5,9 @@ import { PlantContext } from '../../context'
 import { formReducer } from '../useForm'
 
 export const Signup = () => {
-  const [state, dispatch] = useContext(PlantContext)
-  const { formIsLoading } = state
+  const [{ formIsLoading }, dispatch] = useContext(PlantContext)
 
-  const [formState, formDispatch] = useReducer(formReducer, {
+  const [signupState, signupDispatch] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
@@ -21,9 +20,9 @@ export const Signup = () => {
     password,
     passwordConfirmation,
     errors,
-  } = formState
+  } = signupState
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     console.log('signing up')
 
     dispatch({ type: 'FORM_START_LOADING' })
@@ -38,7 +37,7 @@ export const Signup = () => {
 
     axios
       .post(url, { user }, { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         if (response.data.status === 'created') {
           dispatch({
             type: 'AUTH_LOGGED_IN',
@@ -47,13 +46,13 @@ export const Signup = () => {
           history.push('/')
         } else {
           dispatch({ type: 'FORM_DONE_LOADING' })
-          formDispatch({
+          signupDispatch({
             type: 'AUTH_FAILURE',
             payload: response.data,
           })
         }
       })
-      .catch(error => console.log('signup api errors:', error))
+      .catch((error) => console.log('signup api errors:', error))
 
     e.target.reset()
     e.preventDefault()
@@ -66,8 +65,12 @@ export const Signup = () => {
     return (
       <div className='text-center'>
         <ul className='p-0'>
-          {errors.map(error => {
-            return <li key={error}>{error}</li>
+          {errors.map((error) => {
+            return (
+              <li key={error}>
+                <strong>{error}</strong>
+              </li>
+            )
           })}
         </ul>
       </div>
@@ -80,7 +83,7 @@ export const Signup = () => {
     <React.Fragment>
       <div className='d-flex justify-content-center'>
         <div>
-          <h1 className='text-capitalize'>
+          <h1 className='text-capitalize text-center'>
             <strong>sign up</strong>
           </h1>
           <form onSubmit={handleSubmit}>
@@ -89,8 +92,8 @@ export const Signup = () => {
                 type='text'
                 placeholder='Username'
                 value={username}
-                onChange={e =>
-                  formDispatch({
+                onChange={(e) =>
+                  signupDispatch({
                     type: 'field',
                     fieldName: 'username',
                     payload: e.target.value,
@@ -104,8 +107,8 @@ export const Signup = () => {
                 type='email'
                 placeholder='Email'
                 value={email}
-                onChange={e =>
-                  formDispatch({
+                onChange={(e) =>
+                  signupDispatch({
                     type: 'field',
                     fieldName: 'email',
                     payload: e.target.value,
@@ -119,8 +122,8 @@ export const Signup = () => {
                 type='password'
                 placeholder='Password'
                 value={password}
-                onChange={e =>
-                  formDispatch({
+                onChange={(e) =>
+                  signupDispatch({
                     type: 'field',
                     fieldName: 'password',
                     payload: e.target.value,
@@ -134,8 +137,8 @@ export const Signup = () => {
                 type='password'
                 placeholder='Confirm Password'
                 value={passwordConfirmation}
-                onChange={e =>
-                  formDispatch({
+                onChange={(e) =>
+                  signupDispatch({
                     type: 'field',
                     fieldName: 'passwordConfirmation',
                     payload: e.target.value,
@@ -147,7 +150,7 @@ export const Signup = () => {
             {formIsLoading ? (
               <button
                 disabled={formIsLoading}
-                className='btn-success btn-lg mt-3 text-capitalize'
+                className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing
               </button>
@@ -157,16 +160,15 @@ export const Signup = () => {
                   type='submit'
                   placeholder='submit'
                   disabled={formIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize'
+                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                 >
                   <strong>create account</strong>
                 </button>
-                <br />
                 <Link to='/login'>
                   <button
                     placeholder='login'
                     disabled={formIsLoading}
-                    className='btn-primary btn-lg mt-3 text-capitalize'
+                    className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                   >
                     <strong>log in</strong>
                   </button>

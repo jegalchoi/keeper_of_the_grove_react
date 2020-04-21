@@ -61,7 +61,7 @@ export class Plant extends Component {
             className='img-container p-5'
             // onClick={() => value.handleDetail(id)}
           >
-            <Link to='/details'>
+            <Link to={`/details/${id}`}>
               <img src={image} alt={name} className='card-img-top' />
             </Link>
             {/* <button

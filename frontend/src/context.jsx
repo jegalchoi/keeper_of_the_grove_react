@@ -12,7 +12,7 @@ const initialState = {
   plantsUser: [],
   plantDetail: {},
   displayUserPlants: false,
-  newPlantCreated: false,
+  plantsNeedRefresh: false,
   errors: null,
 }
 
@@ -36,11 +36,11 @@ const reducer = (state, action) => {
     case 'AUTH_LOGGED_IN':
       return {
         ...state,
+        siteIsLoading: false,
+        formIsLoading: false,
         permissions: 'LOGGED_IN',
         userId: action.payload.user.id,
         username: action.payload.user.username,
-        siteIsLoading: false,
-        formIsLoading: false,
       }
     case 'AUTH_NOT_LOGGED_IN':
       return {
@@ -53,6 +53,7 @@ const reducer = (state, action) => {
     case 'AUTH_LOGOUT':
       return {
         ...state,
+        formIsLoading: false,
         siteIsLoading: false,
         permissions: 'NOT_LOGGED_IN',
         userId: '',
@@ -66,14 +67,14 @@ const reducer = (state, action) => {
         ...state,
         siteIsLoading: false,
         plantsPublic: action.payload.plants,
-        newPlantCreated: false,
+        plantsNeedRefresh: false,
       }
     case 'PLANTS_USER_FETCH_SUCCESS':
       return {
         ...state,
         siteIsLoading: false,
         plantsUser: action.payload.plants,
-        newPlantCreated: false,
+        plantsNeedRefresh: false,
       }
     case 'PLANT_FETCH_FAILURE':
       return {
@@ -81,7 +82,7 @@ const reducer = (state, action) => {
         siteIsLoading: false,
         plantsPublic: [],
         plantsUser: [],
-        newPlantCreated: false,
+        plantsNeedRefresh: false,
         errors: action.payload.errors,
       }
     case 'PLANT_DISPLAY_TOGGLE':
@@ -89,11 +90,11 @@ const reducer = (state, action) => {
         ...state,
         displayUserPlants: action.payload,
       }
-    case 'PLANT_NEW_TOGGLE':
+    case 'PLANT_NEED_REFRESH':
       return {
         ...state,
         formIsLoading: false,
-        newPlantCreated: true,
+        plantsNeedRefresh: true,
       }
     case 'CLEAR_ERRORS':
       return {
@@ -109,7 +110,7 @@ export const PlantProvider = props => {
   console.log('context')
 
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { userId, displayUserPlants, newPlantCreated } = state
+  const { userId, displayUserPlants, plantsNeedRefresh } = state
 
   useEffect(() => {
     console.log('fetching login status')
@@ -133,9 +134,9 @@ export const PlantProvider = props => {
   useEffect(() => {
     console.log('fetching plants')
 
-    const urlMyPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
+    const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
     const urlAllPlants = `http://localhost:3001/api/v1/plants/`
-    const urlPlants = displayUserPlants ? urlMyPlants : urlAllPlants
+    const urlPlants = displayUserPlants ? urlUserPlants : urlAllPlants
     // console.log(urlPlants)
     axios
       .get(urlPlants, { withCredentials: true })
@@ -154,7 +155,7 @@ export const PlantProvider = props => {
       .catch(errors =>
         console.log('check plants api errors:', errors)
       )
-  }, [newPlantCreated, displayUserPlants])
+  }, [plantsNeedRefresh, displayUserPlants])
 
   return (
     <PlantContext.Provider value={[state, dispatch]}>
