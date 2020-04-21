@@ -5,7 +5,7 @@ export const Default = () => {
   return (
     <React.Fragment>
       <div className='d-flex justify-content-center'>
-        <div>
+        <div className='my-5'>
           <h1 className='text-capitalize'>
             <strong>page not found</strong>
           </h1>

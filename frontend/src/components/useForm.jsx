@@ -51,6 +51,11 @@ export const formReducer = (state, action) => {
         ...state,
         plantIsLoading: true,
       }
+    case 'PLANT_DETAIL_DONE_LOADING':
+      return {
+        ...state,
+        plantIsLoading: false,
+      }
     case 'CLEAR_ERRORS':
       return {
         ...state,

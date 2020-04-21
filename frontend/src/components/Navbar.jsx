@@ -36,7 +36,7 @@ export const Navbar = () => {
   return (
     <nav className='navbar bg-success navbar-expand-sm px-sm-5'>
       <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
-        <div className='spinner fadein'>
+        <div className='px-3'>
           <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
         </div>
       </Link>

@@ -126,7 +126,7 @@ export const PlantDetail = () => {
               <img src={image} alt={name} className='img-fluid' />
             </div>
             {/* {plant text} */}
-            <div className='col-10 mx-auto col-md-6 my-3 text-capitalize text-center'>
+            <div className='col-10 mx-auto col-md-6 my-3 text-center'>
               {water !== null ? (
                 <div>
                   <h4 className='mb-2'>
@@ -140,10 +140,12 @@ export const PlantDetail = () => {
                   <strong>never been watered</strong>
                 </h4>
               )}
-              <h4 className='text-muted mt-3 mb-2'>
+              <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
+                notes:
+              </p>
+              <p className='text-muted mt-3 mb-2 text-capitalize'>
                 <strong>{hidden ? 'private' : 'public'}</strong>
-              </h4>
-              <p className='font-weight-bold mt-3 mb-0'>notes:</p>
+              </p>
               <p className='text-muted lead'>{notes}</p>
               {/* {buttons} */}
               {plantIsLoading ? (
