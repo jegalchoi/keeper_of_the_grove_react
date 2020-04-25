@@ -9,20 +9,16 @@ export const EditUser = () => {
     PlantContext
   )
 
-  const [editUserState, editUserDispatch] = useReducer(formReducer, {
+  const [
+    { username, email, password, passwordConfirmation, errors },
+    editUserDispatch,
+  ] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
     passwordConfirmation: '',
     errors: null,
   })
-  const {
-    username,
-    email,
-    password,
-    passwordConfirmation,
-    errors,
-  } = editUserState
 
   const handleSubmit = (e) => {
     console.log('editing account')
@@ -180,7 +176,7 @@ export const EditUser = () => {
             </div>
             {formIsLoading ? (
               <button
-                disabled={formIsLoading}
+                disabled
                 className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing

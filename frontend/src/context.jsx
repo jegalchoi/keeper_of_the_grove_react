@@ -106,7 +106,7 @@ const reducer = (state, action) => {
   }
 }
 
-export const PlantProvider = props => {
+export const PlantProvider = (props) => {
   console.log('context')
 
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -119,7 +119,7 @@ export const PlantProvider = props => {
 
     axios
       .get(urlLoginStatus, { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         // console.log(response.data)
         dispatch({
           type: response.data.logged_in
@@ -128,7 +128,9 @@ export const PlantProvider = props => {
           payload: response.data,
         })
       })
-      .catch(errors => console.log('check login api errors:', errors))
+      .catch((errors) =>
+        console.log('check login api errors:', errors)
+      )
   }, [])
 
   useEffect(() => {
@@ -140,7 +142,7 @@ export const PlantProvider = props => {
     // console.log(urlPlants)
     axios
       .get(urlPlants, { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         // console.log(response.data)
         dispatch({
           type:
@@ -152,7 +154,7 @@ export const PlantProvider = props => {
           payload: response.data,
         })
       })
-      .catch(errors =>
+      .catch((errors) =>
         console.log('check plants api errors:', errors)
       )
   }, [plantsNeedRefresh, displayUserPlants])

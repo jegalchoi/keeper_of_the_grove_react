@@ -56,6 +56,11 @@ export const formReducer = (state, action) => {
         ...state,
         plantIsLoading: false,
       }
+    case 'PLANT_REMOVE_IMAGE':
+      return {
+        ...state,
+        images: action.payload,
+      }
     case 'CLEAR_ERRORS':
       return {
         ...state,

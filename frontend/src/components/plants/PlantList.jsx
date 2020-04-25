@@ -9,8 +9,6 @@ export const PlantList = () => {
   ] = useContext(PlantContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
-  // console.log(plants)
-
   console.log('plantlist')
 
   return (
@@ -22,7 +20,7 @@ export const PlantList = () => {
             description='keeping your plants properly watered'
           />
           <div className='row'>
-            {plants.map(plant => (
+            {plants.map((plant) => (
               <Plant key={plant.id} plant={plant} />
             ))}
           </div>
