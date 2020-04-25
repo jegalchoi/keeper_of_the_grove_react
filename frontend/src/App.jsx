@@ -9,7 +9,6 @@ import { PlantList } from './components/plants/PlantList'
 import { PlantNew } from './components/plants/PlantNew'
 import { PlantDetail } from './components/plants/PlantDetail'
 import { Default } from './components/Default.jsx'
-import Spinner from './components/Spinner'
 
 export const App = () => {
   console.log('app')

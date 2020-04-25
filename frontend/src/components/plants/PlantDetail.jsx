@@ -2,16 +2,28 @@ import React, { useContext, useReducer, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { PlantContext } from '../../context'
+import { formReducer } from '../useForm'
 // import { ButtonContainer } from './Button'
 import TimeAgo from 'react-timeago'
-import { formReducer } from '../useForm'
 
 export const PlantDetail = () => {
   const [{ userId }, dispatch] = useContext(PlantContext)
 
   let { plantId } = useParams()
 
-  const [plantState, plantDispatch] = useReducer(formReducer, {
+  const [
+    {
+      plantIsLoading,
+      name,
+      notes,
+      water,
+      hidden,
+      image,
+      ownerId,
+      errors,
+    },
+    plantDispatch,
+  ] = useReducer(formReducer, {
     plantIsLoading: true,
     name: '',
     notes: '',
@@ -21,16 +33,6 @@ export const PlantDetail = () => {
     ownerId: '',
     errors: null,
   })
-  const {
-    plantIsLoading,
-    name,
-    notes,
-    water,
-    hidden,
-    image,
-    ownerId,
-    errors,
-  } = plantState
 
   useEffect(() => {
     console.log('fetching plant detail')
@@ -61,7 +63,7 @@ export const PlantDetail = () => {
     )
 
     if (confirmation) {
-      console.log('plant deletion submitted')
+      console.log('deleting plant')
       plantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
       axios
         .delete(url, { withCredentials: true })
@@ -125,7 +127,6 @@ export const PlantDetail = () => {
             <div className='col-10 mx-auto col-md-6 my-3'>
               <img src={image} alt={name} className='img-fluid' />
             </div>
-            {/* {plant text} */}
             <div className='col-10 mx-auto col-md-6 my-3 text-center'>
               {water !== null ? (
                 <div>

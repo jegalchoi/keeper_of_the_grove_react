@@ -7,20 +7,16 @@ import { formReducer } from '../useForm'
 export const Signup = () => {
   const [{ formIsLoading }, dispatch] = useContext(PlantContext)
 
-  const [signupState, signupDispatch] = useReducer(formReducer, {
+  const [
+    { username, email, password, passwordConfirmation, errors },
+    signupDispatch,
+  ] = useReducer(formReducer, {
     username: '',
     email: '',
     password: '',
     passwordConfirmation: '',
     errors: null,
   })
-  const {
-    username,
-    email,
-    password,
-    passwordConfirmation,
-    errors,
-  } = signupState
 
   const handleSubmit = (e) => {
     console.log('signing up')
@@ -149,7 +145,7 @@ export const Signup = () => {
             </div>
             {formIsLoading ? (
               <button
-                disabled={formIsLoading}
+                disabled
                 className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing

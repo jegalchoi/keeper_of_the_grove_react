@@ -1,22 +1,25 @@
 import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import styled from 'styled-components'
 import { PlantContext } from '../../context'
 import { formReducer } from '../useForm'
+import styled from 'styled-components'
+import TimeAgo from 'react-timeago'
 
 export const Plant = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
 
-  const [state, dispatch] = useContext(PlantContext)
+  const [{}, dispatch] = useContext(PlantContext)
 
-  const [plantState, plantDispatch] = useReducer(formReducer, {
-    plantIsLoading: false,
-  })
-  const { plantIsLoading } = plantState
+  const [{ plantIsLoading }, plantDispatch] = useReducer(
+    formReducer,
+    {
+      plantIsLoading: false,
+    }
+  )
 
-  const handleWaterPlant = () => {
-    console.log('plant watered')
+  const waterPlant = () => {
+    console.log('watering plant')
 
     plantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
 
@@ -73,31 +76,44 @@ export const Plant = ({ plant }) => {
             <button
               className='water-btn'
               disabled={water == null ? false : compareDates(water)}
-              onClick={() => handleWaterPlant()}
+              onClick={() => waterPlant()}
             >
               {water == null || !compareDates(water) ? (
-                <span className='badge badge-info'>water plant</span>
+                <span className='badge badge-success'>
+                  water plant
+                </span>
               ) : (
-                <span className='badge badge-success disabled'>
+                <span className='badge badge-secondary disabled'>
                   watered today
                 </span>
               )}
             </button>
           )}
         </div>
-        <div className='card-footer d-flex justify-content-between'>
-          <p className='align-self-center mb-0'>{name}</p>
-          {/* <h5 className='font-italic mb-0'>
-            notes will go here
-          </h5> */}
+        <div className='card-footer container'>
+          <div className='row justify-content-center'>
+            <p className='mb-0'>
+              <strong>{name}</strong>
+            </p>
+          </div>
+          <div className='row justify-content-center text-muted'>
+            {water !== null ? (
+              <p className='mb-0'>
+                watered <TimeAgo date={water} />
+              </p>
+            ) : (
+              <p className='mb-0'>never been watered</p>
+            )}
+          </div>
         </div>
       </div>
     </PlantWrapper>
   )
 }
+
 const PlantWrapper = styled.div`
   .card {
-    border-color: transparent;
+    border-color: green;
     transition: all 0.5s linear;
   }
   .card-footer {
@@ -129,9 +145,7 @@ const PlantWrapper = styled.div`
     bottom: 0;
     right: 0;
     padding: 0.2rem 0.4rem;
-    background: bg-info;
     border: none;
-    color: bg-primary;
     font-size: 1.1rem;
     border-radius: 0.5rem 0 0 0;
     transform: translate(100%, 100%);
@@ -141,7 +155,6 @@ const PlantWrapper = styled.div`
     transform: translate(0, 0);
   }
   .water-btn:hover {
-    color: bg-primary;
     cursor: pointer;
   }
 `

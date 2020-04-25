@@ -5,22 +5,32 @@ import { PlantContext } from '../../context'
 import { formReducer } from '../useForm'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { PlantDropzone } from './PlantDropzone'
+
+// import PlantImages from './PlantImages'
+// import PlantImagesButtons from './PlantImagesButtons'
+// import Spinner from '../Spinner'
 
 export const PlantNew = () => {
-  const [state, dispatch] = useContext(PlantContext)
+  const [{ userId, formIsLoading }, dispatch] = useContext(
+    PlantContext
+  )
 
-  const { userId, formIsLoading } = state
-
-  const [plantState, formDispatch] = useReducer(formReducer, {
+  const [
+    { name, notes, water, hidden, image, errors, images, uploading },
+    formDispatch,
+  ] = useReducer(formReducer, {
     name: '',
     notes: '',
     water: '',
     hidden: true,
     image: '',
     errors: null,
+    uploading: false,
+    images: [],
   })
 
-  const { name, notes, water, hidden, image, errors } = plantState
+  //
 
   const handleSubmit = (e) => {
     console.log('creating plant')
@@ -49,7 +59,6 @@ export const PlantNew = () => {
             type: 'PLANT_NEED_REFRESH',
           })
           history.push(`/details/${response.data.plant.id}`)
-          // history.push(`/`)
         } else {
           dispatch({ type: 'FORM_DONE_LOADING' })
           formDispatch({
@@ -81,11 +90,32 @@ export const PlantNew = () => {
     )
   }
 
+  const plantImages = () => {
+    switch (true) {
+      case uploading:
+        return <Spinner />
+      case images.length > 0:
+        return (
+          <PlantImages images={images} removeImage={removeImage} />
+        )
+      default:
+        return <PlantImagesButtons onChange={onChange} />
+    }
+  }
+
   // const stripHtmlEntities = str => {
   //   return String(str)
   //     .replace(/</g, '&lt;')
   //     .replace(/>/g, '&gt;')
   // }
+
+  const formDispatchPlantDropzone = (url) => {
+    formDispatch({
+      type: 'field',
+      fieldName: 'image',
+      payload: url,
+    })
+  }
 
   console.log('create plant')
 
@@ -97,7 +127,7 @@ export const PlantNew = () => {
             <strong>add new plant</strong>
           </h1>
           <form onSubmit={handleSubmit}>
-            <div className='form-group'>
+            <div className='form-group px-5'>
               <input
                 type='text'
                 placeholder='Name'
@@ -112,8 +142,9 @@ export const PlantNew = () => {
                 required
               />
             </div>
-            <div>
+            <div className='form-group px-5'>
               <DatePicker
+                showTimeSelect
                 selected={water}
                 onChange={(date) =>
                   formDispatch({
@@ -127,7 +158,7 @@ export const PlantNew = () => {
                 Select date that plant was last watered.
               </small>
             </div>
-            <div className='form-group'>
+            <div className='form-group px-5'>
               <input
                 type='text'
                 placeholder='Notes'
@@ -144,7 +175,7 @@ export const PlantNew = () => {
                 Separate each note with a comma.
               </small>
             </div>
-            <div className='form-check'>
+            <div className='form-check px-5'>
               <input
                 className='form-check-input'
                 type='checkbox'
@@ -168,9 +199,11 @@ export const PlantNew = () => {
                 Everyone can view public plants.
               </small>
             </div>
+            <br />
+            <PlantDropzone formDispatch={formDispatchPlantDropzone} />
             {formIsLoading ? (
               <button
-                disabled={formIsLoading}
+                disabled
                 className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing
@@ -183,14 +216,13 @@ export const PlantNew = () => {
                   disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                 >
-                  <strong>create plant</strong>
+                  <strong>add plant</strong>
                 </button>
                 <Link to='/'>
                   <button
                     placeholder='home'
                     disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-                    onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
                   >
                     <strong>home</strong>
                   </button>

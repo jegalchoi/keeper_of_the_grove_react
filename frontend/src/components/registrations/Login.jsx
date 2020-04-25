@@ -7,12 +7,14 @@ import { formReducer } from '../useForm'
 export const Login = () => {
   const [{ formIsLoading }, dispatch] = useContext(PlantContext)
 
-  const [loginState, loginDispatch] = useReducer(formReducer, {
-    username: '',
-    password: '',
-    errors: null,
-  })
-  const { username, password, errors } = loginState
+  const [{ username, password, errors }, loginDispatch] = useReducer(
+    formReducer,
+    {
+      username: '',
+      password: '',
+      errors: null,
+    }
+  )
 
   const handleSubmit = (e) => {
     console.log('logging in')
@@ -109,7 +111,7 @@ export const Login = () => {
             </div>
             {formIsLoading ? (
               <button
-                disabled={formIsLoading}
+                disabled
                 className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
               >
                 processing

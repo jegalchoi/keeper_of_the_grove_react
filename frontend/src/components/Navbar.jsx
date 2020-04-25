@@ -6,15 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faOilCan } from '@fortawesome/free-solid-svg-icons'
 
 export const Navbar = () => {
-  const [state, dispatch] = useContext(PlantContext)
-
-  const {
-    siteIsLoading,
-    formIsLoading,
-    permissions,
-    username,
-    displayUserPlants,
-  } = state
+  const [
+    {
+      siteIsLoading,
+      formIsLoading,
+      permissions,
+      username,
+      displayUserPlants,
+    },
+    dispatch,
+  ] = useContext(PlantContext)
 
   const handleLogout = () => {
     console.log('logging out')
@@ -84,10 +85,7 @@ export const Navbar = () => {
             </strong>
           ) : (
             permissions === 'LOGGED_IN' && (
-              <Link
-                to='/editUser'
-                onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
-              >
+              <Link to='/editUser'>
                 <h5>
                   <strong>{username}</strong>
                 </h5>
@@ -104,11 +102,7 @@ export const Navbar = () => {
               log out
             </Link>
           ) : (
-            <Link
-              to='/login'
-              className='text-capitalize'
-              onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
-            >
+            <Link to='/login' className='text-capitalize'>
               log in
             </Link>
           )}
@@ -116,11 +110,7 @@ export const Navbar = () => {
           {siteIsLoading || formIsLoading
             ? null
             : permissions === 'NOT_LOGGED_IN' && (
-                <Link
-                  to='/signup'
-                  className='text-capitalize'
-                  onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
-                >
+                <Link to='/signup' className='text-capitalize'>
                   create account
                 </Link>
               )}
