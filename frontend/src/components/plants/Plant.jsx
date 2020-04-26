@@ -9,7 +9,7 @@ import TimeAgo from 'react-timeago'
 export const Plant = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
 
-  const [{}, dispatch] = useContext(PlantContext)
+  const [{ userId }, dispatch] = useContext(PlantContext)
 
   const [{ plantIsLoading }, plantDispatch] = useReducer(
     formReducer,
@@ -66,29 +66,30 @@ export const Plant = ({ plant }) => {
           <Link to={`/details/${id}`}>
             <img src={image} alt={name} className='card-img-top' />
           </Link>
-          {plantIsLoading ? (
-            <button className='water-btn' disabled>
-              <span className='badge badge-info text-capitalize'>
-                processing
-              </span>
-            </button>
-          ) : (
-            <button
-              className='water-btn'
-              disabled={water == null ? false : compareDates(water)}
-              onClick={() => waterPlant()}
-            >
-              {water == null || !compareDates(water) ? (
-                <span className='badge badge-success'>
-                  water plant
+          {userId === user_id &&
+            (plantIsLoading ? (
+              <button className='water-btn' disabled>
+                <span className='badge badge-info text-capitalize'>
+                  processing
                 </span>
-              ) : (
-                <span className='badge badge-secondary disabled'>
-                  watered today
-                </span>
-              )}
-            </button>
-          )}
+              </button>
+            ) : (
+              <button
+                className='water-btn'
+                disabled={water == null ? false : compareDates(water)}
+                onClick={() => waterPlant()}
+              >
+                {water == null || !compareDates(water) ? (
+                  <span className='badge badge-success'>
+                    water plant
+                  </span>
+                ) : (
+                  <span className='badge badge-secondary disabled'>
+                    watered today
+                  </span>
+                )}
+              </button>
+            ))}
         </div>
         <div className='card-footer container'>
           <div className='row justify-content-center'>
@@ -96,15 +97,17 @@ export const Plant = ({ plant }) => {
               <strong>{name}</strong>
             </p>
           </div>
-          <div className='row justify-content-center text-muted'>
-            {water !== null ? (
-              <p className='mb-0'>
-                watered <TimeAgo date={water} />
-              </p>
-            ) : (
-              <p className='mb-0'>never been watered</p>
-            )}
-          </div>
+          {userId === user_id && (
+            <div className='row justify-content-center text-muted'>
+              {water !== null ? (
+                <p className='mb-0'>
+                  watered <TimeAgo date={water} />
+                </p>
+              ) : (
+                <p className='mb-0'>never been watered</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </PlantWrapper>
