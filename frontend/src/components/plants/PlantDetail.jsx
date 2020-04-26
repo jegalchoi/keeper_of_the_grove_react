@@ -128,25 +128,30 @@ export const PlantDetail = () => {
               <img src={image} alt={name} className='img-fluid' />
             </div>
             <div className='col-10 mx-auto col-md-6 my-3 text-center'>
-              {water !== null ? (
-                <div>
+              {userId === ownerId &&
+                (water !== null ? (
+                  <div>
+                    <h4 className='mb-2'>
+                      <strong>
+                        watered <TimeAgo date={water} />
+                      </strong>
+                    </h4>
+                  </div>
+                ) : (
                   <h4 className='mb-2'>
-                    <strong>
-                      watered <TimeAgo date={water} />
-                    </strong>
+                    <strong>never been watered</strong>
                   </h4>
-                </div>
-              ) : (
-                <h4 className='mb-2'>
-                  <strong>never been watered</strong>
-                </h4>
+                ))}
+              {userId === ownerId && (
+                <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
+                  notes:
+                </p>
               )}
-              <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
-                notes:
-              </p>
-              <p className='text-muted mt-3 mb-2 text-capitalize'>
-                <strong>{hidden ? 'private' : 'public'}</strong>
-              </p>
+              {userId === ownerId && (
+                <p className='text-muted mt-3 mb-2 text-capitalize'>
+                  <strong>{hidden ? 'private' : 'public'}</strong>
+                </p>
+              )}
               <p className='text-muted lead'>{notes}</p>
               {/* {buttons} */}
               {plantIsLoading ? (
