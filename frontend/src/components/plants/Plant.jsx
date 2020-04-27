@@ -97,7 +97,9 @@ export const Plant = ({ plant }) => {
               <strong>{name}</strong>
             </p>
           </div>
-          {userId === user_id && (
+          {userId !== user_id ? (
+            <br />
+          ) : (
             <div className='row justify-content-center text-muted'>
               {water !== null ? (
                 <p className='mb-0'>
