@@ -2,7 +2,7 @@ import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from '../useForm'
+import { plantsReducer } from './usePlants'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
@@ -19,7 +19,7 @@ export const PlantNew = () => {
   const [
     { name, notes, water, hidden, image, errors, images, uploading },
     formDispatch,
-  ] = useReducer(formReducer, {
+  ] = useReducer(plantsReducer, {
     name: '',
     notes: '',
     water: '',

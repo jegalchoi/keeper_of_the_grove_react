@@ -2,7 +2,7 @@ import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from '../useForm'
+import { plantsReducer } from './usePlants'
 import styled from 'styled-components'
 import TimeAgo from 'react-timeago'
 
@@ -12,7 +12,7 @@ export const Plant = ({ plant }) => {
   const [{ userId }, dispatch] = useContext(PlantContext)
 
   const [{ plantIsLoading }, plantDispatch] = useReducer(
-    formReducer,
+    plantsReducer,
     {
       plantIsLoading: false,
     }

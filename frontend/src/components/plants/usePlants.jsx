@@ -1,23 +1,9 @@
-export const formReducer = (state, action) => {
+export const plantsReducer = (state, action) => {
   switch (action.type) {
     case 'field':
       return {
         ...state,
         [action.fieldName]: action.payload,
-      }
-    case 'AUTH_FAILURE':
-      return {
-        username: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
-        errors: action.payload.errors,
-      }
-    case 'AUTH_LOGIN_FAILURE':
-      return {
-        username: '',
-        password: '',
-        errors: action.payload.errors,
       }
     case 'PLANT_CREATE_FAILURE':
       return {
@@ -56,10 +42,15 @@ export const formReducer = (state, action) => {
         ...state,
         plantIsLoading: false,
       }
-    case 'PLANT_REMOVE_IMAGE':
+    case 'PLANT_SET_IMAGES':
       return {
         ...state,
         images: action.payload,
+      }
+    case 'PLANT_UPLOADING_IMAGES':
+      return {
+        ...state,
+        uploading: true,
       }
     case 'CLEAR_ERRORS':
       return {

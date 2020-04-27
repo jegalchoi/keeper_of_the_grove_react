@@ -2,7 +2,7 @@ import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from '../useForm'
+import { registrationsReducer } from './useRegistrations'
 
 export const Signup = () => {
   const [{ formIsLoading }, dispatch] = useContext(PlantContext)
@@ -10,7 +10,7 @@ export const Signup = () => {
   const [
     { username, email, password, passwordConfirmation, errors },
     signupDispatch,
-  ] = useReducer(formReducer, {
+  ] = useReducer(registrationsReducer, {
     username: '',
     email: '',
     password: '',

@@ -16,7 +16,7 @@ const getColor = (props) => {
   return '#eeeeee'
 }
 
-const Container = styled.div`
+const DropzoneWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -116,7 +116,7 @@ export const PlantDropzone = (props) => {
 
   return (
     <div className='container text-center'>
-      <Container
+      <DropzoneWrapper
         {...getRootProps({
           isDragActive,
           isDragAccept,
@@ -139,7 +139,7 @@ export const PlantDropzone = (props) => {
           <div>{acceptedFiles.length > 0 && photoItems(true)}</div>
           <div>{rejectedFiles.length > 0 && photoItems(false)}</div>
         </aside>
-      </Container>
+      </DropzoneWrapper>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { PlantContext } from '../../context'
-import { formReducer } from '../useForm'
+import { plantsReducer } from './usePlants'
 // import { ButtonContainer } from './Button'
 import TimeAgo from 'react-timeago'
 
@@ -23,7 +23,7 @@ export const PlantDetail = () => {
       errors,
     },
     plantDispatch,
-  ] = useReducer(formReducer, {
+  ] = useReducer(plantsReducer, {
     plantIsLoading: true,
     name: '',
     notes: '',
