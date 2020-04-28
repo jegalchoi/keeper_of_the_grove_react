@@ -93,7 +93,7 @@ export const Plant = ({ plant }) => {
         </div>
         <div className='card-footer container'>
           <div className='row justify-content-center'>
-            <p className='mb-0'>
+            <p className='mb-0 d-inline-block text-truncate'>
               <strong>{name}</strong>
             </p>
           </div>
@@ -102,7 +102,7 @@ export const Plant = ({ plant }) => {
           ) : (
             <div className='row justify-content-center text-muted'>
               {water !== null ? (
-                <p className='mb-0'>
+                <p className='mb-0 d-inline-block text-truncate'>
                   watered <TimeAgo date={water} />
                 </p>
               ) : (

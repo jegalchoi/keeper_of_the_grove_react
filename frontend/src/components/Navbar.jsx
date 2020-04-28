@@ -34,6 +34,12 @@ export const Navbar = () => {
 
   const history = useHistory()
 
+  const truncString = (str, max) => {
+    return typeof str === 'string' && str.length > max
+      ? str.substring(0, max) + '...'
+      : str
+  }
+
   return (
     <nav className='navbar bg-success navbar-expand-sm px-sm-5'>
       <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
@@ -77,17 +83,15 @@ export const Navbar = () => {
           </ul>
         </React.Fragment>
       )}
-      <div className='ml-auto'>
-        <div className='mr-2'>
+      <div className='ml-auto text-right'>
+        <div>
           {siteIsLoading || formIsLoading ? (
-            <strong>
-              <h5>loading...</h5>
-            </strong>
+            <strong>loading...</strong>
           ) : (
             permissions === 'LOGGED_IN' && (
               <Link to='/editUser'>
                 <h5>
-                  <strong>{username}</strong>
+                  <strong>{truncString(username, 20)}</strong>
                 </h5>
               </Link>
             )

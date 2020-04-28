@@ -119,7 +119,7 @@ export const PlantDetail = () => {
           {/* {title} */}
           <div className='row'>
             <div className='col-10 mx-auto text-center my-5'>
-              <h1>{name}</h1>
+              <h1 className='text-truncate'>{name}</h1>
             </div>
           </div>
           {/* {plant info} */}
