@@ -117,7 +117,6 @@ export const Login = () => {
               </div>
             </div>
           </div>
-
           {formIsLoading ? (
             <div className='row'>
               <div className='col text-center'>
@@ -149,9 +148,9 @@ export const Login = () => {
                     <button
                       placeholder='create account'
                       disabled={formIsLoading}
-                      className='btn-primary btn-lg mt-3 text-capitalize'
+                      className='btn-secondary btn-lg mt-3 text-capitalize'
                     >
-                      <strong>create account</strong>
+                      <strong>sign up</strong>
                     </button>
                   </Link>
                 </div>
