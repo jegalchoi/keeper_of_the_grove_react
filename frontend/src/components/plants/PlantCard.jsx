@@ -6,7 +6,7 @@ import { plantsReducer } from './usePlants'
 import TimeAgo from 'react-timeago'
 import styled from 'styled-components'
 
-export const Plant = ({ plant }) => {
+export const PlantCard = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
 
   const [{ userId }, dispatch] = useContext(PlantContext)

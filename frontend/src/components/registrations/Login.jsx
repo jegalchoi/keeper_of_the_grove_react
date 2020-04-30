@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
+import { ContainerWrapper } from '../ContainerWrapper'
 
 export const Login = () => {
   const [{ formIsLoading }, dispatch] = useContext(PlantContext)
@@ -72,76 +73,108 @@ export const Login = () => {
   console.log('login')
 
   return (
-    <React.Fragment>
-      <div className='d-flex justify-content-center'>
-        <div>
-          <h1 className='text-capitalize text-center'>
-            <strong>log in</strong>
-          </h1>
-          <form onSubmit={handleSubmit}>
-            <div className='form-group'>
-              <input
-                type='text'
-                placeholder='Username'
-                value={username}
-                onChange={(e) =>
-                  loginDispatch({
-                    type: 'field',
-                    fieldName: 'username',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+    <ContainerWrapper>
+      <h1 className='text-capitalize text-center'>
+        <strong>login</strong>
+      </h1>
+      <form onSubmit={handleSubmit}>
+        <div className='container'>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='text'
+                  placeholder='Username'
+                  value={username}
+                  onChange={(e) =>
+                    loginDispatch({
+                      type: 'field',
+                      fieldName: 'username',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div className='form-group'>
-              <input
-                type='password'
-                placeholder='Password'
-                value={password}
-                onChange={(e) =>
-                  loginDispatch({
-                    type: 'field',
-                    fieldName: 'password',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+          </div>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='password'
+                  placeholder='Password'
+                  value={password}
+                  onChange={(e) =>
+                    loginDispatch({
+                      type: 'field',
+                      fieldName: 'password',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            {formIsLoading ? (
-              <button
-                disabled
-                className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-              >
-                processing
-              </button>
-            ) : (
-              <React.Fragment>
+          </div>
+
+          {formIsLoading ? (
+            <div className='row'>
+              <div className='col text-center'>
                 <button
-                  type='submit'
-                  placeholder='submit'
-                  disabled={formIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                  disabled
+                  className='btn-success btn-lg mt-3 text-capitalize'
                 >
-                  <strong>log in</strong>
+                  processing
                 </button>
-                <Link to='/signup'>
+              </div>
+            </div>
+          ) : (
+            <React.Fragment>
+              <div className='row'>
+                <div className='col text-center'>
                   <button
-                    placeholder='create account'
+                    type='submit'
+                    placeholder='submit'
                     disabled={formIsLoading}
-                    className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                    className='btn-success btn-lg mt-3 text-capitalize'
                   >
-                    <strong>create account</strong>
+                    <strong>log in</strong>
                   </button>
-                </Link>
-              </React.Fragment>
-            )}
-          </form>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-center'>
+                  <Link to='/signup'>
+                    <button
+                      placeholder='create account'
+                      disabled={formIsLoading}
+                      className='btn-primary btn-lg mt-3 text-capitalize'
+                    >
+                      <strong>create account</strong>
+                    </button>
+                  </Link>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-center'>
+                  <Link to='/'>
+                    <button
+                      placeholder='home'
+                      disabled={formIsLoading}
+                      className='btn-primary btn-lg mt-3 text-capitalize'
+                    >
+                      <strong>home</strong>
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
-      </div>
+      </form>
       <br />
       <div>{errors && handleErrors()}</div>
-    </React.Fragment>
+    </ContainerWrapper>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Plant } from './Plant.jsx'
+import { PlantCard } from './PlantCard.jsx'
 import { Title } from '../Title'
 import { PlantContext } from '../../context'
 
@@ -21,7 +21,7 @@ export const PlantList = () => {
           />
           <div className='row'>
             {plants.map((plant) => (
-              <Plant key={plant.id} plant={plant} />
+              <PlantCard key={plant.id} plant={plant} />
             ))}
           </div>
         </div>
