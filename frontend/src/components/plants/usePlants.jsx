@@ -14,6 +14,10 @@ export const plantsReducer = (state, action) => {
         image: '',
         errors: action.payload.errors,
       }
+    case 'PLANT_UPDATE_FAILURE':
+      return {
+        errors: action.payload.errors,
+      }
     case 'PLANT_DETAIL_FETCH_SUCCESS':
       const plant = action.payload.plant
       return {

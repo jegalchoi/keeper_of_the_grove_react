@@ -89,7 +89,7 @@ export const Navbar = () => {
             <strong>loading...</strong>
           ) : (
             permissions === 'LOGGED_IN' && (
-              <Link to='/editUser'>
+              <Link to='/account'>
                 <h5>
                   <strong>{truncString(username, 20)}</strong>
                 </h5>

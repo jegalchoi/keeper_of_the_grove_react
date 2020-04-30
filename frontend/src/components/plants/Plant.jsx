@@ -3,8 +3,8 @@ import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
 import { plantsReducer } from './usePlants'
-import styled from 'styled-components'
 import TimeAgo from 'react-timeago'
+import styled from 'styled-components'
 
 export const Plant = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant

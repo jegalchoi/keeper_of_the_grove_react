@@ -95,6 +95,12 @@ const reducer = (state, action) => {
         ...state,
         formIsLoading: false,
         plantsNeedRefresh: true,
+        plantDetail: {},
+      }
+    case 'SET_PLANTDETAIL':
+      return {
+        ...state,
+        plantDetail: action.payload,
       }
     case 'CLEAR_ERRORS':
       return {

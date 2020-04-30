@@ -14,6 +14,7 @@ export const PlantDetail = () => {
   const [
     {
       plantIsLoading,
+      id,
       name,
       notes,
       water,
@@ -25,6 +26,7 @@ export const PlantDetail = () => {
     plantDispatch,
   ] = useReducer(plantsReducer, {
     plantIsLoading: true,
+    id: plantId,
     name: '',
     notes: '',
     water: '',
@@ -33,6 +35,16 @@ export const PlantDetail = () => {
     ownerId: '',
     errors: null,
   })
+
+  const plant = {
+    id,
+    name,
+    notes,
+    water,
+    hidden,
+    image,
+    ownerId,
+  }
 
   useEffect(() => {
     console.log('fetching plant detail')
@@ -52,7 +64,7 @@ export const PlantDetail = () => {
         })
       })
       .catch((errors) =>
-        console.log('check login api errors:', errors)
+        console.log('check plant detail api errors:', errors)
       )
   }, [])
 
@@ -63,7 +75,7 @@ export const PlantDetail = () => {
     )
 
     if (confirmation) {
-      console.log('deleting plant')
+      console.log('plant deletion submitted from plant detail')
       plantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
       axios
         .delete(url, { withCredentials: true })
@@ -170,6 +182,12 @@ export const PlantDetail = () => {
                           placeholder='edit'
                           disabled={plantIsLoading}
                           className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                          onClick={() =>
+                            dispatch({
+                              type: 'SET_PLANTDETAIL',
+                              payload: plant,
+                            })
+                          }
                         >
                           <strong>edit plant</strong>
                         </button>

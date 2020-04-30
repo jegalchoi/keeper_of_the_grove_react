@@ -6,9 +6,10 @@ import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'
 import { PlantList } from './components/plants/PlantList'
-import { PlantNew } from './components/plants/PlantNew'
+import { NewPlant } from './components/plants/NewPlant'
 import { PlantDetail } from './components/plants/PlantDetail'
 import { Default } from './components/Default.jsx'
+import { EditPlant } from './components/plants/EditPlant'
 
 export const App = () => {
   console.log('app')
@@ -47,7 +48,7 @@ export const App = () => {
           />
           <Route
             exact
-            path='/edituser'
+            path='/account'
             render={() =>
               permissions === 'LOGGED_IN' ? (
                 <EditUser />
@@ -61,7 +62,18 @@ export const App = () => {
             path='/new'
             render={() =>
               permissions === 'LOGGED_IN' ? (
-                <PlantNew />
+                <NewPlant />
+              ) : (
+                <Redirect to='/login' />
+              )
+            }
+          />
+          <Route
+            exact
+            path='/edit'
+            render={() =>
+              permissions === 'LOGGED_IN' ? (
+                <EditPlant />
               ) : (
                 <Redirect to='/login' />
               )
