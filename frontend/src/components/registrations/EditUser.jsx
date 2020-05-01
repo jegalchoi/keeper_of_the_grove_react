@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
+import { ContainerWrapper } from '../ContainerWrapper'
 
 export const EditUser = () => {
   const [{ formIsLoading, userId }, dispatch] = useContext(
@@ -103,118 +104,144 @@ export const EditUser = () => {
   console.log('edit user')
 
   return (
-    <React.Fragment>
-      <div className='d-flex justify-content-center'>
-        <div>
-          <h1 className='text-capitalize text-center'>
-            <strong>edit account</strong>
-          </h1>
-          <form onSubmit={handleSubmit}>
-            <div className='form-group'>
-              <input
-                type='text'
-                placeholder='Username'
-                value={username}
-                className='position-relative mx-auto d-block'
-                onChange={(e) =>
-                  editUserDispatch({
-                    type: 'field',
-                    fieldName: 'username',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+    <ContainerWrapper>
+      <h1 className='text-capitalize text-center'>
+        <strong>edit account</strong>
+      </h1>
+      <form onSubmit={handleSubmit}>
+        <div className='container'>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='text'
+                  placeholder='Username'
+                  value={username}
+                  onChange={(e) =>
+                    editUserDispatch({
+                      type: 'field',
+                      fieldName: 'username',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div className='form-group'>
-              <input
-                type='email'
-                placeholder='Email'
-                value={email}
-                className='position-relative mx-auto d-block'
-                onChange={(e) =>
-                  editUserDispatch({
-                    type: 'field',
-                    fieldName: 'email',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+          </div>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='email'
+                  placeholder='Email'
+                  value={email}
+                  onChange={(e) =>
+                    editUserDispatch({
+                      type: 'field',
+                      fieldName: 'email',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div className='form-group'>
-              <input
-                type='password'
-                placeholder='Password'
-                value={password}
-                className='position-relative mx-auto d-block'
-                onChange={(e) =>
-                  editUserDispatch({
-                    type: 'field',
-                    fieldName: 'password',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+          </div>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='password'
+                  placeholder='Password'
+                  value={password}
+                  onChange={(e) =>
+                    editUserDispatch({
+                      type: 'field',
+                      fieldName: 'password',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div className='form-group'>
-              <input
-                type='password'
-                placeholder='Confirm Password'
-                value={passwordConfirmation}
-                className='position-relative mx-auto d-block'
-                onChange={(e) =>
-                  editUserDispatch({
-                    type: 'field',
-                    fieldName: 'passwordConfirmation',
-                    payload: e.target.value,
-                  })
-                }
-                required
-              />
+          </div>
+          <div className='row'>
+            <div className='col'>
+              <div className='form-group text-center'>
+                <input
+                  type='password'
+                  placeholder='Confirm Password'
+                  value={passwordConfirmation}
+                  onChange={(e) =>
+                    editUserDispatch({
+                      type: 'field',
+                      fieldName: 'passwordConfirmation',
+                      payload: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
-            {formIsLoading ? (
-              <button
-                disabled
-                className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-              >
-                processing
-              </button>
-            ) : (
-              <React.Fragment>
+          </div>
+          {formIsLoading ? (
+            <div className='row'>
+              <div className='col text-center'>
                 <button
-                  type='submit'
-                  placeholder='submit'
-                  disabled={formIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                  disabled
+                  className='btn-success btn-lg mt-3 text-capitalize'
                 >
-                  <strong>update account</strong>
+                  processing
                 </button>
-                <button
-                  placeholder='delete'
-                  disabled={formIsLoading}
-                  className='btn-danger btn-lg mt-3 text-uppercase position-relative mx-auto d-block'
-                  onClick={deleteUser}
-                >
-                  <strong>delete account</strong>
-                </button>
-                <Link to='/'>
+              </div>
+            </div>
+          ) : (
+            <React.Fragment>
+              <div className='row'>
+                <div className='col text-center'>
                   <button
-                    placeholder='home'
+                    type='submit'
+                    placeholder='submit'
                     disabled={formIsLoading}
-                    className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                    className='btn-success btn-lg mt-3 text-capitalize'
                   >
-                    <strong>home</strong>
+                    <strong>update account</strong>
                   </button>
-                </Link>
-              </React.Fragment>
-            )}
-          </form>
-          <br />
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-center'>
+                  <button
+                    placeholder='delete'
+                    disabled={formIsLoading}
+                    className='btn-danger btn-lg mt-3 text-uppercase'
+                    onClick={deleteUser}
+                  >
+                    <strong>delete account</strong>
+                  </button>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-center'>
+                  <Link to='/'>
+                    <button
+                      placeholder='home'
+                      disabled={formIsLoading}
+                      className='btn-primary btn-lg mt-3 text-capitalize'
+                    >
+                      <strong>home</strong>
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
-      </div>
+      </form>
+      <br />
       <div>{errors && handleErrors()}</div>
-    </React.Fragment>
+    </ContainerWrapper>
   )
 }
