@@ -91,18 +91,18 @@ export const NewPlant = () => {
     )
   }
 
-  const plantImages = () => {
-    switch (true) {
-      case uploading:
-        return <Spinner />
-      case images.length > 0:
-        return (
-          <PlantImages images={images} removeImage={removeImage} />
-        )
-      default:
-        return <PlantImagesButtons onChange={onChange} />
-    }
-  }
+  // const plantImages = () => {
+  //   switch (true) {
+  //     case uploading:
+  //       return <Spinner />
+  //     case images.length > 0:
+  //       return (
+  //         <PlantImages images={images} removeImage={removeImage} />
+  //       )
+  //     default:
+  //       return <PlantImagesButtons onChange={onChange} />
+  //   }
+  // }
 
   // const stripHtmlEntities = str => {
   //   return String(str)
@@ -145,15 +145,20 @@ export const NewPlant = () => {
           <div className='row form-group text-center'>
             <div className='col'>
               <DatePicker
-                showTimeSelect
+                placeholderText='Click to select a date'
+                isClearable
+                dateFormat='MM/dd/yyyy h:mm aa'
+                timeInputLabel='Time:'
+                showTimeInput
                 selected={water}
-                onChange={(date) =>
-                  newPlantDispatch({
+                onChange={(date) => {
+                  console.log(date)
+                  return newPlantDispatch({
                     type: 'field',
                     fieldName: 'water',
                     payload: date,
                   })
-                }
+                }}
               />
               <small id='waterHelp' className='form-text text-muted'>
                 Select date that plant was last watered.

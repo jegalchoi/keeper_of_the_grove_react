@@ -268,7 +268,7 @@ export const EditPlant = () => {
                       disabled={formIsLoading}
                       className='btn-success btn-lg mt-3 text-capitalize'
                     >
-                      <strong>edit plant</strong>
+                      <strong>update plant</strong>
                     </button>
                   </div>
                   <div className='row justify-content-center'>

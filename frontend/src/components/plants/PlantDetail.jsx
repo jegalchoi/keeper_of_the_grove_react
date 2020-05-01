@@ -124,6 +124,29 @@ export const PlantDetail = () => {
 
   console.log('plant detail')
 
+  const formatNotes = (plantNotes) => {
+    console.log(plantNotes)
+
+    return plantNotes === '' ? (
+      <div>
+        <p>none</p>
+      </div>
+    ) : (
+      <div>
+        <ul className='p-0'>
+          {plantNotes.split(',').map((note) => (
+            <li
+              key={note}
+              className='list-group-item text-break text-wrap'
+            >
+              {note}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <React.Fragment>
       {errors ? null : (
@@ -131,7 +154,7 @@ export const PlantDetail = () => {
           {/* {title} */}
           <div className='row'>
             <div className='col-10 mx-auto text-center my-5'>
-              <h1 className='text-truncate'>{name}</h1>
+              <h1 className='text-break text-wrap'>{name}</h1>
             </div>
           </div>
           {/* {plant info} */}
@@ -155,16 +178,19 @@ export const PlantDetail = () => {
                   </h4>
                 ))}
               {userId === ownerId && (
-                <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
-                  notes:
-                </p>
+                <React.Fragment>
+                  <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
+                    notes:
+                  </p>
+                  <div>{formatNotes(notes)}</div>
+                  <p className='text-muted mt-3 mb-2 text-capitalize'>
+                    <strong>{hidden ? 'private' : 'public'}</strong>
+                  </p>
+                </React.Fragment>
               )}
-              {userId === ownerId && (
-                <p className='text-muted mt-3 mb-2 text-capitalize'>
-                  <strong>{hidden ? 'private' : 'public'}</strong>
-                </p>
-              )}
-              <p className='text-muted lead'>{notes}</p>
+              {/* {userId === ownerId && (
+                
+              )} */}
               {/* {buttons} */}
               {plantIsLoading ? (
                 <button
