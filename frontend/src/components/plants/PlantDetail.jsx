@@ -127,7 +127,7 @@ export const PlantDetail = () => {
   return (
     <React.Fragment>
       {errors ? null : (
-        <div className='container py-5'>
+        <div className='container py-3'>
           {/* {title} */}
           <div className='row'>
             <div className='col-10 mx-auto text-center my-5'>

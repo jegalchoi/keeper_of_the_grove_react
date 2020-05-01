@@ -127,148 +127,121 @@ export const NewPlant = () => {
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
-          <div className='row'>
+          <div className='row justify-content-center form-group'>
+            <input
+              type='text'
+              placeholder='Name'
+              value={name}
+              onChange={(e) =>
+                newPlantDispatch({
+                  type: 'field',
+                  fieldName: 'name',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
+          </div>
+          <div className='row form-group text-center'>
             <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='text'
-                  placeholder='Name'
-                  value={name}
-                  onChange={(e) =>
-                    newPlantDispatch({
-                      type: 'field',
-                      fieldName: 'name',
-                      payload: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
+              <DatePicker
+                showTimeSelect
+                selected={water}
+                onChange={(date) =>
+                  newPlantDispatch({
+                    type: 'field',
+                    fieldName: 'water',
+                    payload: date,
+                  })
+                }
+              />
+              <small id='waterHelp' className='form-text text-muted'>
+                Select date that plant was last watered.
+              </small>
             </div>
           </div>
-          <div className='row'>
+          <div className='row form-group text-center'>
             <div className='col'>
-              <div className='form-group text-center'>
-                <DatePicker
-                  showTimeSelect
-                  selected={water}
-                  onChange={(date) =>
-                    newPlantDispatch({
-                      type: 'field',
-                      fieldName: 'water',
-                      payload: date,
-                    })
-                  }
-                />
-                <small
-                  id='waterHelp'
-                  className='form-text text-muted'
-                >
-                  Select date that plant was last watered.
-                </small>
-              </div>
+              <input
+                type='text'
+                placeholder='Notes'
+                value={notes}
+                onChange={(e) =>
+                  newPlantDispatch({
+                    type: 'field',
+                    fieldName: 'notes',
+                    payload: e.target.value,
+                  })
+                }
+              />
+              <small id='notesHelp' className='form-text text-muted'>
+                Separate each note with a comma.
+              </small>
             </div>
           </div>
-          <div className='row'>
+          <div className='row form-check text-center'>
             <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='text'
-                  placeholder='Notes'
-                  value={notes}
-                  onChange={(e) =>
-                    newPlantDispatch({
-                      type: 'field',
-                      fieldName: 'notes',
-                      payload: e.target.value,
-                    })
-                  }
-                />
-                <small
-                  id='notesHelp'
-                  className='form-text text-muted'
-                >
-                  Separate each note with a comma.
-                </small>
-              </div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='form-check text-center'>
-                <input
-                  className='form-check-input'
-                  type='checkbox'
-                  checked={hidden}
-                  id='plantHidden'
-                  onChange={(e) =>
-                    newPlantDispatch({
-                      type: 'field',
-                      fieldName: 'hidden',
-                      payload: e.target.checked,
-                    })
-                  }
-                />
-                <label
-                  className='form-check-label text-capitalize'
-                  htmlFor='plantHidden'
-                >
-                  private
-                </label>
-                <small
-                  id='hiddenHelp'
-                  className='form-text text-muted'
-                >
-                  Everyone can view public plants.
-                </small>
-              </div>
+              <input
+                className='form-check-input'
+                type='checkbox'
+                checked={hidden}
+                id='plantHidden'
+                onChange={(e) =>
+                  newPlantDispatch({
+                    type: 'field',
+                    fieldName: 'hidden',
+                    payload: e.target.checked,
+                  })
+                }
+              />
+              <label
+                className='form-check-label text-capitalize'
+                htmlFor='plantHidden'
+              >
+                private
+              </label>
+              <small id='hiddenHelp' className='form-text text-muted'>
+                Everyone can view public plants.
+              </small>
             </div>
           </div>
           <br />
           <div className='row'>
-            <div className='col'>
-              <PlantDropzone
-                newPlantDispatch={formDispatchPlantDropzone}
-              />
-            </div>
+            <PlantDropzone
+              newPlantDispatch={formDispatchPlantDropzone}
+            />
           </div>
           {formIsLoading ? (
-            <div className='row'>
-              <div className='col text-center'>
-                <button
-                  disabled
-                  className='btn-success btn-lg mt-3 text-capitalize'
-                >
-                  processing
-                </button>
-              </div>
+            <div className='row justify-content-center'>
+              <button
+                disabled
+                className='btn-success btn-lg mt-3 text-capitalize'
+              >
+                processing
+              </button>
             </div>
           ) : (
             <React.Fragment>
-              <div className='row'>
-                <div className='col text-center'>
-                  <button
-                    type='submit'
-                    placeholder='submit'
-                    disabled={formIsLoading}
-                    className='btn-success btn-lg mt-3 text-capitalize'
-                  >
-                    <strong>add plant</strong>
-                  </button>
-                </div>
+              <div className='row justify-content-center'>
+                <button
+                  type='submit'
+                  placeholder='submit'
+                  disabled={formIsLoading}
+                  className='btn-success btn-lg mt-3 text-capitalize'
+                >
+                  <strong>add plant</strong>
+                </button>
               </div>
-              <div className='row'>
-                <div className='col text-center'>
-                  <Link to='/'>
-                    <button
-                      placeholder='home'
-                      disabled={formIsLoading}
-                      className='btn-primary btn-lg mt-3 text-capitalize'
-                    >
-                      <strong>home</strong>
-                    </button>
-                  </Link>
-                </div>
+              <div className='row justify-content-center'>
+                <Link to='/'>
+                  <button
+                    placeholder='home'
+                    disabled={formIsLoading}
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                  >
+                    <strong>home</strong>
+                  </button>
+                </Link>
               </div>
             </React.Fragment>
           )}
