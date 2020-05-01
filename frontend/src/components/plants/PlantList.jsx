@@ -12,20 +12,18 @@ export const PlantList = () => {
   console.log('plantlist')
 
   return (
-    <React.Fragment>
-      <div className='py-5'>
-        <div className='container'>
-          <Title
-            name='grove guardian'
-            description='keeping your plants properly watered'
-          />
-          <div className='row'>
-            {plants.map((plant) => (
-              <PlantCard key={plant.id} plant={plant} />
-            ))}
-          </div>
+    <div className='py-3'>
+      <div className='container'>
+        <Title
+          name='grove guardian'
+          description='keeping your plants properly watered'
+        />
+        <div className='row'>
+          {plants.map((plant) => (
+            <PlantCard key={plant.id} plant={plant} />
+          ))}
         </div>
       </div>
-    </React.Fragment>
+    </div>
   )
 }

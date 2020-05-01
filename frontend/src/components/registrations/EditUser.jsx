@@ -110,131 +110,107 @@ export const EditUser = () => {
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
-          <div className='row'>
-            <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='text'
-                  placeholder='Username'
-                  value={username}
-                  onChange={(e) =>
-                    editUserDispatch({
-                      type: 'field',
-                      fieldName: 'username',
-                      payload: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
-            </div>
+          <div className='row justify-content-center form-group'>
+            <input
+              type='text'
+              placeholder='Username'
+              value={username}
+              onChange={(e) =>
+                editUserDispatch({
+                  type: 'field',
+                  fieldName: 'username',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
           </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='email'
-                  placeholder='Email'
-                  value={email}
-                  onChange={(e) =>
-                    editUserDispatch({
-                      type: 'field',
-                      fieldName: 'email',
-                      payload: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
-            </div>
+          <div className='row justify-content-center form-group'>
+            <input
+              type='email'
+              placeholder='Email'
+              value={email}
+              onChange={(e) =>
+                editUserDispatch({
+                  type: 'field',
+                  fieldName: 'email',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
           </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='password'
-                  placeholder='Password'
-                  value={password}
-                  onChange={(e) =>
-                    editUserDispatch({
-                      type: 'field',
-                      fieldName: 'password',
-                      payload: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
-            </div>
+          <div className='row justify-content-center form-group'>
+            <input
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={(e) =>
+                editUserDispatch({
+                  type: 'field',
+                  fieldName: 'password',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
           </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='form-group text-center'>
-                <input
-                  type='password'
-                  placeholder='Confirm Password'
-                  value={passwordConfirmation}
-                  onChange={(e) =>
-                    editUserDispatch({
-                      type: 'field',
-                      fieldName: 'passwordConfirmation',
-                      payload: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
-            </div>
+          <div className='row justify-content-center form-group'>
+            <input
+              type='password'
+              placeholder='Confirm Password'
+              value={passwordConfirmation}
+              onChange={(e) =>
+                editUserDispatch({
+                  type: 'field',
+                  fieldName: 'passwordConfirmation',
+                  payload: e.target.value,
+                })
+              }
+              required
+            />
           </div>
           {formIsLoading ? (
-            <div className='row'>
-              <div className='col text-center'>
-                <button
-                  disabled
-                  className='btn-success btn-lg mt-3 text-capitalize'
-                >
-                  processing
-                </button>
-              </div>
+            <div className='row justify-content-center'>
+              <button
+                disabled
+                className='btn-success btn-lg mt-3 text-capitalize'
+              >
+                processing
+              </button>
             </div>
           ) : (
             <React.Fragment>
-              <div className='row'>
-                <div className='col text-center'>
-                  <button
-                    type='submit'
-                    placeholder='submit'
-                    disabled={formIsLoading}
-                    className='btn-success btn-lg mt-3 text-capitalize'
-                  >
-                    <strong>update account</strong>
-                  </button>
-                </div>
+              <div className='row justify-content-center'>
+                <button
+                  type='submit'
+                  placeholder='submit'
+                  disabled={formIsLoading}
+                  className='btn-success btn-lg mt-3 text-capitalize'
+                >
+                  <strong>update account</strong>
+                </button>
               </div>
-              <div className='row'>
-                <div className='col text-center'>
-                  <button
-                    placeholder='delete'
-                    disabled={formIsLoading}
-                    className='btn-danger btn-lg mt-3 text-uppercase'
-                    onClick={deleteUser}
-                  >
-                    <strong>delete account</strong>
-                  </button>
-                </div>
+              <div className='row justify-content-center'>
+                <button
+                  placeholder='delete'
+                  disabled={formIsLoading}
+                  className='btn-danger btn-lg mt-3 text-uppercase'
+                  onClick={deleteUser}
+                >
+                  <strong>delete account</strong>
+                </button>
               </div>
-              <div className='row'>
-                <div className='col text-center'>
-                  <Link to='/'>
-                    <button
-                      placeholder='home'
-                      disabled={formIsLoading}
-                      className='btn-primary btn-lg mt-3 text-capitalize'
-                    >
-                      <strong>home</strong>
-                    </button>
-                  </Link>
-                </div>
+              <div className='row justify-content-center'>
+                <Link to='/'>
+                  <button
+                    placeholder='home'
+                    disabled={formIsLoading}
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                  >
+                    <strong>home</strong>
+                  </button>
+                </Link>
               </div>
             </React.Fragment>
           )}
