@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext, useReducer, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
@@ -9,10 +9,7 @@ import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const EditPlant = () => {
-  const [
-    { formIsLoading, userId, plantDetail },
-    dispatch,
-  ] = useContext(PlantContext)
+  const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
 
   const [
     {
@@ -22,44 +19,51 @@ export const EditPlant = () => {
       notes,
       water,
       hidden,
-      image,
+      imageUrl,
+      imageId,
+      imagePublicId,
+      newImageId,
       ownerId,
       errors,
+      uploading,
     },
-    editPlantDispatch,
+    plantDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: true,
+    plantIsLoading: false,
     id: plantDetail.id,
     name: plantDetail.name,
     notes: plantDetail.notes,
     water: plantDetail.water,
     hidden: plantDetail.hidden,
-    image: plantDetail.image,
+    imageUrl: plantDetail.image,
+    imageId: plantDetail.imageId,
+    imagePublicId: '',
+    newImageId: '',
     ownerId: plantDetail.ownerId,
     errors: null,
   })
 
-  // useEffect(() => {
-  //   console.log('fetching plant info')
+  useEffect(() => {
+    console.log('fetching image info')
 
-  //   const urlPlantDetail = `http://localhost:3001/api/v1/plants/${id}`
+    const urlImageDetail = `http://localhost:3001/api/v1/images/${imageId}`
 
-  //   axios
-  //     .get(urlPlantDetail, { withCredentials: true })
-  //     .then((response) => {
-  //       console.log(response.data)
-  //       editPlantDispatch({
-  //         type:
-  //           response.data.status !== 400
-  //             ? 'PLANT_DETAIL_FETCH_SUCCESS'
-  //             : 'PLANT_DETAIL_FETCH_FAILURE',
-  //         payload: response.data,
-  //       })
-  //     })
-  //     .catch((errors) =>
-  //       console.log('check plant detail api errors:', errors)
-  //     )
-  // }, [])
+    axios
+      .get(urlImageDetail, { withCredentials: true })
+      .then((response) => {
+        console.log(response.data)
+        plantDispatch({
+          type:
+            response.data.status !== 400
+              ? 'IMAGE_DETAIL_FETCH_SUCCESS'
+              : 'IMAGE_DETAIL_FETCH_FAILURE',
+          payload: response.data,
+        })
+      })
+      .catch((errors) =>
+        console.log('check plant detail api errors:', errors)
+      )
+  }, [])
 
   const formatDate = (d) => {
     const date = new Date(Date.parse(d))
@@ -73,10 +77,28 @@ export const EditPlant = () => {
     return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
 
+  const deleteImage = () => {
+    const url = `http://localhost:3001/api/v1/images/${imageId}`
+
+    console.log(
+      'image deletion submitted from edit plant after submitting new image'
+    )
+    axios
+      .delete(url, { withCredentials: true })
+      .then((response) => {
+        if (response.data.status === 'destroyed') {
+          console.log('old image deleted')
+        }
+      })
+      .catch((error) =>
+        console.log('delete image api errors:', error)
+      )
+  }
+
   const handleSubmit = (e) => {
     console.log('editing plant')
 
-    dispatch({ type: 'FORM_START_LOADING' })
+    plantDispatch({ type: 'PLANT_START_LOADING' })
 
     let plant = {
       name,
@@ -98,8 +120,7 @@ export const EditPlant = () => {
           })
           history.push(`/details/${id}`)
         } else {
-          dispatch({ type: 'FORM_DONE_LOADING' })
-          editPlantDispatch({
+          plantDispatch({
             type: 'PLANT_UPDATE_FAILURE',
             payload: response.data,
           })
@@ -119,7 +140,7 @@ export const EditPlant = () => {
 
     if (confirmation) {
       console.log('plant deletion submitted from edit plant')
-      editPlantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
+      plantDispatch({ type: 'PLANT_START_LOADING' })
       axios
         .delete(url, { withCredentials: true })
         .then((response) => {
@@ -133,6 +154,8 @@ export const EditPlant = () => {
         .catch((error) =>
           console.log('delete plant api errors:', error)
         )
+    } else {
+      return false
     }
   }
 
@@ -170,7 +193,7 @@ export const EditPlant = () => {
               placeholder='Name'
               value={name}
               onChange={(e) =>
-                editPlantDispatch({
+                plantDispatch({
                   type: 'field',
                   fieldName: 'name',
                   payload: e.target.value,
@@ -179,24 +202,28 @@ export const EditPlant = () => {
               required
             />
           </div>
+          <br />
           <div className='row form-group text-center'>
             <div className='col'>
               <DatePicker
+                inline
                 showTimeSelect
                 selected={water}
-                onChange={(date) =>
-                  editPlantDispatch({
+                onChange={(date) => {
+                  console.log(date)
+                  return plantDispatch({
                     type: 'field',
                     fieldName: 'water',
                     payload: date,
                   })
-                }
+                }}
               />
               <small id='waterHelp' className='form-text text-muted'>
-                Select date that plant was last watered.
+                Select date and time that plant was last watered.
               </small>
             </div>
           </div>
+          <br />
           <div className='row form-group text-center'>
             <div className='col'>
               <input
@@ -204,7 +231,7 @@ export const EditPlant = () => {
                 placeholder='Notes'
                 value={notes}
                 onChange={(e) =>
-                  editPlantDispatch({
+                  plantDispatch({
                     type: 'field',
                     fieldName: 'notes',
                     payload: e.target.value,
@@ -224,7 +251,7 @@ export const EditPlant = () => {
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
-                  editPlantDispatch({
+                  plantDispatch({
                     type: 'field',
                     fieldName: 'hidden',
                     payload: e.target.checked,
@@ -244,51 +271,51 @@ export const EditPlant = () => {
           </div>
           <br />
           <div className='row'>
-            <PlantDropzone
-            // editPlantDispatch={formDispatchPlantDropzone}
-            />
+            {/* <PlantDropzone
+              userId={userId}
+              imageId={imageId}
+              imagePublicId={imagePublicId}
+              plantDispatch={plantDispatchPlantDropzone}
+              clearImages={plantDispatchClearImages}
+            /> */}
+            <h1>{imageId}</h1>
+            <h1>{imagePublicId}</h1>
           </div>
-          {formIsLoading ? (
-            <div className='row justify-content-center'>
-              <button
-                disabled
-                className='btn-success btn-lg mt-3 text-capitalize'
-              >
-                processing
-              </button>
-            </div>
-          ) : (
-            <React.Fragment>
-              {userId === ownerId && (
-                <React.Fragment>
-                  <div className='row justify-content-center'>
-                    <button
-                      type='submit'
-                      placeholder='submit'
-                      disabled={formIsLoading}
-                      className='btn-success btn-lg mt-3 text-capitalize'
-                    >
-                      <strong>update plant</strong>
-                    </button>
-                  </div>
-                  <div className='row justify-content-center'>
-                    <button
-                      placeholder='delete'
-                      disabled={formIsLoading}
-                      className='btn-danger btn-lg mt-3 text-uppercase'
-                      onClick={deletePlant}
-                    >
-                      <strong>delete plant</strong>
-                    </button>
-                  </div>
-                </React.Fragment>
+          {plantIsLoading
+            ? null
+            : userId === ownerId && (
+                <div className='row justify-content-center'>
+                  <button
+                    type='submit'
+                    placeholder='submit'
+                    className='btn-success btn-lg mt-3 text-capitalize'
+                  >
+                    <strong>update plant</strong>
+                  </button>
+                </div>
               )}
+        </div>
+      </form>
+      {plantIsLoading
+        ? null
+        : userId === ownerId && (
+            <React.Fragment>
+              <div className='row justify-content-center'>
+                <button
+                  placeholder='delete'
+                  className='btn-danger btn-lg mt-3 text-uppercase'
+                  onClick={() => {
+                    return deletePlant()
+                  }}
+                >
+                  <strong>delete plant</strong>
+                </button>
+              </div>
               <div className='row'>
                 <div className='col text-center'>
                   <Link to='/'>
                     <button
                       placeholder='home'
-                      disabled={formIsLoading}
                       className='btn-primary btn-lg mt-3 text-capitalize'
                     >
                       <strong>home</strong>
@@ -298,8 +325,16 @@ export const EditPlant = () => {
               </div>
             </React.Fragment>
           )}
+      {!plantIsLoading ? null : (
+        <div className='row justify-content-center'>
+          <button
+            disabled
+            className='btn-success btn-lg mt-3 text-capitalize'
+          >
+            processing
+          </button>
         </div>
-      </form>
+      )}
       <br />
       <div>{errors && handleErrors()}</div>
     </ContainerWrapper>

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     else
       render json: {
         status: 401,
-        errors: ['Could not locate user', 'Verify credentials and try again or signup']
+        errors: ['Could not locate user', 'Verify credentials and try again or sign up']
       }
     end
   end

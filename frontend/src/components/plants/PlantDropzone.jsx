@@ -1,20 +1,7 @@
 import React, { useState, useCallback } from 'react'
+import axios from 'axios'
 import { useDropzone } from 'react-dropzone'
-import request from 'superagent'
 import styled from 'styled-components'
-
-const getColor = (props) => {
-  if (props.isDragAccept) {
-    return '#00e676'
-  }
-  if (props.isDragReject) {
-    return '#ff1744'
-  }
-  if (props.isDragActive) {
-    return '#2196f3'
-  }
-  return '#eeeeee'
-}
 
 const DropzoneWrapper = styled.div`
   flex: 1;
@@ -33,52 +20,104 @@ const DropzoneWrapper = styled.div`
   cursor: pointer;
 `
 
+const getColor = (props) => {
+  if (props.isDragActive) {
+    return '#2196f3'
+  }
+  if (props.isDragAccept) {
+    return '#00e676'
+  }
+  if (props.isDragReject) {
+    return '#ff1744'
+  }
+  return '#eeeeee'
+}
+
 export const PlantDropzone = (props) => {
-  const [uploadedFile, setUploadedFile] = useState(null)
-  const [
-    uploadedFileCloudinaryURL,
-    setUploadedFileCloudinaryURL,
-  ] = useState('')
+  const [uploadedFiles, setUploadedFiles] = useState([])
+  const [uploading, setUploading] = useState(false)
 
-  const CLOUDINARY_UPLOAD_PRESET = 'ksuclyat'
-  const CLOUDINARY_UPLOAD_URL =
-    'https://api.cloudinary.com/v1_1/diekjezbk/image/upload'
-
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles)
-    if (acceptedFiles.length > 0) {
-      setUploadedFile(acceptedFiles[0])
-      handleImageUpload(acceptedFiles[0])
-    }
-  }, [])
-
-  const handleImageUpload = (file) => {
-    let upload = request
-      .post(CLOUDINARY_UPLOAD_URL)
-      .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-      .field('file', file)
-
-    upload.end((error, response) => {
-      console.log(response)
-      if (error) {
-        console.log(error)
-      }
-
-      if (response.body.secure_url !== '') {
-        setUploadedFileCloudinaryURL(
-          props.formDispatch(response.body.secure_url)
-        )
-      }
-    })
+  const removeFile = (file) => {
+    const newFiles = [...uploadedFiles]
+    newFiles.splice(newFiles.indexOf(file), 1)
+    setUploadedFiles(newFiles)
   }
 
-  const photoItems = (accepted) => {
-    const photos = accepted ? acceptedFiles : rejectedFiles
+  const handleRemoveUploadedPhotos = () => {
+    setUploadedFiles([])
+    deleteImage()
+  }
+
+  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    if (rejectedFiles.length > 0) {
+      return null
+    }
+
+    console.log('uploading image')
+
+    setUploading(true)
+
+    let image = new FormData()
+    image.append('file', acceptedFiles[0])
+    image.append('user_id', props.userId)
+
+    const url = 'http://localhost:3001/api/v1/images'
+
+    axios
+      .post(url, image, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.status === 'created') {
+          props.newPlantDispatch('imageUrl', response.data.image.url)
+          props.newPlantDispatch(
+            'imagePublicId',
+            response.data.image.public_id
+          )
+          props.newPlantDispatch('imageId', response.data.image.id)
+          setUploadedFiles([...uploadedFiles, ...acceptedFiles])
+          setUploading(false)
+        } else {
+          props.newPlantDispatch({
+            type: 'IMAGE_UPLOAD_FAILURE',
+            payload: response.data,
+          })
+          setUploading(false)
+        }
+      })
+      .catch((error) =>
+        console.log('upload image api errors:', error)
+      )
+  }, [])
+
+  const deleteImage = () => {
+    console.log('removing uploaded photo from new plant')
+
+    const url = `http://localhost:3001/api/v1/images/${props.imageId}`
+
+    axios
+      .delete(url, { withCredentials: true })
+      .then((response) => {
+        if (response.data.status === 'destroyed') {
+          props.newPlantDispatchClearImages()
+        } else {
+          props.newPlantDispatch({
+            type: 'IMAGE_UPLOAD_FAILURE',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('delete image api errors:', error)
+      )
+  }
+
+  const fileList = (accepted) => {
+    const photos = accepted ? uploadedFiles : rejectedFiles
 
     return (
       <div className='text-center'>
         <h4 className={accepted ? 'text-success' : 'text-danger'}>
-          {accepted ? 'Accepted files:' : 'Rejected files:'}
+          {accepted ? 'Uploaded files:' : 'Rejected files:'}
         </h4>
         <ul className='list-group p-0'>
           {photos.map((file) => (
@@ -90,7 +129,9 @@ export const PlantDropzone = (props) => {
                   : 'list-group-item list-group-item-danger'
               }
             >
-              {file.path} - {file.size} bytes
+              <span>
+                {file.path} - {file.size} bytes
+              </span>
             </li>
           ))}
         </ul>
@@ -124,22 +165,37 @@ export const PlantDropzone = (props) => {
         })}
       >
         <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the files here...</p>
-        ) : (
-          <p>
-            Drag 'n' drop some photos here, or click to select photos
-          </p>
-        )}
-        <em>(Only *.jpeg and *.png images will be accepted)</em>
-        <br />
+        {!uploading ? (
+          isDragActive ? (
+            <p>Drop the photo here...</p>
+          ) : uploadedFiles.length > 0 ? null : (
+            <React.Fragment>
+              <p>
+                Drag 'n' drop a lovely photo of your plant here, or
+                click to select photo
+              </p>
+              <em>
+                (Only *.jpeg and *.png files less than 3MB will be
+                accepted)
+              </em>
+            </React.Fragment>
+          )
+        ) : uploadedFiles.length === 0 ? (
+          <h2 className='text-capitalize'>uploading image...</h2>
+        ) : null}
         <aside>
-          {uploadedFileCloudinaryURL !== '' &&
-            uploadedFileCloudinaryURL}
-          <div>{acceptedFiles.length > 0 && photoItems(true)}</div>
-          <div>{rejectedFiles.length > 0 && photoItems(false)}</div>
+          <div>{uploadedFiles.length > 0 && fileList(true)}</div>
+          <div>{rejectedFiles.length > 0 && fileList(false)}</div>
         </aside>
       </DropzoneWrapper>
+      {uploadedFiles.length > 0 && (
+        <input
+          type='button'
+          className='btn btn-danger mt-3 text-capitalize'
+          onClick={() => handleRemoveUploadedPhotos()}
+          value='remove uploaded photo'
+        />
+      )}
     </div>
   )
 }

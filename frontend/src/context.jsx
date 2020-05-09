@@ -61,6 +61,7 @@ const reducer = (state, action) => {
         plantsUser: [],
         displayUserPlants: false,
         plantDetail: {},
+        errors: null,
       }
     case 'PLANTS_PUBLIC_FETCH_SUCCESS':
       return {
@@ -95,7 +96,6 @@ const reducer = (state, action) => {
         ...state,
         formIsLoading: false,
         plantsNeedRefresh: true,
-        plantDetail: {},
       }
     case 'SET_PLANTDETAIL':
       return {

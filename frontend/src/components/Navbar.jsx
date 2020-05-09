@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../context'
@@ -41,21 +41,23 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className='navbar bg-success navbar-expand-sm px-sm-5'>
-      <Link to='/' onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}>
-        <div className='px-3'>
-          <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
-        </div>
+    <nav className='navbar navbar-expand-sm px-sm-5 sticky-top bg-success'>
+      <Link
+        to='/'
+        className='navbar-brand'
+        onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
+      >
+        <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
       </Link>
       {siteIsLoading || formIsLoading ? null : (
-        <React.Fragment>
-          <ul className='navbar-nav align-items-center'>
-            {permissions === 'LOGGED_IN' && (
+        <ul className='navbar-nav align-items-center'>
+          {permissions === 'LOGGED_IN' && (
+            <React.Fragment>
               <li className='nav-item ml-auto'>
                 <Link to='/' className='nav-link'>
                   <button
                     style={{ width: '200px' }}
-                    className='text-capitalize'
+                    className='btn btn-outline-primary text-capitalize'
                     onClick={() =>
                       dispatch({
                         type: 'PLANT_DISPLAY_TOGGLE',
@@ -69,19 +71,14 @@ export const Navbar = () => {
                   </button>
                 </Link>
               </li>
-            )}
-            {permissions === 'LOGGED_IN' && (
               <li className='nav-item ml-auto'>
-                <Link
-                  to={'/new'}
-                  className='nav-link text-capitalize'
-                >
+                <Link to='/new' className='nav-link text-capitalize'>
                   <strong>create new plant</strong>
                 </Link>
               </li>
-            )}
-          </ul>
-        </React.Fragment>
+            </React.Fragment>
+          )}
+        </ul>
       )}
       <div className='ml-auto text-right'>
         <div>
@@ -110,16 +107,14 @@ export const Navbar = () => {
               log in
             </Link>
           )}
-          <br />
-          {siteIsLoading || formIsLoading
-            ? null
-            : permissions === 'NOT_LOGGED_IN' && (
-                <Link to='/signup' className='text-capitalize'>
-                  create account
-                </Link>
-              )}
-          <br />
         </div>
+        {siteIsLoading || formIsLoading
+          ? null
+          : permissions === 'NOT_LOGGED_IN' && (
+              <Link to='/signup' className='text-capitalize'>
+                sign up
+              </Link>
+            )}
       </div>
     </nav>
   )

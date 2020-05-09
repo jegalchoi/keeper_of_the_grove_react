@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { PlantContext } from '../../context'
 import { plantsReducer } from './usePlants'
-// import { ButtonContainer } from './Button'
 import TimeAgo from 'react-timeago'
 
 export const PlantDetail = () => {
@@ -20,18 +19,22 @@ export const PlantDetail = () => {
       water,
       hidden,
       image,
+      imageId,
+      imagePublicId,
       ownerId,
       errors,
     },
     plantDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: true,
+    plantIsLoading: false,
     id: plantId,
     name: '',
     notes: '',
     water: '',
     hidden: '',
     image: '',
+    imageId: '',
+    imagePublicId: '',
     ownerId: '',
     errors: null,
   })
@@ -43,6 +46,8 @@ export const PlantDetail = () => {
     water,
     hidden,
     image,
+    imageId,
+    imagePublicId,
     ownerId,
   }
 
@@ -75,8 +80,8 @@ export const PlantDetail = () => {
     )
 
     if (confirmation) {
-      console.log('plant deletion submitted from plant detail')
-      plantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
+      console.log('deleting plant from plant detail')
+      plantDispatch({ type: 'PLANT_START_LOADING' })
       axios
         .delete(url, { withCredentials: true })
         .then((response) => {
@@ -122,10 +127,8 @@ export const PlantDetail = () => {
   //   return `${YYYY}-${MM}-${DD}`
   // }
 
-  console.log('plant detail')
-
   const formatNotes = (plantNotes) => {
-    console.log(plantNotes)
+    // console.log(plantNotes)
 
     return plantNotes === '' ? (
       <div>
@@ -147,10 +150,12 @@ export const PlantDetail = () => {
     )
   }
 
+  console.log('plant detail')
+
   return (
     <React.Fragment>
       {errors ? null : (
-        <div className='container py-3'>
+        <div className='container'>
           {/* {title} */}
           <div className='row'>
             <div className='col-10 mx-auto text-center my-5'>
@@ -165,38 +170,30 @@ export const PlantDetail = () => {
             <div className='col-10 mx-auto col-md-6 my-3 text-center'>
               {userId === ownerId &&
                 (water !== null ? (
-                  <div>
-                    <h4 className='mb-2'>
-                      <strong>
-                        watered <TimeAgo date={water} />
-                      </strong>
-                    </h4>
-                  </div>
+                  <h4>
+                    <strong>
+                      watered <TimeAgo date={water} />
+                    </strong>
+                  </h4>
                 ) : (
-                  <h4 className='mb-2'>
+                  <h4>
                     <strong>never been watered</strong>
                   </h4>
                 ))}
               {userId === ownerId && (
                 <React.Fragment>
+                  <p className='text-muted m-3 text-capitalize'>
+                    <strong>{hidden ? 'private' : 'public'}</strong>
+                  </p>
                   <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
                     notes:
                   </p>
                   <div>{formatNotes(notes)}</div>
-                  <p className='text-muted mt-3 mb-2 text-capitalize'>
-                    <strong>{hidden ? 'private' : 'public'}</strong>
-                  </p>
                 </React.Fragment>
               )}
-              {/* {userId === ownerId && (
-                
-              )} */}
               {/* {buttons} */}
               {plantIsLoading ? (
-                <button
-                  disabled={plantIsLoading}
-                  className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-                >
+                <button className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'>
                   processing
                 </button>
               ) : (
@@ -206,7 +203,6 @@ export const PlantDetail = () => {
                       <Link to='/edit'>
                         <button
                           placeholder='edit'
-                          disabled={plantIsLoading}
                           className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                           onClick={() =>
                             dispatch({
@@ -220,7 +216,6 @@ export const PlantDetail = () => {
                       </Link>
                       <button
                         placeholder='delete'
-                        disabled={plantIsLoading}
                         className='btn-danger btn-lg mt-3 text-uppercase position-relative mx-auto d-block'
                         onClick={deletePlant}
                       >
@@ -231,7 +226,6 @@ export const PlantDetail = () => {
                   <Link to='/'>
                     <button
                       placeholder='home'
-                      disabled={plantIsLoading}
                       className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                     >
                       <strong>home</strong>

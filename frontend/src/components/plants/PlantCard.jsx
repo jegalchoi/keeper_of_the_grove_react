@@ -36,8 +36,8 @@ export const PlantCard = ({ plant }) => {
           dispatch({
             type: 'PLANT_NEED_REFRESH',
           })
-          plantDispatch({ type: 'PLANT_DETAIL_DONE_LOADING' })
           history.push('/')
+          plantDispatch({ type: 'PLANT_DETAIL_DONE_LOADING' })
         }
       })
       .catch((error) => console.log('water plant api errors:', error))

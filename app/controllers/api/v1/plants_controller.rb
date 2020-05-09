@@ -120,6 +120,7 @@ class Api::V1::PlantsController < ApplicationController
       :water, 
       :hidden, 
       :image, 
+      :image_id, 
       :user_id
     )
   end

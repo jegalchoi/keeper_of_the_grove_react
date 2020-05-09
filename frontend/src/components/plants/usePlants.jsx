@@ -12,10 +12,13 @@ export const plantsReducer = (state, action) => {
         water: '',
         hidden: true,
         image: '',
+        plantIsLoading: false,
         errors: action.payload.errors,
       }
     case 'PLANT_UPDATE_FAILURE':
       return {
+        ...state,
+        plantIsLoading: false,
         errors: action.payload.errors,
       }
     case 'PLANT_DETAIL_FETCH_SUCCESS':
@@ -29,6 +32,7 @@ export const plantsReducer = (state, action) => {
         hidden: plant.hidden,
         ownerId: plant.user_id,
         image: plant.image,
+        imageId: plant.image_id,
       }
     case 'PLANT_DETAIL_FETCH_FAILURE':
       return {
@@ -36,25 +40,44 @@ export const plantsReducer = (state, action) => {
         plantIsLoading: false,
         errors: action.payload.errors,
       }
-    case 'PLANT_DETAIL_START_LOADING':
+    case 'IMAGE_DETAIL_FETCH_SUCCESS':
+      return {
+        ...state,
+        imagePublicId: action.payload.image.public_id,
+      }
+    case 'IMAGE_DETAIL_FETCH_FAILURE':
+      return {
+        ...state,
+        plantIsLoading: false,
+        errors: action.payload.errors,
+      }
+    case 'PLANT_START_LOADING':
       return {
         ...state,
         plantIsLoading: true,
       }
-    case 'PLANT_DETAIL_DONE_LOADING':
+    case 'PLANT_DONE_LOADING':
       return {
         ...state,
         plantIsLoading: false,
       }
-    case 'PLANT_SET_IMAGES':
+    case 'PLANT_SET_IMAGE_STATE':
       return {
         ...state,
-        images: action.payload,
+        [action.stateName]: action.payload,
       }
-    case 'PLANT_UPLOADING_IMAGES':
+    case 'PLANT_CLEAR_IMAGES':
       return {
         ...state,
-        uploading: true,
+        imageUrl: '',
+        imageId: '',
+        imagePublicId: '',
+        images: [],
+      }
+    case 'IMAGE_UPLOAD_FAILURE':
+      return {
+        ...state,
+        errors: action.payload.errors,
       }
     case 'CLEAR_ERRORS':
       return {

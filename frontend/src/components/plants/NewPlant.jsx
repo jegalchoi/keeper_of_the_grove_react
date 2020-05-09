@@ -7,28 +7,41 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 // import PlantImages from './PlantImages'
 // import PlantImagesButtons from './PlantImagesButtons'
 // import Spinner from '../Spinner'
 
 export const NewPlant = () => {
-  const [{ userId, formIsLoading }, dispatch] = useContext(
-    PlantContext
-  )
+  const [{ userId }, dispatch] = useContext(PlantContext)
 
   const [
-    { name, notes, water, hidden, image, errors, images, uploading },
+    {
+      plantIsLoading,
+      name,
+      notes,
+      water,
+      hidden,
+      imageUrl,
+      imageId,
+      imagePublicId,
+      errors,
+      uploading,
+    },
     newPlantDispatch,
   ] = useReducer(plantsReducer, {
+    plantIsLoading: false,
     name: '',
     notes: '',
     water: '',
     hidden: true,
-    image: '',
+    imageUrl: '',
+    imageId: '',
+    imagePublicId: '',
     errors: null,
     uploading: false,
-    images: [],
   })
 
   //
@@ -36,7 +49,7 @@ export const NewPlant = () => {
   const handleSubmit = (e) => {
     console.log('creating plant')
 
-    dispatch({ type: 'FORM_START_LOADING' })
+    newPlantDispatch({ type: 'PLANT_START_LOADING' })
 
     let plant = {
       name,
@@ -44,12 +57,13 @@ export const NewPlant = () => {
       water: water === '' ? null : water,
       hidden,
       image:
-        image === '' ? 'https://placeimg.com/320/240/nature' : image,
+        imageUrl === ''
+          ? 'https://placeimg.com/320/240/nature'
+          : imageUrl,
+      image_id: imageId,
       user_id: userId,
     }
     const url = 'http://localhost:3001/api/v1/plants'
-
-    if (name.length === 0 || userId === 0) return
 
     axios
       .post(url, { plant }, { withCredentials: true })
@@ -61,7 +75,6 @@ export const NewPlant = () => {
           })
           history.push(`/details/${response.data.plant.id}`)
         } else {
-          dispatch({ type: 'FORM_DONE_LOADING' })
           newPlantDispatch({
             type: 'PLANT_CREATE_FAILURE',
             payload: response.data,
@@ -91,30 +104,23 @@ export const NewPlant = () => {
     )
   }
 
-  // const plantImages = () => {
-  //   switch (true) {
-  //     case uploading:
-  //       return <Spinner />
-  //     case images.length > 0:
-  //       return (
-  //         <PlantImages images={images} removeImage={removeImage} />
-  //       )
-  //     default:
-  //       return <PlantImagesButtons onChange={onChange} />
-  //   }
-  // }
-
   // const stripHtmlEntities = str => {
   //   return String(str)
   //     .replace(/</g, '&lt;')
   //     .replace(/>/g, '&gt;')
   // }
 
-  const formDispatchPlantDropzone = (url) => {
+  const newPlantDispatchPlantDropzone = (state, value) => {
     newPlantDispatch({
-      type: 'field',
-      fieldName: 'image',
-      payload: url,
+      type: 'PLANT_SET_IMAGE_STATE',
+      stateName: state,
+      payload: value,
+    })
+  }
+
+  const newPlantDispatchClearImages = () => {
+    newPlantDispatch({
+      type: 'PLANT_CLEAR_IMAGES',
     })
   }
 
@@ -142,17 +148,15 @@ export const NewPlant = () => {
               required
             />
           </div>
+          <br />
           <div className='row form-group text-center'>
             <div className='col'>
               <DatePicker
-                placeholderText='Click to select a date'
-                isClearable
-                dateFormat='MM/dd/yyyy h:mm aa'
-                timeInputLabel='Time:'
-                showTimeInput
+                inline
+                showTimeSelect
                 selected={water}
                 onChange={(date) => {
-                  console.log(date)
+                  // console.log(date)
                   return newPlantDispatch({
                     type: 'field',
                     fieldName: 'water',
@@ -161,14 +165,14 @@ export const NewPlant = () => {
                 }}
               />
               <small id='waterHelp' className='form-text text-muted'>
-                Select date that plant was last watered.
+                Select date and time that plant was last watered.
               </small>
             </div>
           </div>
+          <br />
           <div className='row form-group text-center'>
             <div className='col'>
-              <input
-                type='text'
+              <textarea
                 placeholder='Notes'
                 value={notes}
                 onChange={(e) =>
@@ -213,10 +217,27 @@ export const NewPlant = () => {
           <br />
           <div className='row'>
             <PlantDropzone
-              newPlantDispatch={formDispatchPlantDropzone}
+              userId={userId}
+              imageId={imageId}
+              imagePublicId={imagePublicId}
+              newPlantDispatch={newPlantDispatchPlantDropzone}
+              newPlantDispatchClearImages={
+                newPlantDispatchClearImages
+              }
             />
+            {/* <button
+              className='btn btn-outline-danger mr-2'
+              onClick={() => deleteImage()}
+            >
+              <FontAwesomeIcon
+                icon={faTrashAlt}
+                size='1x'
+                color='black'
+                id='trash'
+              />
+            </button> */}
           </div>
-          {formIsLoading ? (
+          {plantIsLoading ? (
             <div className='row justify-content-center'>
               <button
                 disabled
@@ -231,7 +252,7 @@ export const NewPlant = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={formIsLoading}
+                  disabled={plantIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>add plant</strong>
@@ -241,7 +262,7 @@ export const NewPlant = () => {
                 <Link to='/'>
                   <button
                     placeholder='home'
-                    disabled={formIsLoading}
+                    disabled={plantIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
                   >
                     <strong>home</strong>
