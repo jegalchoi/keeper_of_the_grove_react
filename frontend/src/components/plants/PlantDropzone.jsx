@@ -36,6 +36,7 @@ const getColor = (props) => {
 export const PlantDropzone = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [uploading, setUploading] = useState(false)
+  const [uploadedImageId, setUploadedImageId] = useState('')
 
   const removeFile = (file) => {
     const newFiles = [...uploadedFiles]
@@ -61,23 +62,30 @@ export const PlantDropzone = (props) => {
     image.append('file', acceptedFiles[0])
     image.append('user_id', props.userId)
 
-    const url = 'http://localhost:3001/api/v1/images'
+    const urlImageCreate = 'http://localhost:3001/api/v1/images'
 
     axios
-      .post(url, image, { withCredentials: true })
+      .post(urlImageCreate, image, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
         if (response.data.status === 'created') {
-          props.newPlantDispatch('imageUrl', response.data.image.url)
-          props.newPlantDispatch(
+          props.plantDispatchSetImageState(
+            'imageUrl',
+            response.data.image.url
+          )
+          props.plantDispatchSetImageState(
             'imagePublicId',
             response.data.image.public_id
           )
-          props.newPlantDispatch('imageId', response.data.image.id)
+          props.plantDispatchSetImageState(
+            'imageId',
+            response.data.image.id
+          )
+          setUploadedImageId(response.data.image.id)
           setUploadedFiles([...uploadedFiles, ...acceptedFiles])
           setUploading(false)
         } else {
-          props.newPlantDispatch({
+          props.plantDispatchSetImageState({
             type: 'IMAGE_UPLOAD_FAILURE',
             payload: response.data,
           })
@@ -90,17 +98,17 @@ export const PlantDropzone = (props) => {
   }, [])
 
   const deleteImage = () => {
-    console.log('removing uploaded photo from new plant')
+    console.log('removing new uploaded photo')
 
-    const url = `http://localhost:3001/api/v1/images/${props.imageId}`
+    const urlImageDestroy = `http://localhost:3001/api/v1/images/${uploadedImageId}`
 
     axios
-      .delete(url, { withCredentials: true })
+      .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
         if (response.data.status === 'destroyed') {
-          props.newPlantDispatchClearImages()
+          props.plantDispatchClearImages()
         } else {
-          props.newPlantDispatch({
+          props.plantDispatchSetImageState({
             type: 'IMAGE_UPLOAD_FAILURE',
             payload: response.data,
           })
@@ -167,12 +175,12 @@ export const PlantDropzone = (props) => {
         <input {...getInputProps()} />
         {!uploading ? (
           isDragActive ? (
-            <p>Drop the photo here...</p>
+            <p>Drag your file to upload here</p>
           ) : uploadedFiles.length > 0 ? null : (
             <React.Fragment>
               <p>
-                Drag 'n' drop a lovely photo of your plant here, or
-                click to select photo
+                Drag a lovely photo of your plant here, or click to
+                select photo from your computer
               </p>
               <em>
                 (Only *.jpeg and *.png files less than 3MB will be

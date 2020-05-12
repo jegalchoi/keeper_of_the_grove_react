@@ -43,7 +43,7 @@ export const plantsReducer = (state, action) => {
     case 'IMAGE_DETAIL_FETCH_SUCCESS':
       return {
         ...state,
-        imagePublicId: action.payload.image.public_id,
+        originalImagePublicId: action.payload.image.public_id,
       }
     case 'IMAGE_DETAIL_FETCH_FAILURE':
       return {
@@ -74,7 +74,7 @@ export const plantsReducer = (state, action) => {
         imagePublicId: '',
         images: [],
       }
-    case 'IMAGE_UPLOAD_FAILURE':
+    case 'IMAGE_ERRORS':
       return {
         ...state,
         errors: action.payload.errors,

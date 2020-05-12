@@ -22,12 +22,13 @@ export const EditPlant = () => {
       imageUrl,
       imageId,
       imagePublicId,
-      newImageId,
+      originalImageUrl,
+      originalImageId,
+      originalImagePublicId,
       ownerId,
       errors,
-      uploading,
     },
-    plantDispatch,
+    editPlantDispatch,
   ] = useReducer(plantsReducer, {
     plantIsLoading: false,
     id: plantDetail.id,
@@ -35,24 +36,30 @@ export const EditPlant = () => {
     notes: plantDetail.notes,
     water: plantDetail.water,
     hidden: plantDetail.hidden,
-    imageUrl: plantDetail.image,
-    imageId: plantDetail.imageId,
+    imageUrl: '',
+    imageId: '',
     imagePublicId: '',
-    newImageId: '',
+    originalImageUrl: plantDetail.image,
+    originalImageId: plantDetail.imageId,
+    originalImagePublicId: '',
     ownerId: plantDetail.ownerId,
     errors: null,
   })
 
   useEffect(() => {
+    if (originalImageId === null) {
+      return
+    }
+
     console.log('fetching image info')
 
-    const urlImageDetail = `http://localhost:3001/api/v1/images/${imageId}`
+    const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
 
     axios
-      .get(urlImageDetail, { withCredentials: true })
+      .get(urlImageGet, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
-        plantDispatch({
+        // console.log(response.data)
+        editPlantDispatch({
           type:
             response.data.status !== 400
               ? 'IMAGE_DETAIL_FETCH_SUCCESS'
@@ -65,29 +72,21 @@ export const EditPlant = () => {
       )
   }, [])
 
-  const formatDate = (d) => {
-    const date = new Date(Date.parse(d))
-    const YYYY = date.getFullYear()
-    const MM = `0${date.getMonth() + 1}`.slice(-2)
-    const DD = `0${date.getDate()}`.slice(-2)
-    return `${YYYY}-${MM}-${DD}`
-  }
+  const deleteImage = (id) => {
+    console.log('deleting image from edit plant')
 
-  const stripHtmlEntities = (str) => {
-    return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  }
+    const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
 
-  const deleteImage = () => {
-    const url = `http://localhost:3001/api/v1/images/${imageId}`
-
-    console.log(
-      'image deletion submitted from edit plant after submitting new image'
-    )
     axios
-      .delete(url, { withCredentials: true })
+      .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
         if (response.data.status === 'destroyed') {
-          console.log('old image deleted')
+          console.log('image deleted from edit plant')
+        } else {
+          editPlantDispatchSetImageState({
+            type: 'IMAGE_ERRORS',
+            payload: response.data,
+          })
         }
       })
       .catch((error) =>
@@ -98,7 +97,7 @@ export const EditPlant = () => {
   const handleSubmit = (e) => {
     console.log('editing plant')
 
-    plantDispatch({ type: 'PLANT_START_LOADING' })
+    editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
     let plant = {
       name,
@@ -106,13 +105,26 @@ export const EditPlant = () => {
       water: water === '' ? null : water,
       hidden,
       image:
-        image === '' ? 'https://placeimg.com/320/240/nature' : image,
+        originalImageUrl === '' && imageUrl === ''
+          ? 'https://placeimg.com/320/240/nature'
+          : imageUrl || originalImageUrl,
+      image_id: imageId || originalImageId,
       user_id: userId,
     }
-    const url = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+    console.log(plant)
+
+    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+
+    if (
+      imageId !== '' &&
+      originalImageId !== null &&
+      imageId !== originalImageId
+    ) {
+      deleteImage(originalImageId)
+    }
 
     axios
-      .patch(url, { plant }, { withCredentials: true })
+      .patch(urlPlantEdit, { plant }, { withCredentials: true })
       .then((response) => {
         if (response.data.status === 'updated') {
           dispatch({
@@ -120,7 +132,7 @@ export const EditPlant = () => {
           })
           history.push(`/details/${id}`)
         } else {
-          plantDispatch({
+          editPlantDispatch({
             type: 'PLANT_UPDATE_FAILURE',
             payload: response.data,
           })
@@ -133,16 +145,21 @@ export const EditPlant = () => {
   }
 
   const deletePlant = () => {
-    const url = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+    const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+
     const confirmation = confirm(
       'Are you sure you want to delete your plant?'
     )
 
     if (confirmation) {
-      console.log('plant deletion submitted from edit plant')
-      plantDispatch({ type: 'PLANT_START_LOADING' })
+      console.log('deleting plant from edit plant')
+
+      editPlantDispatch({ type: 'PLANT_START_LOADING' })
+
+      deleteImage(originalImageId)
+
       axios
-        .delete(url, { withCredentials: true })
+        .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
           if (response.data.status === 'destroyed') {
             dispatch({
@@ -154,8 +171,6 @@ export const EditPlant = () => {
         .catch((error) =>
           console.log('delete plant api errors:', error)
         )
-    } else {
-      return false
     }
   }
 
@@ -178,10 +193,76 @@ export const EditPlant = () => {
     )
   }
 
+  // const stripHtmlEntities = (str) => {
+  //   return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  // }
+
+  const editPlantDispatchSetImageState = (state, value) => {
+    editPlantDispatch({
+      type: 'PLANT_SET_IMAGE_STATE',
+      stateName: state,
+      payload: value,
+    })
+  }
+
+  const editPlantDispatchClearImages = () => {
+    editPlantDispatch({
+      type: 'PLANT_CLEAR_IMAGES',
+    })
+  }
+
   console.log('edit plant')
 
   return (
     <ContainerWrapper>
+      <h1>
+        imageUrl:{' '}
+        {imageUrl === ''
+          ? 'empty string'
+          : imageUrl === null
+          ? 'null'
+          : imageUrl}
+      </h1>
+      <h1>
+        imageId:{' '}
+        {imageId === ''
+          ? 'empty string'
+          : imageId === null
+          ? 'null'
+          : imageId}
+      </h1>
+      <h1>
+        imagePublicId:{' '}
+        {imagePublicId === ''
+          ? 'empty string'
+          : imagePublicId === null
+          ? 'null'
+          : imagePublicId}
+      </h1>
+      <h1>
+        originalImageUrl:{' '}
+        {originalImageUrl === ''
+          ? 'empty string'
+          : originalImageUrl === null
+          ? 'null'
+          : originalImageUrl}
+      </h1>
+      <h1>
+        originalImageId:{' '}
+        {originalImageId === ''
+          ? 'empty string'
+          : originalImageId === null
+          ? 'null'
+          : originalImageId}
+      </h1>
+      <h1>
+        originalImagePublicId:{' '}
+        {originalImagePublicId === ''
+          ? 'empty string'
+          : originalImagePublicId === null
+          ? 'null'
+          : originalImagePublicId}
+      </h1>
       <h1 className='text-capitalize text-center'>
         <strong>edit plant</strong>
       </h1>
@@ -193,7 +274,7 @@ export const EditPlant = () => {
               placeholder='Name'
               value={name}
               onChange={(e) =>
-                plantDispatch({
+                editPlantDispatch({
                   type: 'field',
                   fieldName: 'name',
                   payload: e.target.value,
@@ -210,8 +291,8 @@ export const EditPlant = () => {
                 showTimeSelect
                 selected={water}
                 onChange={(date) => {
-                  console.log(date)
-                  return plantDispatch({
+                  // console.log(date)
+                  return editPlantDispatch({
                     type: 'field',
                     fieldName: 'water',
                     payload: date,
@@ -226,12 +307,11 @@ export const EditPlant = () => {
           <br />
           <div className='row form-group text-center'>
             <div className='col'>
-              <input
-                type='text'
+              <textarea
                 placeholder='Notes'
                 value={notes}
                 onChange={(e) =>
-                  plantDispatch({
+                  editPlantDispatch({
                     type: 'field',
                     fieldName: 'notes',
                     payload: e.target.value,
@@ -251,7 +331,7 @@ export const EditPlant = () => {
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
-                  plantDispatch({
+                  editPlantDispatch({
                     type: 'field',
                     fieldName: 'hidden',
                     payload: e.target.checked,
@@ -271,15 +351,15 @@ export const EditPlant = () => {
           </div>
           <br />
           <div className='row'>
-            {/* <PlantDropzone
+            <PlantDropzone
               userId={userId}
               imageId={imageId}
               imagePublicId={imagePublicId}
-              plantDispatch={plantDispatchPlantDropzone}
-              clearImages={plantDispatchClearImages}
-            /> */}
-            <h1>{imageId}</h1>
-            <h1>{imagePublicId}</h1>
+              plantDispatchSetImageState={
+                editPlantDispatchSetImageState
+              }
+              plantDispatchClearImages={editPlantDispatchClearImages}
+            />
           </div>
           {plantIsLoading
             ? null
@@ -304,24 +384,20 @@ export const EditPlant = () => {
                 <button
                   placeholder='delete'
                   className='btn-danger btn-lg mt-3 text-uppercase'
-                  onClick={() => {
-                    return deletePlant()
-                  }}
+                  onClick={deletePlant}
                 >
                   <strong>delete plant</strong>
                 </button>
               </div>
-              <div className='row'>
-                <div className='col text-center'>
-                  <Link to='/'>
-                    <button
-                      placeholder='home'
-                      className='btn-primary btn-lg mt-3 text-capitalize'
-                    >
-                      <strong>home</strong>
-                    </button>
-                  </Link>
-                </div>
+              <div className='row justify-content-center'>
+                <Link to='/'>
+                  <button
+                    placeholder='home'
+                    className='btn-primary btn-lg mt-3 text-capitalize'
+                  >
+                    <strong>home</strong>
+                  </button>
+                </Link>
               </div>
             </React.Fragment>
           )}

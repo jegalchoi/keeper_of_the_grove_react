@@ -24,7 +24,7 @@ export const PlantDetail = () => {
       ownerId,
       errors,
     },
-    plantDispatch,
+    showPlantDispatch,
   ] = useReducer(plantsReducer, {
     plantIsLoading: false,
     id: plantId,
@@ -54,13 +54,13 @@ export const PlantDetail = () => {
   useEffect(() => {
     console.log('fetching plant detail')
 
-    const urlPlantDetail = `http://localhost:3001/api/v1/plants/${plantId}`
+    const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
 
     axios
-      .get(urlPlantDetail, { withCredentials: true })
+      .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
-        plantDispatch({
+        // console.log(response.data)
+        showPlantDispatch({
           type:
             response.data.status !== 400
               ? 'PLANT_DETAIL_FETCH_SUCCESS'
@@ -74,16 +74,23 @@ export const PlantDetail = () => {
   }, [])
 
   const deletePlant = () => {
-    const url = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+
     const confirmation = confirm(
       'Are you sure you want to delete this plant?'
     )
 
     if (confirmation) {
       console.log('deleting plant from plant detail')
-      plantDispatch({ type: 'PLANT_START_LOADING' })
+
+      showPlantDispatch({ type: 'PLANT_START_LOADING' })
+
+      if (imageId !== null) {
+        deleteImage(imageId)
+      }
+
       axios
-        .delete(url, { withCredentials: true })
+        .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
           if (response.data.status === 'destroyed') {
             dispatch({
@@ -93,9 +100,31 @@ export const PlantDetail = () => {
           }
         })
         .catch((error) =>
-          console.log('delete user api errors:', error)
+          console.log('delete plant api errors:', error)
         )
     }
+  }
+
+  const deleteImage = (id) => {
+    console.log('deleting image from plant detail')
+
+    const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
+
+    axios
+      .delete(urlImageDestroy, { withCredentials: true })
+      .then((response) => {
+        if (response.data.status === 'destroyed') {
+          console.log('image deleted from edit plant')
+        } else {
+          showPlantDispatch({
+            type: 'IMAGE_ERRORS',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('delete image api errors:', error)
+      )
   }
 
   const history = useHistory()
@@ -116,16 +145,6 @@ export const PlantDetail = () => {
       </div>
     )
   }
-
-  // formatDate = d => {
-  //   console.log(d)
-  //   const date = new Date(Date.parse(d))
-  //   const YYYY = date.getFullYear()
-  //   const MM = `0${date.getMonth() + 1}`.slice(-2)
-  //   const DD = `0${date.getDate()}`.slice(-2)
-  //   console.log(`${YYYY}-${MM}-${DD}`)
-  //   return `${YYYY}-${MM}-${DD}`
-  // }
 
   const formatNotes = (plantNotes) => {
     // console.log(plantNotes)
@@ -206,7 +225,7 @@ export const PlantDetail = () => {
                           className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
                           onClick={() =>
                             dispatch({
-                              type: 'SET_PLANTDETAIL',
+                              type: 'SET_PLANT_DETAIL',
                               payload: plant,
                             })
                           }

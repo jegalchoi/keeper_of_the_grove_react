@@ -97,7 +97,7 @@ const reducer = (state, action) => {
         formIsLoading: false,
         plantsNeedRefresh: true,
       }
-    case 'SET_PLANTDETAIL':
+    case 'SET_PLANT_DETAIL':
       return {
         ...state,
         plantDetail: action.payload,
@@ -144,10 +144,12 @@ export const PlantProvider = (props) => {
 
     const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
     const urlAllPlants = `http://localhost:3001/api/v1/plants/`
-    const urlPlants = displayUserPlants ? urlUserPlants : urlAllPlants
-    // console.log(urlPlants)
+    const urlPlantsGet = displayUserPlants
+      ? urlUserPlants
+      : urlAllPlants
+    // console.log(urlPlantsGet)
     axios
-      .get(urlPlants, { withCredentials: true })
+      .get(urlPlantsGet, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
         dispatch({

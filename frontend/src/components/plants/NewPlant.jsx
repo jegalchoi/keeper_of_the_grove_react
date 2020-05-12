@@ -28,7 +28,6 @@ export const NewPlant = () => {
       imageId,
       imagePublicId,
       errors,
-      uploading,
     },
     newPlantDispatch,
   ] = useReducer(plantsReducer, {
@@ -41,7 +40,6 @@ export const NewPlant = () => {
     imageId: '',
     imagePublicId: '',
     errors: null,
-    uploading: false,
   })
 
   //
@@ -63,10 +61,10 @@ export const NewPlant = () => {
       image_id: imageId,
       user_id: userId,
     }
-    const url = 'http://localhost:3001/api/v1/plants'
+    const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
 
     axios
-      .post(url, { plant }, { withCredentials: true })
+      .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
         console.log(response.data)
         if (response.data.status === 'created') {
@@ -110,7 +108,7 @@ export const NewPlant = () => {
   //     .replace(/>/g, '&gt;')
   // }
 
-  const newPlantDispatchPlantDropzone = (state, value) => {
+  const newPlantDispatchSetImageState = (state, value) => {
     newPlantDispatch({
       type: 'PLANT_SET_IMAGE_STATE',
       stateName: state,
@@ -129,7 +127,7 @@ export const NewPlant = () => {
   return (
     <ContainerWrapper>
       <h1 className='text-capitalize text-center'>
-        <strong>add new plant</strong>
+        <strong>new plant</strong>
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
@@ -220,22 +218,11 @@ export const NewPlant = () => {
               userId={userId}
               imageId={imageId}
               imagePublicId={imagePublicId}
-              newPlantDispatch={newPlantDispatchPlantDropzone}
-              newPlantDispatchClearImages={
-                newPlantDispatchClearImages
+              plantDispatchSetImageState={
+                newPlantDispatchSetImageState
               }
+              plantDispatchClearImages={newPlantDispatchClearImages}
             />
-            {/* <button
-              className='btn btn-outline-danger mr-2'
-              onClick={() => deleteImage()}
-            >
-              <FontAwesomeIcon
-                icon={faTrashAlt}
-                size='1x'
-                color='black'
-                id='trash'
-              />
-            </button> */}
           </div>
           {plantIsLoading ? (
             <div className='row justify-content-center'>
@@ -252,7 +239,6 @@ export const NewPlant = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={plantIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>add plant</strong>
@@ -262,7 +248,6 @@ export const NewPlant = () => {
                 <Link to='/'>
                   <button
                     placeholder='home'
-                    disabled={plantIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
                   >
                     <strong>home</strong>
