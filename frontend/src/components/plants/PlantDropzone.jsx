@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react'
-import axios from 'axios'
+import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 
@@ -34,18 +33,7 @@ const getColor = (props) => {
 }
 
 export const PlantDropzone = (props) => {
-  const [uploadedFiles, setUploadedFiles] = useState([])
-
-  const removeFile = (file) => {
-    const newFiles = [...uploadedFiles]
-    newFiles.splice(newFiles.indexOf(file), 1)
-    setUploadedFiles(newFiles)
-  }
-
-  const handleRemoveQueuedPhotos = () => {
-    setUploadedFiles([])
-    props.newPlantClearUploadedFiles()
-  }
+  const uploadedFiles = props.uploadedFiles
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
@@ -54,31 +42,8 @@ export const PlantDropzone = (props) => {
 
     console.log('queuing images for upload')
 
-    setUploadedFiles([...uploadedFiles, ...acceptedFiles])
     props.setUploadedFiles(acceptedFiles)
   }, [])
-
-  const deleteImage = () => {
-    console.log('removing  uploaded photo')
-
-    const urlImageDestroy = `http://localhost:3001/api/v1/images/${uploadedImageId}`
-
-    axios
-      .delete(urlImageDestroy, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === 'destroyed') {
-          props.plantDispatchClearImages()
-        } else {
-          props.plantDispatchSetImageState({
-            type: 'IMAGE_UPLOAD_FAILURE',
-            payload: response.data,
-          })
-        }
-      })
-      .catch((error) =>
-        console.log('delete image api errors:', error)
-      )
-  }
 
   const fileList = (accepted) => {
     const photos = accepted ? uploadedFiles : rejectedFiles
@@ -153,14 +118,6 @@ export const PlantDropzone = (props) => {
           <div>{rejectedFiles.length > 0 && fileList(false)}</div>
         </aside>
       </DropzoneWrapper>
-      {uploadedFiles.length > 0 && (
-        <input
-          type='button'
-          className='btn btn-danger mt-3 text-capitalize'
-          onClick={() => handleRemoveQueuedPhotos()}
-          value='remove queued photos'
-        />
-      )}
     </div>
   )
 }

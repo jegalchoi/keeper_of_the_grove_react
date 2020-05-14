@@ -10,7 +10,6 @@ import { ContainerWrapper } from '../ContainerWrapper'
 
 export const NewPlant = () => {
   const [{ userId }, dispatch] = useContext(PlantContext)
-
   const [uploadedFiles, setUploadedFiles] = useState([])
 
   const [
@@ -52,28 +51,23 @@ export const NewPlant = () => {
       notes: notes.replace(/\n/g, '<br />'),
       water: water === '' ? null : water,
       hidden,
-      // image:
-      //   imageUrl === ''
-      //     ? 'https://placeimg.com/320/240/nature'
-      //     : imageUrl,
-      // image_id: imageId,
       user_id: userId,
     }
     const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
-
     axios
       .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         const plantId = response.data.plant.id
         if (response.data.status === 'created') {
           if (uploadedFiles.length > 0) {
             uploadImage(plantId)
+          } else {
+            dispatch({
+              type: 'PLANT_NEED_REFRESH',
+            })
+            history.push(`/details/${plantId}`)
           }
-          // dispatch({
-          //   type: 'PLANT_NEED_REFRESH',
-          // })
-          // history.push(`/details/${response.data.plant.id}`)
         } else {
           newPlantDispatch({
             type: 'PLANT_CREATE_FAILURE',
@@ -87,6 +81,69 @@ export const NewPlant = () => {
 
     e.target.reset()
     e.preventDefault()
+  }
+
+  const uploadImage = (plantId) => {
+    console.log('uploading image')
+
+    let image = new FormData()
+    image.append('file', uploadedFiles[0])
+    image.append('user_id', userId)
+    image.append('plant_id', plantId)
+    const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    axios
+      .post(urlImageCreate, image, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.status === 'created') {
+          setImageForPlant(
+            plantId,
+            response.data.image.url,
+            response.data.image.id
+          )
+        } else {
+          newPlantDispatch({
+            type: 'IMAGE_ERRORS',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('upload image api errors:', error)
+      )
+  }
+
+  const setImageForPlant = (plantId, imageUrl, imageId) => {
+    console.log('setting image for plant')
+
+    let plant = {
+      image: imageUrl,
+      image_id: imageId,
+    }
+    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    axios
+      .patch(urlPlantEdit, { plant }, { withCredentials: true })
+      .then((response) => {
+        if (response.data.status === 'updated') {
+          dispatch({
+            type: 'PLANT_NEED_REFRESH',
+          })
+          history.push(`/details/${plantId}`)
+        } else {
+          newPlantDispatch({
+            type: 'PLANT_UPDATE_FAILURE',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('edit plant image api errors:', error)
+      )
+  }
+
+  const handleRemoveQueuedPhotos = () => {
+    console.log('removing queued images')
+    setUploadedFiles([])
   }
 
   const history = useHistory()
@@ -125,7 +182,6 @@ export const NewPlant = () => {
   }
 
   const newPlantSetUploadedFiles = (files) => {
-    console.log(files)
     setUploadedFiles([...uploadedFiles, ...files])
   }
 
@@ -133,83 +189,11 @@ export const NewPlant = () => {
     setUploadedFiles([])
   }
 
-  const uploadImage = (plantId) => {
-    console.log('uploading image')
-
-    let image = new FormData()
-    image.append('file', uploadedFiles[0])
-    image.append('user_id', userId)
-    image.append('plant_id', plantId)
-
-    const urlImageCreate = 'http://localhost:3001/api/v1/images'
-
-    axios
-      .post(urlImageCreate, image, { withCredentials: true })
-      .then((response) => {
-        // console.log(response.data)
-        if (response.data.status === 'created') {
-          // newPlantDispatch({
-          //   type: 'PLANT_SET_IMAGE_STATE',
-          //   stateName: 'imageUrl',
-          //   payload: response.data.image.url,
-          // })
-          // newPlantDispatch({
-          //   type: 'PLANT_SET_IMAGE_STATE',
-          //   stateName: 'imagePublicId',
-          //   payload: response.data.image.public_id,
-          // })
-          // newPlantDispatch({
-          //   type: 'PLANT_SET_IMAGE_STATE',
-          //   stateName: 'imageId',
-          //   payload: response.data.image.id,
-          // })
-          setImageForPlant(
-            plantId,
-            response.data.image.url,
-            response.data.image.id
-          )
-        } else {
-          newPlantDispatch({
-            type: 'IMAGE_UPLOAD_FAILURE',
-            payload: response.data,
-          })
-        }
-      })
-      .catch((error) =>
-        console.log('upload image api errors:', error)
-      )
-  }
-
-  const setImageForPlant = (plantId, imageUrl, imageId) => {
-    console.log('setting image for plant')
-
-    let plant = {
-      image: imageUrl,
-      image_id: imageId,
-    }
-    console.log(plant)
-
-    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
-
-    axios
-      .patch(urlPlantEdit, { plant }, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === 'updated') {
-          dispatch({
-            type: 'PLANT_NEED_REFRESH',
-          })
-          history.push(`/details/${plantId}`)
-        } else {
-          newPlantDispatch({
-            type: 'PLANT_UPDATE_FAILURE',
-            payload: response.data,
-          })
-        }
-      })
-      .catch((error) =>
-        console.log('edit plant image api errors:', error)
-      )
-  }
+  // const removeFile = (file) => {
+  //   const newFiles = [...uploadedFiles]
+  //   newFiles.splice(newFiles.indexOf(file), 1)
+  //   setUploadedFiles(newFiles)
+  // }
 
   console.log('create plant')
 
@@ -224,6 +208,7 @@ export const NewPlant = () => {
             <input
               type='text'
               placeholder='Name'
+              disabled={plantIsLoading}
               value={name}
               onChange={(e) =>
                 newPlantDispatch({
@@ -241,6 +226,7 @@ export const NewPlant = () => {
               <DatePicker
                 inline
                 showTimeSelect
+                disabled={plantIsLoading}
                 selected={water}
                 onChange={(date) => {
                   // console.log(date)
@@ -261,6 +247,7 @@ export const NewPlant = () => {
             <div className='col'>
               <textarea
                 placeholder='Notes'
+                disabled={plantIsLoading}
                 value={notes}
                 onChange={(e) =>
                   newPlantDispatch({
@@ -280,6 +267,7 @@ export const NewPlant = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
+                disabled={plantIsLoading}
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
@@ -302,18 +290,19 @@ export const NewPlant = () => {
             </div>
           </div>
           <br />
-          <div className='row'>
+          <div className='row justify-content-center'>
             <PlantDropzone
-              userId={userId}
-              imageId={imageId}
-              imagePublicId={imagePublicId}
-              plantDispatchSetImageState={
-                newPlantDispatchSetImageState
-              }
-              plantDispatchClearImages={newPlantDispatchClearImages}
               setUploadedFiles={newPlantSetUploadedFiles}
-              newPlantClearUploadedFiles={newPlantClearUploadedFiles}
+              uploadedFiles={uploadedFiles}
             />
+            {!plantIsLoading && uploadedFiles.length > 0 && (
+              <input
+                type='button'
+                className='btn btn-danger mt-3 text-capitalize'
+                onClick={() => handleRemoveQueuedPhotos()}
+                value='remove queued photos'
+              />
+            )}
           </div>
           {plantIsLoading ? (
             <div className='row justify-content-center'>

@@ -77,6 +77,7 @@ export const plantsReducer = (state, action) => {
     case 'IMAGE_ERRORS':
       return {
         ...state,
+        plantIsLoading: false,
         errors: action.payload.errors,
       }
     case 'CLEAR_ERRORS':

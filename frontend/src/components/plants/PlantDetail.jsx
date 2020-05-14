@@ -69,7 +69,7 @@ export const PlantDetail = () => {
         })
       })
       .catch((errors) =>
-        console.log('check plant detail api errors:', errors)
+        console.log('fetch plant detail api errors:', errors)
       )
   }, [])
 
@@ -100,7 +100,10 @@ export const PlantDetail = () => {
           }
         })
         .catch((error) =>
-          console.log('delete plant api errors:', error)
+          console.log(
+            'delete plant from plant detail api errors:',
+            error
+          )
         )
     }
   }
@@ -114,7 +117,7 @@ export const PlantDetail = () => {
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
         if (response.data.status === 'destroyed') {
-          console.log('image deleted from edit plant')
+          console.log('image deleted from plant detail')
         } else {
           showPlantDispatch({
             type: 'IMAGE_ERRORS',
@@ -123,7 +126,10 @@ export const PlantDetail = () => {
         }
       })
       .catch((error) =>
-        console.log('delete image api errors:', error)
+        console.log(
+          'delete image from plant detail api errors:',
+          error
+        )
       )
   }
 
