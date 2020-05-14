@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext, useReducer, useState } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
@@ -7,15 +7,11 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-
-// import PlantImages from './PlantImages'
-// import PlantImagesButtons from './PlantImagesButtons'
-// import Spinner from '../Spinner'
 
 export const NewPlant = () => {
   const [{ userId }, dispatch] = useContext(PlantContext)
+
+  const [uploadedFiles, setUploadedFiles] = useState([])
 
   const [
     {
@@ -27,6 +23,7 @@ export const NewPlant = () => {
       imageUrl,
       imageId,
       imagePublicId,
+      // uploadedFiles,
       errors,
     },
     newPlantDispatch,
@@ -39,6 +36,7 @@ export const NewPlant = () => {
     imageUrl: '',
     imageId: '',
     imagePublicId: '',
+    // uploadedFiles: [],
     errors: null,
   })
 
@@ -54,11 +52,11 @@ export const NewPlant = () => {
       notes: notes.replace(/\n/g, '<br />'),
       water: water === '' ? null : water,
       hidden,
-      image:
-        imageUrl === ''
-          ? 'https://placeimg.com/320/240/nature'
-          : imageUrl,
-      image_id: imageId,
+      // image:
+      //   imageUrl === ''
+      //     ? 'https://placeimg.com/320/240/nature'
+      //     : imageUrl,
+      // image_id: imageId,
       user_id: userId,
     }
     const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
@@ -67,11 +65,15 @@ export const NewPlant = () => {
       .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
         console.log(response.data)
+        const plantId = response.data.plant.id
         if (response.data.status === 'created') {
-          dispatch({
-            type: 'PLANT_NEED_REFRESH',
-          })
-          history.push(`/details/${response.data.plant.id}`)
+          if (uploadedFiles.length > 0) {
+            uploadImage(plantId)
+          }
+          // dispatch({
+          //   type: 'PLANT_NEED_REFRESH',
+          // })
+          // history.push(`/details/${response.data.plant.id}`)
         } else {
           newPlantDispatch({
             type: 'PLANT_CREATE_FAILURE',
@@ -120,6 +122,93 @@ export const NewPlant = () => {
     newPlantDispatch({
       type: 'PLANT_CLEAR_IMAGES',
     })
+  }
+
+  const newPlantSetUploadedFiles = (files) => {
+    console.log(files)
+    setUploadedFiles([...uploadedFiles, ...files])
+  }
+
+  const newPlantClearUploadedFiles = () => {
+    setUploadedFiles([])
+  }
+
+  const uploadImage = (plantId) => {
+    console.log('uploading image')
+
+    let image = new FormData()
+    image.append('file', uploadedFiles[0])
+    image.append('user_id', userId)
+    image.append('plant_id', plantId)
+
+    const urlImageCreate = 'http://localhost:3001/api/v1/images'
+
+    axios
+      .post(urlImageCreate, image, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.status === 'created') {
+          // newPlantDispatch({
+          //   type: 'PLANT_SET_IMAGE_STATE',
+          //   stateName: 'imageUrl',
+          //   payload: response.data.image.url,
+          // })
+          // newPlantDispatch({
+          //   type: 'PLANT_SET_IMAGE_STATE',
+          //   stateName: 'imagePublicId',
+          //   payload: response.data.image.public_id,
+          // })
+          // newPlantDispatch({
+          //   type: 'PLANT_SET_IMAGE_STATE',
+          //   stateName: 'imageId',
+          //   payload: response.data.image.id,
+          // })
+          setImageForPlant(
+            plantId,
+            response.data.image.url,
+            response.data.image.id
+          )
+        } else {
+          newPlantDispatch({
+            type: 'IMAGE_UPLOAD_FAILURE',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('upload image api errors:', error)
+      )
+  }
+
+  const setImageForPlant = (plantId, imageUrl, imageId) => {
+    console.log('setting image for plant')
+
+    let plant = {
+      image: imageUrl,
+      image_id: imageId,
+    }
+    console.log(plant)
+
+    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+
+    axios
+      .patch(urlPlantEdit, { plant }, { withCredentials: true })
+      .then((response) => {
+        if (response.data.status === 'updated') {
+          dispatch({
+            type: 'PLANT_NEED_REFRESH',
+          })
+          history.push(`/details/${plantId}`)
+        } else {
+          newPlantDispatch({
+            type: 'PLANT_UPDATE_FAILURE',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('edit plant image api errors:', error)
+      )
   }
 
   console.log('create plant')
@@ -222,6 +311,8 @@ export const NewPlant = () => {
                 newPlantDispatchSetImageState
               }
               plantDispatchClearImages={newPlantDispatchClearImages}
+              setUploadedFiles={newPlantSetUploadedFiles}
+              newPlantClearUploadedFiles={newPlantClearUploadedFiles}
             />
           </div>
           {plantIsLoading ? (

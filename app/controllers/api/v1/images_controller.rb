@@ -17,7 +17,7 @@ class Api::V1::ImagesController < ApplicationController
 
   def create
     uploaded_image = Cloudinary::Uploader.upload(params[:file])
-    image = { 'url': uploaded_image['secure_url'], 'public_id': uploaded_image['public_id'] }
+    image = { 'url': uploaded_image['secure_url'], 'public_id': uploaded_image['public_id'], 'user_id': params[:user_id].to_i, 'plant_id': params[:plant_id] }
     
     @image = Image.new(image)
     if @image.save

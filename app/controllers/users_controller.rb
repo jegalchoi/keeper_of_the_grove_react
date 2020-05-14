@@ -1,19 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  # def index
-  #   @users = User.all
-  #   if @users
-  #     render json: {
-  #       users: @users
-  #     }
-  #   else
-  #     render json: {
-  #       status: 500,
-  #       errors: ['Could not locate any users']
-  #     }
-  #   end
-  # end
-
+  
   def show
     if @user
       render json: {
@@ -76,6 +63,20 @@ class UsersController < ApplicationController
       }
     end
   end
+
+  # def index
+  #   @users = User.all
+  #   if @users
+  #     render json: {
+  #       users: @users
+  #     }
+  #   else
+  #     render json: {
+  #       status: 500,
+  #       errors: ['Could not locate any users']
+  #     }
+  #   end
+  # end
 
     private
 

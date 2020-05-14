@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :null_session
 
   helper_method :login!, :logged_in?, :logout!, :current_user, :authorized_user?, :current_user_id, :current_user_username
 

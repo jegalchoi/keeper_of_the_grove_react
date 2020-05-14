@@ -35,8 +35,6 @@ const getColor = (props) => {
 
 export const PlantDropzone = (props) => {
   const [uploadedFiles, setUploadedFiles] = useState([])
-  const [uploading, setUploading] = useState(false)
-  const [uploadedImageId, setUploadedImageId] = useState('')
 
   const removeFile = (file) => {
     const newFiles = [...uploadedFiles]
@@ -44,9 +42,9 @@ export const PlantDropzone = (props) => {
     setUploadedFiles(newFiles)
   }
 
-  const handleRemoveUploadedPhotos = () => {
+  const handleRemoveQueuedPhotos = () => {
     setUploadedFiles([])
-    deleteImage()
+    props.newPlantClearUploadedFiles()
   }
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -54,51 +52,14 @@ export const PlantDropzone = (props) => {
       return null
     }
 
-    console.log('uploading image')
+    console.log('queuing images for upload')
 
-    setUploading(true)
-
-    let image = new FormData()
-    image.append('file', acceptedFiles[0])
-    image.append('user_id', props.userId)
-
-    const urlImageCreate = 'http://localhost:3001/api/v1/images'
-
-    axios
-      .post(urlImageCreate, image, { withCredentials: true })
-      .then((response) => {
-        // console.log(response.data)
-        if (response.data.status === 'created') {
-          props.plantDispatchSetImageState(
-            'imageUrl',
-            response.data.image.url
-          )
-          props.plantDispatchSetImageState(
-            'imagePublicId',
-            response.data.image.public_id
-          )
-          props.plantDispatchSetImageState(
-            'imageId',
-            response.data.image.id
-          )
-          setUploadedImageId(response.data.image.id)
-          setUploadedFiles([...uploadedFiles, ...acceptedFiles])
-          setUploading(false)
-        } else {
-          props.plantDispatchSetImageState({
-            type: 'IMAGE_UPLOAD_FAILURE',
-            payload: response.data,
-          })
-          setUploading(false)
-        }
-      })
-      .catch((error) =>
-        console.log('upload image api errors:', error)
-      )
+    setUploadedFiles([...uploadedFiles, ...acceptedFiles])
+    props.setUploadedFiles(acceptedFiles)
   }, [])
 
   const deleteImage = () => {
-    console.log('removing new uploaded photo')
+    console.log('removing  uploaded photo')
 
     const urlImageDestroy = `http://localhost:3001/api/v1/images/${uploadedImageId}`
 
@@ -125,7 +86,7 @@ export const PlantDropzone = (props) => {
     return (
       <div className='text-center'>
         <h4 className={accepted ? 'text-success' : 'text-danger'}>
-          {accepted ? 'Uploaded files:' : 'Rejected files:'}
+          {accepted ? 'Photos to be uploaded:' : 'Rejected files:'}
         </h4>
         <ul className='list-group p-0'>
           {photos.map((file) => (
@@ -173,24 +134,20 @@ export const PlantDropzone = (props) => {
         })}
       >
         <input {...getInputProps()} />
-        {!uploading ? (
-          isDragActive ? (
-            <p>Drag your file to upload here</p>
-          ) : uploadedFiles.length > 0 ? null : (
-            <React.Fragment>
-              <p>
-                Drag a lovely photo of your plant here, or click to
-                select photo from your computer
-              </p>
-              <em>
-                (Only *.jpeg and *.png files less than 3MB will be
-                accepted)
-              </em>
-            </React.Fragment>
-          )
-        ) : uploadedFiles.length === 0 ? (
-          <h2 className='text-capitalize'>uploading image...</h2>
-        ) : null}
+        {isDragActive ? (
+          <p>Drag your files to upload here</p>
+        ) : uploadedFiles.length > 0 ? null : (
+          <React.Fragment>
+            <p>
+              Drag photos of your plant here, or click to select
+              photos from your computer
+            </p>
+            <em>
+              (Only *.jpeg and *.png files less than 3MB will be
+              accepted)
+            </em>
+          </React.Fragment>
+        )}
         <aside>
           <div>{uploadedFiles.length > 0 && fileList(true)}</div>
           <div>{rejectedFiles.length > 0 && fileList(false)}</div>
@@ -200,8 +157,8 @@ export const PlantDropzone = (props) => {
         <input
           type='button'
           className='btn btn-danger mt-3 text-capitalize'
-          onClick={() => handleRemoveUploadedPhotos()}
-          value='remove uploaded photo'
+          onClick={() => handleRemoveQueuedPhotos()}
+          value='remove queued photos'
         />
       )}
     </div>

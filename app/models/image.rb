@@ -13,4 +13,9 @@
 class Image < ApplicationRecord
   validates :url, presence: true
   validates :public_id, presence: true
+  validates :user_id, presence: true
+  validates :plant_id, presence: true
+
+  belongs_to :user
+  belongs_to :plant
 end
