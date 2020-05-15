@@ -30,11 +30,11 @@ export const Signup = () => {
       password,
       passwordConfirmation,
     }
-    const url = 'http://localhost:3001/users'
-
+    const urlSignup = 'http://localhost:3001/users'
     axios
-      .post(url, { user }, { withCredentials: true })
+      .post(urlSignup, { user }, { withCredentials: true })
       .then((response) => {
+        // console.log(response.data)
         if (response.data.status === 'created') {
           dispatch({
             type: 'AUTH_LOGGED_IN',
@@ -49,7 +49,7 @@ export const Signup = () => {
           })
         }
       })
-      .catch((error) => console.log('signup api errors:', error))
+      .catch((error) => console.log('Signup api errors:', error))
 
     e.target.reset()
     e.preventDefault()
@@ -87,6 +87,7 @@ export const Signup = () => {
             <input
               type='text'
               placeholder='Username'
+              disabled={formIsLoading}
               value={username}
               onChange={(e) =>
                 signupDispatch({
@@ -102,6 +103,7 @@ export const Signup = () => {
             <input
               type='email'
               placeholder='Email'
+              disabled={formIsLoading}
               value={email}
               onChange={(e) =>
                 signupDispatch({
@@ -117,6 +119,7 @@ export const Signup = () => {
             <input
               type='password'
               placeholder='Password'
+              disabled={formIsLoading}
               value={password}
               onChange={(e) =>
                 signupDispatch({
@@ -132,6 +135,7 @@ export const Signup = () => {
             <input
               type='password'
               placeholder='Confirm Password'
+              disabled={formIsLoading}
               value={passwordConfirmation}
               onChange={(e) =>
                 signupDispatch({
@@ -158,7 +162,6 @@ export const Signup = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>create account</strong>
@@ -168,7 +171,6 @@ export const Signup = () => {
                 <Link to='/login'>
                   <button
                     placeholder='login'
-                    disabled={formIsLoading}
                     className='btn-secondary btn-lg mt-3 text-capitalize'
                   >
                     <strong>login</strong>
@@ -179,7 +181,6 @@ export const Signup = () => {
                 <Link to='/'>
                   <button
                     placeholder='home'
-                    disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
                   >
                     <strong>home</strong>

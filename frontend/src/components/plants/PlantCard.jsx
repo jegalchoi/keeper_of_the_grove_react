@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 export const PlantCard = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
+  const ownerId = user_id
 
   const [{ userId }, dispatch] = useContext(PlantContext)
 
@@ -26,12 +27,11 @@ export const PlantCard = ({ plant }) => {
     const plant = {
       water: new Date(),
     }
-    const url = `http://localhost:3001/api/v1/users/${user_id}/plants/${id}`
-
+    const urlPlantPatch = `http://localhost:3001/api/v1/users/${user_id}/plants/${id}`
     axios
-      .patch(url, { plant }, { withCredentials: true })
+      .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
-        // console.log(response.status)
+        // console.log(response.data)
         if (response.status === 200) {
           dispatch({
             type: 'PLANT_NEED_REFRESH',
@@ -40,7 +40,9 @@ export const PlantCard = ({ plant }) => {
           plantDispatch({ type: 'PLANT_DETAIL_DONE_LOADING' })
         }
       })
-      .catch((error) => console.log('water plant api errors:', error))
+      .catch((error) =>
+        console.log('PlantCard/waterPlant api errors:', error)
+      )
   }
 
   const history = useHistory()
@@ -66,7 +68,7 @@ export const PlantCard = ({ plant }) => {
           <Link to={`/details/${id}`}>
             <img src={image} alt={name} className='card-img-top' />
           </Link>
-          {userId === user_id &&
+          {userId === ownerId &&
             (plantIsLoading ? (
               <button className='water-btn' disabled>
                 <span className='badge badge-info text-capitalize'>
@@ -97,7 +99,7 @@ export const PlantCard = ({ plant }) => {
               <strong>{name}</strong>
             </p>
           </div>
-          {userId !== user_id ? (
+          {userId !== ownerId ? (
             <br />
           ) : (
             <div className='row justify-content-center text-muted'>

@@ -26,11 +26,11 @@ export const Login = () => {
       username,
       password,
     }
-    const url = 'http://localhost:3001/login'
-
+    const urlLogin = 'http://localhost:3001/login'
     axios
-      .post(url, { user }, { withCredentials: true })
+      .post(urlLogin, { user }, { withCredentials: true })
       .then((response) => {
+        // console.log(response.data)
         if (response.data.logged_in) {
           dispatch({
             type: 'AUTH_LOGGED_IN',
@@ -45,7 +45,9 @@ export const Login = () => {
           })
         }
       })
-      .catch((error) => console.log('login api errors:', error))
+      .catch((error) =>
+        console.log('Login/handleSubmit api errors:', error)
+      )
 
     e.target.reset()
     e.preventDefault()
@@ -83,6 +85,7 @@ export const Login = () => {
             <input
               type='text'
               placeholder='Username'
+              disabled={formIsLoading}
               value={username}
               onChange={(e) =>
                 loginDispatch({
@@ -98,6 +101,7 @@ export const Login = () => {
             <input
               type='password'
               placeholder='Password'
+              disabled={formIsLoading}
               value={password}
               onChange={(e) =>
                 loginDispatch({
@@ -124,7 +128,6 @@ export const Login = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>log in</strong>
@@ -134,7 +137,6 @@ export const Login = () => {
                 <Link to='/signup'>
                   <button
                     placeholder='create account'
-                    disabled={formIsLoading}
                     className='btn-secondary btn-lg mt-3 text-capitalize'
                   >
                     <strong>sign up</strong>
@@ -145,7 +147,6 @@ export const Login = () => {
                 <Link to='/'>
                   <button
                     placeholder='home'
-                    disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
                   >
                     <strong>home</strong>

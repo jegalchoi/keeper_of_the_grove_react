@@ -32,11 +32,11 @@ export const EditUser = () => {
       password,
       passwordConfirmation,
     }
-    const url = `http://localhost:3001/users/${userId}`
-
+    const urlUserPatch = `http://localhost:3001/users/${userId}`
     axios
-      .patch(url, { user }, { withCredentials: true })
+      .patch(urlUserPatch, { user }, { withCredentials: true })
       .then((response) => {
+        // console.log(response.data)
         if (response.data.status === 'updated') {
           dispatch({
             type: 'AUTH_LOGGED_IN',
@@ -51,24 +51,29 @@ export const EditUser = () => {
           })
         }
       })
-      .catch((error) => console.log('edit user api errors:', error))
+      .catch((error) =>
+        console.log('EditUser/handleSubmit api errors:', error)
+      )
 
     e.target.reset()
     e.preventDefault()
   }
 
   const deleteUser = () => {
-    const url = `http://localhost:3001/users/${userId}`
     const confirmation = confirm(
       'Are you sure you want to delete your account?'
     )
 
     if (confirmation) {
       console.log('user deletion submitted')
+
       dispatch({ type: 'FORM_START_LOADING' })
+
+      const urlUserDestroy = `http://localhost:3001/users/${userId}`
       axios
-        .delete(url, { withCredentials: true })
+        .delete(urlUserDestroy, { withCredentials: true })
         .then((response) => {
+          // console.log(response.data)
           if (response.data.status === 'destroyed') {
             dispatch({
               type: 'AUTH_LOGOUT',
@@ -77,7 +82,7 @@ export const EditUser = () => {
           }
         })
         .catch((error) =>
-          console.log('delete user api errors:', error)
+          console.log('EditUser/deleteUser api errors:', error)
         )
     }
   }
@@ -114,6 +119,7 @@ export const EditUser = () => {
             <input
               type='text'
               placeholder='Username'
+              disabled={formIsLoading}
               value={username}
               onChange={(e) =>
                 editUserDispatch({
@@ -129,6 +135,7 @@ export const EditUser = () => {
             <input
               type='email'
               placeholder='Email'
+              disabled={formIsLoading}
               value={email}
               onChange={(e) =>
                 editUserDispatch({
@@ -144,6 +151,7 @@ export const EditUser = () => {
             <input
               type='password'
               placeholder='Password'
+              disabled={formIsLoading}
               value={password}
               onChange={(e) =>
                 editUserDispatch({
@@ -159,6 +167,7 @@ export const EditUser = () => {
             <input
               type='password'
               placeholder='Confirm Password'
+              disabled={formIsLoading}
               value={passwordConfirmation}
               onChange={(e) =>
                 editUserDispatch({
@@ -185,7 +194,6 @@ export const EditUser = () => {
                 <button
                   type='submit'
                   placeholder='submit'
-                  disabled={formIsLoading}
                   className='btn-success btn-lg mt-3 text-capitalize'
                 >
                   <strong>update account</strong>
@@ -194,7 +202,6 @@ export const EditUser = () => {
               <div className='row justify-content-center'>
                 <button
                   placeholder='delete'
-                  disabled={formIsLoading}
                   className='btn-danger btn-lg mt-3 text-uppercase'
                   onClick={deleteUser}
                 >
@@ -205,7 +212,6 @@ export const EditUser = () => {
                 <Link to='/'>
                   <button
                     placeholder='home'
-                    disabled={formIsLoading}
                     className='btn-primary btn-lg mt-3 text-capitalize'
                   >
                     <strong>home</strong>

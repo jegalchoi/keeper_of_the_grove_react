@@ -55,27 +55,25 @@ export const PlantDetail = () => {
     console.log('fetching plant detail')
 
     const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
-
     axios
       .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
         showPlantDispatch({
           type:
-            response.data.status !== 400
+            response.data.status !== 400 ||
+            response.data.status !== 500
               ? 'PLANT_DETAIL_FETCH_SUCCESS'
               : 'PLANT_DETAIL_FETCH_FAILURE',
           payload: response.data,
         })
       })
       .catch((errors) =>
-        console.log('fetch plant detail api errors:', errors)
+        console.log('PlantDetail/useEffect api errors:', errors)
       )
   }, [])
 
   const deletePlant = () => {
-    const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
-
     const confirmation = confirm(
       'Are you sure you want to delete this plant?'
     )
@@ -89,9 +87,11 @@ export const PlantDetail = () => {
         deleteImage(imageId)
       }
 
+      const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
+          // console.log(response.data)
           if (response.data.status === 'destroyed') {
             dispatch({
               type: 'PLANT_NEED_REFRESH',
@@ -100,10 +100,7 @@ export const PlantDetail = () => {
           }
         })
         .catch((error) =>
-          console.log(
-            'delete plant from plant detail api errors:',
-            error
-          )
+          console.log('PlantDetail/deletePlant api errors:', error)
         )
     }
   }
@@ -112,10 +109,10 @@ export const PlantDetail = () => {
     console.log('deleting image from plant detail')
 
     const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
-
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
+        // console.log(response.data)
         if (response.data.status === 'destroyed') {
           console.log('image deleted from plant detail')
         } else {
@@ -126,10 +123,7 @@ export const PlantDetail = () => {
         }
       })
       .catch((error) =>
-        console.log(
-          'delete image from plant detail api errors:',
-          error
-        )
+        console.log('PlantDetail/deleteImage api errors:', error)
       )
   }
 

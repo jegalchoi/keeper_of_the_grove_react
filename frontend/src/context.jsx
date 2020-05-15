@@ -122,7 +122,6 @@ export const PlantProvider = (props) => {
     console.log('fetching login status')
 
     const urlLoginStatus = 'http://localhost:3001/logged_in'
-
     axios
       .get(urlLoginStatus, { withCredentials: true })
       .then((response) => {
@@ -135,7 +134,7 @@ export const PlantProvider = (props) => {
         })
       })
       .catch((errors) =>
-        console.log('check login api errors:', errors)
+        console.log('fetch login api errors:', errors)
       )
   }, [])
 
@@ -163,7 +162,7 @@ export const PlantProvider = (props) => {
         })
       })
       .catch((errors) =>
-        console.log('check plants api errors:', errors)
+        console.log('fetch plants api errors:', errors)
       )
   }, [plantsNeedRefresh, displayUserPlants])
 

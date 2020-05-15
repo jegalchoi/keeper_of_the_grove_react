@@ -1,4 +1,9 @@
-import React, { useContext, useReducer, useEffect } from 'react'
+import React, {
+  useContext,
+  useReducer,
+  useEffect,
+  useState,
+} from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { PlantContext } from '../../context'
@@ -10,6 +15,7 @@ import { ContainerWrapper } from '../ContainerWrapper'
 
 export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
+  const [uploadedFiles, setUploadedFiles] = useState([])
 
   const [
     {
@@ -54,45 +60,23 @@ export const EditPlant = () => {
     console.log('fetching image info')
 
     const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
-
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
         editPlantDispatch({
           type:
-            response.data.status !== 400
+            response.data.status !== 400 ||
+            response.data.status !== 500
               ? 'IMAGE_DETAIL_FETCH_SUCCESS'
               : 'IMAGE_DETAIL_FETCH_FAILURE',
           payload: response.data,
         })
       })
       .catch((errors) =>
-        console.log('check plant detail api errors:', errors)
+        console.log('editPlant/useEffect api errors:', errors)
       )
   }, [])
-
-  const deleteImage = (id) => {
-    console.log('deleting image from edit plant')
-
-    const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
-
-    axios
-      .delete(urlImageDestroy, { withCredentials: true })
-      .then((response) => {
-        if (response.data.status === 'destroyed') {
-          console.log('image deleted from edit plant')
-        } else {
-          editPlantDispatchSetImageState({
-            type: 'IMAGE_ERRORS',
-            payload: response.data,
-          })
-        }
-      })
-      .catch((error) =>
-        console.log('delete image api errors:', error)
-      )
-  }
 
   const handleSubmit = (e) => {
     console.log('editing plant')
@@ -104,21 +88,14 @@ export const EditPlant = () => {
       notes: notes.replace(/\n/g, '<br />'),
       water: water === '' ? null : water,
       hidden,
-      image:
-        originalImageUrl === '' && imageUrl === ''
-          ? 'https://placeimg.com/320/240/nature'
-          : imageUrl || originalImageUrl,
-      image_id: imageId || originalImageId,
       user_id: userId,
     }
-    console.log(plant)
-
     const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
 
     if (
       imageId !== '' &&
       originalImageId !== null &&
-      imageId !== originalImageId
+      imagePublicId !== originalImagePublicId
     ) {
       deleteImage(originalImageId)
     }
@@ -126,11 +103,16 @@ export const EditPlant = () => {
     axios
       .patch(urlPlantEdit, { plant }, { withCredentials: true })
       .then((response) => {
+        // console.log(response.data)
         if (response.data.status === 'updated') {
-          dispatch({
-            type: 'PLANT_NEED_REFRESH',
-          })
-          history.push(`/details/${id}`)
+          if (uploadedFiles.length > 0) {
+            uploadImage(id)
+          } else {
+            dispatch({
+              type: 'PLANT_NEED_REFRESH',
+            })
+            history.push(`/details/${id}`)
+          }
         } else {
           editPlantDispatch({
             type: 'PLANT_UPDATE_FAILURE',
@@ -138,15 +120,72 @@ export const EditPlant = () => {
           })
         }
       })
-      .catch((error) => console.log('edit plant api errors:', error))
+      .catch((error) =>
+        console.log('editPlant/handleSubmit api errors:', error)
+      )
 
     e.target.reset()
     e.preventDefault()
   }
 
-  const deletePlant = () => {
-    const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+  const uploadImage = (plantId) => {
+    console.log('uploading image')
 
+    let image = new FormData()
+    image.append('file', uploadedFiles[0])
+    image.append('user_id', userId)
+    image.append('plant_id', plantId)
+    const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    axios
+      .post(urlImageCreate, image, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        const imageUrl = response.data.image.url
+        const imageId = response.data.image.id
+        if (response.data.status === 'created') {
+          setImageForPlant(plantId, imageUrl, imageId)
+        } else {
+          editPlantDispatch({
+            type: 'IMAGE_ERRORS',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('editPlant/uploadImage api errors:', error)
+      )
+  }
+
+  const setImageForPlant = (plantId, imageUrl, imageId) => {
+    console.log('setting image for plant')
+
+    let plant = {
+      image: imageUrl,
+      image_id: imageId,
+    }
+    const urlPlantPatch = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    axios
+      .patch(urlPlantPatch, { plant }, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.status === 'updated') {
+          dispatch({
+            type: 'PLANT_NEED_REFRESH',
+          })
+          history.push(`/details/${plantId}`)
+        } else {
+          editPlantDispatch({
+            type: 'PLANT_UPDATE_FAILURE',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('Editplant/setImageForPlant api errors:', error)
+      )
+  }
+
+  const deletePlant = () => {
     const confirmation = confirm(
       'Are you sure you want to delete your plant?'
     )
@@ -156,11 +195,19 @@ export const EditPlant = () => {
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
-      deleteImage(originalImageId)
+      if (
+        imageId !== '' &&
+        originalImageId !== null &&
+        imagePublicId !== originalImagePublicId
+      ) {
+        deleteImage(originalImageId)
+      }
 
+      const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
+          // console.log(response.data)
           if (response.data.status === 'destroyed') {
             dispatch({
               type: 'PLANT_NEED_REFRESH',
@@ -169,9 +216,35 @@ export const EditPlant = () => {
           }
         })
         .catch((error) =>
-          console.log('delete plant api errors:', error)
+          console.log('EditPlant/deletePlant api errors:', error)
         )
     }
+  }
+
+  const deleteImage = (imageId) => {
+    console.log('deleting image from edit plant')
+
+    const urlImageDestroy = `http://localhost:3001/api/v1/images/${imageId}`
+    axios
+      .delete(urlImageDestroy, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.status === 'destroyed') {
+          console.log('image deleted from edit plant')
+        } else {
+          editPlantDispatch({
+            type: 'IMAGE_ERRORS',
+            payload: response.data,
+          })
+        }
+      })
+      .catch((error) =>
+        console.log('EditPlant/deleteImage api errors:', error)
+      )
+  }
+
+  const editPlantSetUploadedFiles = (files) => {
+    setUploadedFiles([...uploadedFiles, ...files])
   }
 
   const history = useHistory()
@@ -197,72 +270,10 @@ export const EditPlant = () => {
   //   return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;')
   // }
 
-  const editPlantDispatchSetImageState = (state, value) => {
-    editPlantDispatch({
-      type: 'PLANT_SET_IMAGE_STATE',
-      stateName: state,
-      payload: value,
-    })
-  }
-
-  const editPlantDispatchClearImages = () => {
-    editPlantDispatch({
-      type: 'PLANT_CLEAR_IMAGES',
-    })
-  }
-
   console.log('edit plant')
 
   return (
     <ContainerWrapper>
-      <h1>
-        imageUrl:{' '}
-        {imageUrl === ''
-          ? 'empty string'
-          : imageUrl === null
-          ? 'null'
-          : imageUrl}
-      </h1>
-      <h1>
-        imageId:{' '}
-        {imageId === ''
-          ? 'empty string'
-          : imageId === null
-          ? 'null'
-          : imageId}
-      </h1>
-      <h1>
-        imagePublicId:{' '}
-        {imagePublicId === ''
-          ? 'empty string'
-          : imagePublicId === null
-          ? 'null'
-          : imagePublicId}
-      </h1>
-      <h1>
-        originalImageUrl:{' '}
-        {originalImageUrl === ''
-          ? 'empty string'
-          : originalImageUrl === null
-          ? 'null'
-          : originalImageUrl}
-      </h1>
-      <h1>
-        originalImageId:{' '}
-        {originalImageId === ''
-          ? 'empty string'
-          : originalImageId === null
-          ? 'null'
-          : originalImageId}
-      </h1>
-      <h1>
-        originalImagePublicId:{' '}
-        {originalImagePublicId === ''
-          ? 'empty string'
-          : originalImagePublicId === null
-          ? 'null'
-          : originalImagePublicId}
-      </h1>
       <h1 className='text-capitalize text-center'>
         <strong>edit plant</strong>
       </h1>
@@ -272,6 +283,7 @@ export const EditPlant = () => {
             <input
               type='text'
               placeholder='Name'
+              disabled={plantIsLoading}
               value={name}
               onChange={(e) =>
                 editPlantDispatch({
@@ -289,6 +301,7 @@ export const EditPlant = () => {
               <DatePicker
                 inline
                 showTimeSelect
+                disabled={plantIsLoading}
                 selected={water}
                 onChange={(date) => {
                   // console.log(date)
@@ -309,6 +322,7 @@ export const EditPlant = () => {
             <div className='col'>
               <textarea
                 placeholder='Notes'
+                disabled={plantIsLoading}
                 value={notes}
                 onChange={(e) =>
                   editPlantDispatch({
@@ -328,6 +342,7 @@ export const EditPlant = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
+                disabled={plantIsLoading}
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
@@ -350,16 +365,19 @@ export const EditPlant = () => {
             </div>
           </div>
           <br />
-          <div className='row'>
+          <div className='row justify-content-center'>
             <PlantDropzone
-              userId={userId}
-              imageId={imageId}
-              imagePublicId={imagePublicId}
-              plantDispatchSetImageState={
-                editPlantDispatchSetImageState
-              }
-              plantDispatchClearImages={editPlantDispatchClearImages}
+              setUploadedFiles={editPlantSetUploadedFiles}
+              uploadedFiles={uploadedFiles}
             />
+            {!plantIsLoading && uploadedFiles.length > 0 && (
+              <input
+                type='button'
+                className='btn btn-outline-danger mt-3 text-uppercase'
+                onClick={() => setUploadedFiles([])}
+                value='clear queued photos'
+              />
+            )}
           </div>
           {plantIsLoading
             ? null
