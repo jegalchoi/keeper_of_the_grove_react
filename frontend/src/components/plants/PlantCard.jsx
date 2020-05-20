@@ -62,11 +62,15 @@ export const PlantCard = ({ plant }) => {
   }
 
   return (
-    <PlantWrapper className='col-9 mx-auto col-md-6 col-lg-3 my-3'>
+    <PlantWrapper className='col-9 mx-auto col-md-6 col-lg-3 my-3 text-center'>
       <div className='card'>
-        <div className='img-container p-5'>
+        <div className='img-container'>
           <Link to={`/details/${id}`}>
-            <img src={image} alt={name} className='card-img-top' />
+            <img
+              src={image}
+              alt={name}
+              className='card-img-top rounded pt-5'
+            />
           </Link>
           {userId === ownerId &&
             (plantIsLoading ? (
@@ -96,7 +100,9 @@ export const PlantCard = ({ plant }) => {
         <div className='card-footer container'>
           <div className='row justify-content-center'>
             <p className='mb-0 d-inline-block text-truncate'>
-              <strong>{name}</strong>
+              <Link to={`/details/${id}`}>
+                <strong>{name}</strong>
+              </Link>
             </p>
           </div>
           {userId !== ownerId ? (
@@ -138,11 +144,17 @@ const PlantWrapper = styled.div`
     }
   }
   .img-container {
+    height: 15rem;
     position: relative;
     overflow: hidden;
   }
   .card-img-top {
+    height: auto;
+    max-height: 12rem;
+    width: auto;
+    max-width: 12rem;
     transition: all 0.5s linear;
+    
   }
   .img-container:hover  .card-img-top {
     transform: scale(1.2);
