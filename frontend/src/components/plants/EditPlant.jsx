@@ -53,7 +53,7 @@ export const EditPlant = () => {
   })
 
   useEffect(() => {
-    if (originalImageId === null) {
+    if (originalImageId === -1) {
       return
     }
 
@@ -194,14 +194,6 @@ export const EditPlant = () => {
       console.log('deleting plant from edit plant')
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
-
-      if (
-        imageId !== '' &&
-        originalImageId !== null &&
-        imagePublicId !== originalImagePublicId
-      ) {
-        deleteImage(originalImageId)
-      }
 
       const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
       axios
