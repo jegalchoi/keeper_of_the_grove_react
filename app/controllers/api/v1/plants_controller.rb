@@ -5,7 +5,7 @@ class Api::V1::PlantsController < ApplicationController
   
   def authorized_index
     @user = User.find(params[:user_id])
-    @plants = @user.plants
+    @plants = @user.plants.order(water: :desc)
     if @plants && authorized_user?
       render json: {
         plants: @plants
@@ -24,7 +24,8 @@ class Api::V1::PlantsController < ApplicationController
   end
 
   def index
-    @plants = Plant.where(hidden: false)
+    @plants = Plant.where(hidden: false).order(created_at: :desc)
+
     if @plants
       render json: {
         plants: @plants
