@@ -94,7 +94,7 @@ export const EditPlant = () => {
 
     if (
       imageId !== '' &&
-      originalImageId !== null &&
+      originalImageId !== -1 &&
       imagePublicId !== originalImagePublicId
     ) {
       deleteImage(originalImageId)

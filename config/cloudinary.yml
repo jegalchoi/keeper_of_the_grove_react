@@ -1,19 +1,19 @@
 ---
 development:
   cloud_name: diekjezbk
-  api_key: '398144785841944'
-  api_secret: uxIsY1MRVVdx7yuK4sxDEj6nANY
+  api_key: '947769111316288'
+  api_secret: ejveBG3KJRAYGMy6ME_Ad1_qeIc
   enhance_image_tag: true
   static_file_support: false
 production:
   cloud_name: diekjezbk
-  api_key: '398144785841944'
-  api_secret: uxIsY1MRVVdx7yuK4sxDEj6nANY
+  api_key: '947769111316288'
+  api_secret: ejveBG3KJRAYGMy6ME_Ad1_qeIc
   enhance_image_tag: true
   static_file_support: true
 test:
   cloud_name: diekjezbk
-  api_key: '398144785841944'
-  api_secret: uxIsY1MRVVdx7yuK4sxDEj6nANY
+  api_key: '947769111316288'
+  api_secret: ejveBG3KJRAYGMy6ME_Ad1_qeIc
   enhance_image_tag: true
   static_file_support: false

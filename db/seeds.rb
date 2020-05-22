@@ -10,6 +10,7 @@
   Plant.create(
     name: "Plant #{i + 1}",
     notes: "notes for plant #{i + 1}",
-    user_id: 1
+    user_id: 20,
+    hidden: false
   )
 end

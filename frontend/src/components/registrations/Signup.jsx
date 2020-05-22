@@ -28,7 +28,7 @@ export const Signup = () => {
       username,
       email,
       password,
-      passwordConfirmation,
+      password_confirmation: passwordConfirmation,
     }
     const urlSignup = 'http://localhost:3001/users'
     axios

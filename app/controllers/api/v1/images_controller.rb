@@ -17,6 +17,7 @@ class Api::V1::ImagesController < ApplicationController
 
   def create
     uploaded_image = Cloudinary::Uploader.upload(params[:file])
+    
     image = { 
       'url': uploaded_image['secure_url'], 
       'public_id': uploaded_image['public_id'], 
@@ -40,7 +41,7 @@ class Api::V1::ImagesController < ApplicationController
 
   def destroy
     if @image
-      if Cloudinary::Uploader.destroy(@image.public_id)['result'] === 'ok'
+      if @result === 'ok'
         @image.destroy
         render json: {
           status: :destroyed

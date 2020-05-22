@@ -59,8 +59,9 @@ const reducer = (state, action) => {
         userId: '',
         username: '',
         plantsUser: [],
-        displayUserPlants: false,
         plantDetail: {},
+        displayUserPlants: false,
+        plantsNeedRefresh: true,
         errors: null,
       }
     case 'PLANTS_PUBLIC_FETCH_SUCCESS':

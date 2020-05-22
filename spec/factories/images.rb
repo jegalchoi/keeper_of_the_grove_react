@@ -4,11 +4,11 @@
 #
 #  id         :bigint           not null, primary key
 #  url        :string           not null
-#  public_id  :string
+#  public_id  :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer
-#  plant_id   :integer
+#  user_id    :integer          not null
+#  plant_id   :integer          not null
 #
 FactoryBot.define do
   factory :image do

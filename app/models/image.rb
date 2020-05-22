@@ -4,11 +4,11 @@
 #
 #  id         :bigint           not null, primary key
 #  url        :string           not null
-#  public_id  :string
+#  public_id  :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer
-#  plant_id   :integer
+#  user_id    :integer          not null
+#  plant_id   :integer          not null
 #
 class Image < ApplicationRecord
   validates :url, presence: true
@@ -18,4 +18,13 @@ class Image < ApplicationRecord
 
   belongs_to :user
   belongs_to :plant
+  
+  before_destroy :delete_image_from_cloudinary
+
+  private
+
+    def delete_image_from_cloudinary
+      @result = Cloudinary::Uploader.destroy(public_id)['result']
+    end
+
 end

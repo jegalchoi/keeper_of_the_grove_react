@@ -208,9 +208,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (1.7.0)
-    responders (3.0.0)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -313,7 +310,6 @@ DEPENDENCIES
   rack-cors
   rails (~> 6.0.2, >= 6.0.2.1)
   rails-controller-testing
-  responders
   rspec-rails
   sass-rails (>= 6)
   shoulda-matchers
