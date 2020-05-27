@@ -27,7 +27,8 @@ export const PlantCard = ({ plant }) => {
     const plant = {
       water: new Date(),
     }
-    const urlPlantPatch = `http://localhost:3001/api/v1/users/${user_id}/plants/${id}`
+    // const urlPlantPatch = `http://localhost:3001/api/v1/users/${user_id}/plants/${id}`
+    const urlPlantPatch = `/api/v1/users/${user_id}/plants/${id}`
     axios
       .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {

@@ -16,6 +16,6 @@
 FactoryBot.define do
   factory :plant do
     name { Faker::Team.name }
-    user_id { 20 }
+    user_id { 1 }
   end
 end

@@ -49,7 +49,8 @@ export const NewPlant = () => {
       hidden,
       user_id: userId,
     }
-    const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
+    // const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
+    const urlPlantCreate = '/api/v1/plants'
     axios
       .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
@@ -86,7 +87,8 @@ export const NewPlant = () => {
     image.append('file', uploadedFiles[0])
     image.append('user_id', userId)
     image.append('plant_id', plantId)
-    const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    // const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    const urlImageCreate = '/api/v1/images'
     axios
       .post(urlImageCreate, image, { withCredentials: true })
       .then((response) => {
@@ -114,7 +116,8 @@ export const NewPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    // const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    const urlPlantEdit = `/api/v1/users/${userId}/plants/${plantId}`
     axios
       .patch(urlPlantEdit, { plant }, { withCredentials: true })
       .then((response) => {

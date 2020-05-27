@@ -54,7 +54,8 @@ export const PlantDetail = () => {
   useEffect(() => {
     console.log('fetching plant detail')
 
-    const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
+    // const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
+    const urlPlantGet = `/api/v1/plants/${plantId}`
     axios
       .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
@@ -87,7 +88,8 @@ export const PlantDetail = () => {
         deleteImage(imageId)
       }
 
-      const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+      // const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+      const urlPlantDestroy = `/api/v1/users/${userId}/plants/${plantId}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -108,7 +110,8 @@ export const PlantDetail = () => {
   const deleteImage = (id) => {
     console.log('deleting image from plant detail')
 
-    const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
+    // const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
+    const urlImageDestroy = `/api/v1/images/${id}`
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {

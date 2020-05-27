@@ -26,7 +26,8 @@ export const Login = () => {
       username,
       password,
     }
-    const urlLogin = 'http://localhost:3001/login'
+    // const urlLogin = 'http://localhost:3001/login'
+    const urlLogin = '/login'
     axios
       .post(urlLogin, { user }, { withCredentials: true })
       .then((response) => {

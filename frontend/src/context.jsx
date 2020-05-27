@@ -122,7 +122,8 @@ export const PlantProvider = (props) => {
   useEffect(() => {
     console.log('fetching login status')
 
-    const urlLoginStatus = 'http://localhost:3001/logged_in'
+    // const urlLoginStatus = 'http://localhost:3001/logged_in'
+    const urlLoginStatus = '/logged_in'
     axios
       .get(urlLoginStatus, { withCredentials: true })
       .then((response) => {
@@ -142,8 +143,10 @@ export const PlantProvider = (props) => {
   useEffect(() => {
     console.log('fetching plants')
 
-    const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
-    const urlAllPlants = `http://localhost:3001/api/v1/plants/`
+    // const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
+    const urlUserPlants = `/api/v1/users/${userId}/plants/`
+    // const urlAllPlants = `http://localhost:3001/api/v1/plants/`
+    const urlAllPlants = `/api/v1/plants/`
     const urlPlantsGet = displayUserPlants
       ? urlUserPlants
       : urlAllPlants

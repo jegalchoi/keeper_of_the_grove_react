@@ -59,7 +59,8 @@ export const EditPlant = () => {
 
     console.log('fetching image info')
 
-    const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
+    // const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
+    const urlImageGet = `/api/v1/images/${originalImageId}`
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
@@ -90,7 +91,8 @@ export const EditPlant = () => {
       hidden,
       user_id: userId,
     }
-    const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+    // const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+    const urlPlantEdit = `/api/v1/users/${userId}/plants/${id}`
 
     if (
       imageId !== '' &&
@@ -135,7 +137,8 @@ export const EditPlant = () => {
     image.append('file', uploadedFiles[0])
     image.append('user_id', userId)
     image.append('plant_id', plantId)
-    const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    // const urlImageCreate = 'http://localhost:3001/api/v1/images'
+    const urlImageCreate = '/api/v1/images'
     axios
       .post(urlImageCreate, image, { withCredentials: true })
       .then((response) => {
@@ -163,7 +166,8 @@ export const EditPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    const urlPlantPatch = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    // const urlPlantPatch = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
+    const urlPlantPatch = `/api/v1/users/${userId}/plants/${plantId}`
     axios
       .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
@@ -195,7 +199,8 @@ export const EditPlant = () => {
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
-      const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+      // const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
+      const urlPlantDestroy = `/api/v1/users/${userId}/plants/${id}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -216,7 +221,8 @@ export const EditPlant = () => {
   const deleteImage = (imageId) => {
     console.log('deleting image from edit plant')
 
-    const urlImageDestroy = `http://localhost:3001/api/v1/images/${imageId}`
+    // const urlImageDestroy = `http://localhost:3001/api/v1/images/${imageId}`
+    const urlImageDestroy = `/api/v1/images/${imageId}`
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
