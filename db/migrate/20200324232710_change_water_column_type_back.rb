@@ -1,5 +1,0 @@
-class ChangeWaterColumnTypeBack < ActiveRecord::Migration[6.0]
-  def change
-    change_column :plants, :water, :datetime
-  end
-end
