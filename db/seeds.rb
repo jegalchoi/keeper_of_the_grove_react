@@ -8,7 +8,7 @@
 
 User.create(
     name: "jaychoi",
-    email: 'jaychoi@gmail.com'
+    email: 'jaychoi@gmail.com',
     password: '123456'
   )
 
