@@ -6,11 +6,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+User.create(
+    name: "jaychoi",
+    email: 'jaychoi@gmail.com'
+    password: '123456'
+  )
+
 9.times do |i|
   Plant.create(
     name: "Plant #{i + 1}",
     notes: "notes for plant #{i + 1}",
-    user_id: 20,
+    user_id: 1,
     hidden: false
   )
 end
