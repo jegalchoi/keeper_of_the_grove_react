@@ -24,7 +24,7 @@
 /config/cloudinary.yml
 /frontend/.env
 
-./public
+/public
 /node_modules
 /yarn-error.log
 yarn-debug.log*
