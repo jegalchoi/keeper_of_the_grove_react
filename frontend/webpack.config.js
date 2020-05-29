@@ -33,7 +33,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.'],
   },
   devServer: {
-    contentBase: path.join(__dirname, './build'),
+    contentBase: path.join(__dirname, 'build'),
     port: 3000,
     watchContentBase: true,
     historyApiFallback: true,
