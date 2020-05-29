@@ -5,9 +5,6 @@
   "main": "index.js",
   "proxy": "http://localhost:3001",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode-development",
-    "test": "jest --config ./jest.config.json",
-    "test:watch": "npm run test -- --watch",
     "build": "yarn --cwd frontend install && yarn --cwd frontend build",
     "deploy": "cp -a frontend/build/. public/",
     "heroku-postbuild": "yarn build && yarn deploy"
