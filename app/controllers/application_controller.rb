@@ -3,6 +3,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :login!, :logged_in?, :logout!, :current_user, :authorized_user?, :current_user_id, :current_user_username
 
+  def fallback_index_html
+    render :file => 'public/index.html'
+  end
+
   def login!
     session[:user_id] = @user.id
   end
