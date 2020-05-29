@@ -4,6 +4,9 @@
   "description": "plant watering tracker",
   "main": "index.js",
   "proxy": "http://localhost:3001",
+  "scripts": {
+    "build": "webpack"
+  },
   "keywords": [],
   "author": "Jay Choi",
   "license": "ISC",
