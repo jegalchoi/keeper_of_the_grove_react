@@ -4,11 +4,6 @@
   "description": "plant watering tracker",
   "main": "index.js",
   "proxy": "http://localhost:3001",
-  "scripts": {
-    "build": "yarn --cwd frontend install && yarn --cwd frontend build",
-    "deploy": "cp -a frontend/build/. public/",
-    "heroku-postbuild": "yarn build && yarn deploy"
-  },
   "engines": {
     "node": "12.7.0",
     "npm": "6.14.4"
