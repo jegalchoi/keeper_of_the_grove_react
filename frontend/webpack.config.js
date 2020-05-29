@@ -1,11 +1,10 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   context: __dirname,
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/',
   },
@@ -28,21 +27,16 @@ module.exports = {
       },
     ],
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.'],
   },
   devServer: {
-    contentBase: './build',
+    contentBase: './dist',
     port: 3000,
     watchContentBase: true,
     historyApiFallback: true,
     open: false,
-    hot: true,
+    hot: false,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve('./index.html'),
-    }),
-  ],
 }
