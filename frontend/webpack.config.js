@@ -33,12 +33,12 @@ module.exports = {
     extensions: ['.js', '.jsx', '.'],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: './build',
     port: 3000,
     watchContentBase: true,
     historyApiFallback: true,
     open: false,
-    hot: false,
+    hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
