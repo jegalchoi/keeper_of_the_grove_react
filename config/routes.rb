@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get '*path', to: "application#fallback_index_html", constraints: -> (request) do
     !request.xhr? && request.format.html?
   end
+  
   defaults format: :json do
     namespace :api do
       namespace :v1 do
