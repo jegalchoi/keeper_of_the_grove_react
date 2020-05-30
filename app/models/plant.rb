@@ -15,8 +15,6 @@
 #
 class Plant < ApplicationRecord
   validates :name, presence: true
-  validates :notes, presence: true
-  validates :hidden, presence: true
   validates :image, presence: true
   validates :image_id, presence: true
   validates :user_id, presence: true

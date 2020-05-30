@@ -54,7 +54,7 @@ export const NewPlant = () => {
     axios
       .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         const plantId = response.data.plant.id
         if (response.data.status === 'created') {
           if (uploadedFiles.length > 0) {
