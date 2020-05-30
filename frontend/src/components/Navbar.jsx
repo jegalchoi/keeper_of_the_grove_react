@@ -21,8 +21,10 @@ export const Navbar = () => {
     console.log('logging out')
 
     dispatch({ type: 'SITE_START_LOADING' })
+    // const urlLoginStatus = 'http://localhost:3001/logout'
+    const urlLogout = '/logout'
     axios
-      .delete('http://localhost:3001/logout', {
+      .delete(urlLogout, {
         withCredentials: true,
       })
       .then((response) => {
