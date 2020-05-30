@@ -27,7 +27,7 @@ module.exports = {
       },
     ],
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.'],
   },
@@ -37,6 +37,6 @@ module.exports = {
     watchContentBase: true,
     historyApiFallback: true,
     open: false,
-    hot: false,
+    hot: true,
   },
 }
