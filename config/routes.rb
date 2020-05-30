@@ -20,13 +20,12 @@ Rails.application.routes.draw do
     get :logged_in, to: 'sessions#is_logged_in?'
     
     resources :users, only: [:show, :create, :update, :destroy]
-
   end
 
-  get '*path', to: "application#fallback_index_html", constraints: -> (request) do
+  get '*path', to: 'application#fallback_index_html', constraints: -> (request) do
     !request.xhr? && request.format.html?
   end
   
-  root to: redirect('/')
+  root 'application#fallback_index_html'
   
 end
