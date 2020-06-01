@@ -26,7 +26,7 @@ export const PlantDetail = () => {
     },
     showPlantDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: false,
+    plantIsLoading: true,
     id: plantId,
     name: '',
     notes: '',
@@ -176,7 +176,7 @@ export const PlantDetail = () => {
 
   return (
     <React.Fragment>
-      {errors ? null : (
+      {errors || plantIsLoading ? null : (
         <div className='container'>
           {/* {title} */}
           <div className='row'>
