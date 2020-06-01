@@ -26,6 +26,6 @@ Rails.application.routes.draw do
     !request.xhr? && request.format.html?
   end
   
-  root 'application#fallback_index_html'
+  root to: redirect('/')
   
 end
