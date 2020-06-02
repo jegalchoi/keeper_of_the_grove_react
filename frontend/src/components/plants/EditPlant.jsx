@@ -303,7 +303,7 @@ export const EditPlant = () => {
                 showTimeSelect
                 disabled={plantIsLoading}
                 selected={water}
-                onChange={(moment(dateString).toDate()) => {
+                onChange={(date) => {
                   // console.log(date)
                   return editPlantDispatch({
                     type: 'field',
