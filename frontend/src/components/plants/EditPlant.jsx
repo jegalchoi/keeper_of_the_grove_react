@@ -12,6 +12,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
+import enUS from 'date-fns/locale/en-US'
 
 export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
@@ -53,6 +54,7 @@ export const EditPlant = () => {
   })
 
   useEffect(() => {
+    console.log(originalImageId)
     if (originalImageId === -1) {
       return
     }
@@ -64,7 +66,7 @@ export const EditPlant = () => {
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
-        // console.log(response.data)
+        console.log(response.data)
         editPlantDispatch({
           type:
             response.data.status !== 400 ||
@@ -301,7 +303,7 @@ export const EditPlant = () => {
                 showTimeSelect
                 disabled={plantIsLoading}
                 selected={water}
-                onChange={(date) => {
+                onChange={(moment(dateString).toDate()) => {
                   // console.log(date)
                   return editPlantDispatch({
                     type: 'field',

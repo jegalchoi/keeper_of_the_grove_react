@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
+import enUs from 'date-fns/locale/en-US'
 
 export const NewPlant = () => {
   const [{ userId }, dispatch] = useContext(PlantContext)
