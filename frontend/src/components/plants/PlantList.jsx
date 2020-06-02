@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { PlantCard } from './PlantCard.jsx'
 import { Title } from '../Title'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 
 export const PlantList = () => {
   const [
     { plantsPublic, plantsUser, displayUserPlants },
-  ] = useContext(PlantContext)
+  ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
   console.log('plantlist')

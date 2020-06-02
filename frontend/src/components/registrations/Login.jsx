@@ -1,12 +1,12 @@
 import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const Login = () => {
-  const [{}, dispatch] = useContext(PlantContext)
+  const [{}, dispatch] = useContext(GroveContext)
 
   const [
     { username, password, loading, errors },

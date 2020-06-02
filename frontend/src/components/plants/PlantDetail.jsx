@@ -1,12 +1,12 @@
 import React, { useContext, useReducer, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import TimeAgo from 'react-timeago'
 
 export const PlantDetail = () => {
-  const [{ userId }, dispatch] = useContext(PlantContext)
+  const [{ userId }, dispatch] = useContext(GroveContext)
 
   let { plantId } = useParams()
 

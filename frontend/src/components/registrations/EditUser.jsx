@@ -1,13 +1,13 @@
 import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const EditUser = () => {
   const [{ formIsLoading, userId }, dispatch] = useContext(
-    PlantContext
+    GroveContext
   )
 
   const [

@@ -1,24 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { PlantProvider } from './context'
+import { GroveProvider } from './context'
 import 'bootstrap/dist/css/bootstrap.css'
 
 import { App } from './App.jsx'
 
 // ReactDOM.render(
-//   <PlantProvider>
+//   <GroveProvider>
 //     <Router>
 //       <App />
 //     </Router>
-//   </PlantProvider>,
+//   </GroveProvider>,
 //   document.getElementById('root')
 // )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <PlantProvider>
+  <GroveProvider>
     <Router>
       <App />
     </Router>
-  </PlantProvider>
+  </GroveProvider>
 )

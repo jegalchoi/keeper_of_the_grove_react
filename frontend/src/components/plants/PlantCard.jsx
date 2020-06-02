@@ -1,7 +1,7 @@
 import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import TimeAgo from 'react-timeago'
 import styled from 'styled-components'
@@ -10,7 +10,7 @@ export const PlantCard = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
   const ownerId = user_id
 
-  const [{ userId }, dispatch] = useContext(PlantContext)
+  const [{ userId }, dispatch] = useContext(GroveContext)
 
   const [{ plantIsLoading }, plantDispatch] = useReducer(
     plantsReducer,

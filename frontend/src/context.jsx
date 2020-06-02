@@ -1,6 +1,6 @@
 import React, { useReducer, createContext, useEffect } from 'react'
 import axios from 'axios'
-export const PlantContext = createContext()
+export const GroveContext = createContext()
 
 const initialState = {
   siteIsLoading: true,
@@ -171,8 +171,8 @@ export const PlantProvider = (props) => {
   }, [plantsNeedRefresh, displayUserPlants])
 
   return (
-    <PlantContext.Provider value={[state, dispatch]}>
+    <GroveContext.Provider value={[state, dispatch]}>
       {props.children}
-    </PlantContext.Provider>
+    </GroveContext.Provider>
   )
 }

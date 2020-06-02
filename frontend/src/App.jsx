@@ -1,20 +1,20 @@
 import React, { useContext } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { PlantContext } from './context'
+import { GroveContext } from './context'
 import { Navbar } from './components/Navbar.jsx'
 import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'
 import { PlantList } from './components/plants/PlantList'
-import { NewPlant } from './components/plants/NewPlant'
 import { PlantDetail } from './components/plants/PlantDetail'
-import { Default } from './components/Default.jsx'
+import { NewPlant } from './components/plants/NewPlant'
 import { EditPlant } from './components/plants/EditPlant'
+import { Default } from './components/Default.jsx'
 
 export const App = () => {
   console.log('app')
 
-  const [{ siteIsLoading, permissions }] = useContext(PlantContext)
+  const [{ siteIsLoading, permissions }] = useContext(GroveContext)
 
   // console.log(state)
 

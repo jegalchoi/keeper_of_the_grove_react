@@ -1,7 +1,7 @@
 import React, { useContext, useReducer, useState } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import { PlantContext } from '../../context'
+import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -11,7 +11,7 @@ import enUS from 'date-fns/locale/en-US'
 import { parseISO, format } from 'date-fns'
 
 export const NewPlant = () => {
-  const [{ userId }, dispatch] = useContext(PlantContext)
+  const [{ userId }, dispatch] = useContext(GroveContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
 
   const [
