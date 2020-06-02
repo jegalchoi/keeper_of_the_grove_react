@@ -19,6 +19,9 @@ export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
 
+  const plantWater =
+    plantDetail.water === nil ? null : new Date(plantDetail.water)
+
   const [
     {
       plantIsLoading,
@@ -42,7 +45,7 @@ export const EditPlant = () => {
     id: plantDetail.id,
     name: plantDetail.name,
     notes: plantDetail.notes,
-    water: new Date(plantDetail.water),
+    water: plantWater,
     hidden: plantDetail.hidden,
     imageUrl: '',
     imageId: '',
@@ -89,7 +92,7 @@ export const EditPlant = () => {
     let plant = {
       name,
       notes: notes.replace(/\n/g, '<br />'),
-      water: water === '' ? null : water,
+      water: water,
       hidden,
       user_id: userId,
     }
