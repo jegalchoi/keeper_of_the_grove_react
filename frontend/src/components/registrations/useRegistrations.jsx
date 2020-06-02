@@ -11,12 +11,6 @@ export const registrationsReducer = (state, action) => {
         loading: false,
         errors: action.payload.errors,
       }
-    case 'AUTH_LOGIN_FAILURE':
-      return {
-        username: '',
-        password: '',
-        errors: action.payload.errors,
-      }
     case 'AUTH_START_LOADING':
       return {
         ...state,

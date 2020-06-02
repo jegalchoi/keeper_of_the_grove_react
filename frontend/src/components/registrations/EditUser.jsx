@@ -11,20 +11,28 @@ export const EditUser = () => {
   )
 
   const [
-    { username, email, password, passwordConfirmation, errors },
+    {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      loading,
+      errors,
+    },
     editUserDispatch,
   ] = useReducer(registrationsReducer, {
     username: '',
     email: '',
     password: '',
     passwordConfirmation: '',
+    loading: false,
     errors: null,
   })
 
   const handleSubmit = (e) => {
     console.log('editing account')
 
-    dispatch({ type: 'FORM_START_LOADING' })
+    editUserDispatch({ type: 'AUTH_START_LOADING' })
 
     let user = {
       username,
@@ -45,7 +53,6 @@ export const EditUser = () => {
           })
           history.push('/')
         } else {
-          dispatch({ type: 'FORM_DONE_LOADING' })
           editUserDispatch({
             type: 'AUTH_FAILURE',
             payload: response.data,
@@ -56,7 +63,6 @@ export const EditUser = () => {
         console.log('EditUser/handleSubmit api errors:', error)
       )
 
-    e.target.reset()
     e.preventDefault()
   }
 
@@ -121,7 +127,7 @@ export const EditUser = () => {
             <input
               type='text'
               placeholder='Username'
-              disabled={formIsLoading}
+              disabled={formIsLoading || loading}
               value={username}
               onChange={(e) =>
                 editUserDispatch({
@@ -137,7 +143,7 @@ export const EditUser = () => {
             <input
               type='email'
               placeholder='Email'
-              disabled={formIsLoading}
+              disabled={formIsLoading || loading}
               value={email}
               onChange={(e) =>
                 editUserDispatch({
@@ -153,7 +159,7 @@ export const EditUser = () => {
             <input
               type='password'
               placeholder='Password'
-              disabled={formIsLoading}
+              disabled={formIsLoading || loading}
               value={password}
               onChange={(e) =>
                 editUserDispatch({
@@ -169,7 +175,7 @@ export const EditUser = () => {
             <input
               type='password'
               placeholder='Confirm Password'
-              disabled={formIsLoading}
+              disabled={formIsLoading || loading}
               value={passwordConfirmation}
               onChange={(e) =>
                 editUserDispatch({
@@ -181,7 +187,7 @@ export const EditUser = () => {
               required
             />
           </div>
-          {formIsLoading ? (
+          {formIsLoading || loading ? (
             <div className='row justify-content-center'>
               <button
                 disabled

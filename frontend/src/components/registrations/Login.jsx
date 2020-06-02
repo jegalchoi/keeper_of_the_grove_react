@@ -6,21 +6,22 @@ import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const Login = () => {
-  const [{ formIsLoading }, dispatch] = useContext(PlantContext)
+  const [dispatch] = useContext(PlantContext)
 
-  const [{ username, password, errors }, loginDispatch] = useReducer(
-    registrationsReducer,
-    {
-      username: '',
-      password: '',
-      errors: null,
-    }
-  )
+  const [
+    { username, password, loading, errors },
+    loginDispatch,
+  ] = useReducer(registrationsReducer, {
+    username: '',
+    password: '',
+    loading: false,
+    errors: null,
+  })
 
   const handleSubmit = (e) => {
     console.log('logging in')
 
-    dispatch({ type: 'FORM_START_LOADING' })
+    loginDispatch({ type: 'AUTH_START_LOADING' })
 
     const user = {
       username,
@@ -39,9 +40,8 @@ export const Login = () => {
           })
           history.push('/')
         } else {
-          dispatch({ type: 'FORM_DONE_LOADING' })
           loginDispatch({
-            type: 'AUTH_LOGIN_FAILURE',
+            type: 'AUTH_FAILURE',
             payload: response.data,
           })
         }
@@ -50,7 +50,6 @@ export const Login = () => {
         console.log('Login/handleSubmit api errors:', error)
       )
 
-    e.target.reset()
     e.preventDefault()
   }
 
@@ -86,7 +85,7 @@ export const Login = () => {
             <input
               type='text'
               placeholder='Username'
-              disabled={formIsLoading}
+              disabled={loading}
               value={username}
               onChange={(e) =>
                 loginDispatch({
@@ -102,7 +101,7 @@ export const Login = () => {
             <input
               type='password'
               placeholder='Password'
-              disabled={formIsLoading}
+              disabled={loading}
               value={password}
               onChange={(e) =>
                 loginDispatch({
@@ -114,7 +113,7 @@ export const Login = () => {
               required
             />
           </div>
-          {formIsLoading ? (
+          {loading ? (
             <div className='row justify-content-center'>
               <button
                 disabled
