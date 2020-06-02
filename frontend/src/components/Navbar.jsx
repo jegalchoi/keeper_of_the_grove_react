@@ -45,7 +45,7 @@ export const Navbar = () => {
       >
         <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
       </Link>
-      {siteIsLoading || formIsLoading ? null : (
+      {siteIsLoading ? null : (
         <ul className='navbar-nav align-items-center'>
           {permissions === 'LOGGED_IN' && (
             <React.Fragment>
@@ -78,7 +78,7 @@ export const Navbar = () => {
       )}
       <div className='ml-auto text-right'>
         <div>
-          {siteIsLoading || formIsLoading ? (
+          {siteIsLoading ? (
             <strong>loading...</strong>
           ) : (
             permissions === 'LOGGED_IN' && (
@@ -89,8 +89,7 @@ export const Navbar = () => {
               </Link>
             )
           )}
-          {siteIsLoading || formIsLoading ? null : permissions ===
-            'LOGGED_IN' ? (
+          {siteIsLoading ? null : permissions === 'LOGGED_IN' ? (
             <Link
               to='/'
               className='text-capitalize'
@@ -104,7 +103,7 @@ export const Navbar = () => {
             </Link>
           )}
         </div>
-        {siteIsLoading || formIsLoading
+        {siteIsLoading
           ? null
           : permissions === 'NOT_LOGGED_IN' && (
               <Link to='/signup' className='text-capitalize'>
