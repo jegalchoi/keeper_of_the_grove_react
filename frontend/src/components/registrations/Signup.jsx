@@ -6,7 +6,7 @@ import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const Signup = () => {
-  const [{ formIsLoading }, dispatch] = useContext(PlantContext)
+  const [{ loading }, dispatch] = useContext(PlantContext)
 
   const [
     { username, email, password, passwordConfirmation, errors },
@@ -52,7 +52,6 @@ export const Signup = () => {
       })
       .catch((error) => console.log('Signup api errors:', error))
 
-    e.target.reset()
     e.preventDefault()
   }
 
@@ -88,7 +87,7 @@ export const Signup = () => {
             <input
               type='text'
               placeholder='Username'
-              disabled={formIsLoading}
+              disabled={loading}
               value={username}
               onChange={(e) =>
                 signupDispatch({
@@ -104,7 +103,7 @@ export const Signup = () => {
             <input
               type='email'
               placeholder='Email'
-              disabled={formIsLoading}
+              disabled={loading}
               value={email}
               onChange={(e) =>
                 signupDispatch({
@@ -120,7 +119,7 @@ export const Signup = () => {
             <input
               type='password'
               placeholder='Password'
-              disabled={formIsLoading}
+              disabled={loading}
               value={password}
               onChange={(e) =>
                 signupDispatch({
@@ -136,7 +135,7 @@ export const Signup = () => {
             <input
               type='password'
               placeholder='Confirm Password'
-              disabled={formIsLoading}
+              disabled={loading}
               value={passwordConfirmation}
               onChange={(e) =>
                 signupDispatch({
@@ -148,7 +147,7 @@ export const Signup = () => {
               required
             />
           </div>
-          {formIsLoading ? (
+          {loading ? (
             <div className='row justify-content-center'>
               <button
                 disabled
