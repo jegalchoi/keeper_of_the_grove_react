@@ -6,7 +6,7 @@ import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const Signup = () => {
-  const [{ loading }, dispatch] = useContext(PlantContext)
+  const [dispatch] = useContext(PlantContext)
 
   const [
     { username, email, password, passwordConfirmation, errors },
