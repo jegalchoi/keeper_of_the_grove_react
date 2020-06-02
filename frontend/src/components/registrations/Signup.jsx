@@ -16,13 +16,14 @@ export const Signup = () => {
     email: '',
     password: '',
     passwordConfirmation: '',
+    loading: false,
     errors: null,
   })
 
   const handleSubmit = (e) => {
     console.log('signing up')
 
-    dispatch({ type: 'FORM_START_LOADING' })
+    signupDispatch({ type: 'AUTH_START_LOADING' })
 
     let user = {
       username,
@@ -43,7 +44,6 @@ export const Signup = () => {
           })
           history.push('/')
         } else {
-          dispatch({ type: 'FORM_DONE_LOADING' })
           signupDispatch({
             type: 'AUTH_FAILURE',
             payload: response.data,
