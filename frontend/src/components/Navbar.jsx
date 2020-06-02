@@ -1,21 +1,15 @@
 import React, { useContext } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
-import { PlantContext } from '../context'
+import { GroveContext } from '../context'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faOilCan } from '@fortawesome/free-solid-svg-icons'
 
 export const Navbar = () => {
   const [
-    {
-      siteIsLoading,
-      formIsLoading,
-      permissions,
-      username,
-      displayUserPlants,
-    },
+    { siteIsLoading, permissions, username, displayUserPlants },
     dispatch,
-  ] = useContext(PlantContext)
+  ] = useContext(GroveContext)
 
   const handleLogout = () => {
     console.log('logging out')
