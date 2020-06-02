@@ -136,7 +136,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!formIsLoading || !loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -152,7 +152,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!formIsLoading || !loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -168,7 +168,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!formIsLoading || !loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -184,7 +184,7 @@ export const EditUser = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!formIsLoading || !loading}
             />
           </div>
           {formIsLoading || loading ? (

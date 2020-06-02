@@ -103,7 +103,7 @@ export const Signup = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -119,7 +119,7 @@ export const Signup = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -135,7 +135,7 @@ export const Signup = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!loading}
             />
           </div>
           <div className='row justify-content-center form-group'>
@@ -151,7 +151,7 @@ export const Signup = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!loading}
             />
           </div>
           {loading ? (
