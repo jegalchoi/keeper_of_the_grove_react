@@ -9,7 +9,14 @@ export const Signup = () => {
   const [dispatch] = useContext(PlantContext)
 
   const [
-    { username, email, password, passwordConfirmation, errors },
+    {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      loading,
+      errors,
+    },
     signupDispatch,
   ] = useReducer(registrationsReducer, {
     username: '',
