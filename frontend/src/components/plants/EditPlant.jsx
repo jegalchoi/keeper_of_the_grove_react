@@ -19,8 +19,9 @@ export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
 
-  const plantWater =
-    plantDetail.water === nil ? null : new Date(plantDetail.water)
+  const plantWater = plantDetail.water
+    ? new Date(plantDetail.water)
+    : null
 
   const [
     {
