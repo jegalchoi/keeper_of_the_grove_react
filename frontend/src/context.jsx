@@ -113,7 +113,7 @@ const reducer = (state, action) => {
   }
 }
 
-export const PlantProvider = (props) => {
+export const GroveProvider = (props) => {
   console.log('context')
 
   const [state, dispatch] = useReducer(reducer, initialState)
