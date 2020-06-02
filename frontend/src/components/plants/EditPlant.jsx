@@ -296,7 +296,7 @@ export const EditPlant = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!plantIsLoading}
             />
           </div>
           <br />

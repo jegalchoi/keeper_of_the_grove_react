@@ -160,12 +160,6 @@ export const NewPlant = () => {
     )
   }
 
-  // const stripHtmlEntities = str => {
-  //   return String(str)
-  //     .replace(/</g, '&lt;')
-  //     .replace(/>/g, '&gt;')
-  // }
-
   // const removeFile = (file) => {
   //   const newFiles = [...uploadedFiles]
   //   newFiles.splice(newFiles.indexOf(file), 1)
@@ -194,7 +188,7 @@ export const NewPlant = () => {
                   payload: e.target.value,
                 })
               }
-              required
+              required={!plantIsLoading}
             />
           </div>
           <br />

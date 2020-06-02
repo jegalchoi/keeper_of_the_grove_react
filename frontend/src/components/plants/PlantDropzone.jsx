@@ -85,7 +85,7 @@ export const PlantDropzone = (props) => {
     multiple: false,
     accept: 'image/png, image/jpeg',
     minSize: 1024,
-    maxSize: 3072000,
+    maxSize: 4194304,
     onDrop,
   })
 
@@ -108,7 +108,7 @@ export const PlantDropzone = (props) => {
               photos from your computer
             </p>
             <em>
-              (Only *.jpeg and *.png files less than 3MB will be
+              (Only *.jpeg and *.png files less than 4MB will be
               accepted)
             </em>
           </React.Fragment>

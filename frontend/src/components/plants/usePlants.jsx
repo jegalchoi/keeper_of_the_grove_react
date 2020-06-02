@@ -7,10 +7,7 @@ export const plantsReducer = (state, action) => {
       }
     case 'PLANT_CREATE_FAILURE':
       return {
-        name: '',
-        notes: '',
-        water: '',
-        hidden: true,
+        ...state,
         image: '',
         plantIsLoading: false,
         errors: action.payload.errors,
@@ -79,11 +76,6 @@ export const plantsReducer = (state, action) => {
         ...state,
         plantIsLoading: false,
         errors: action.payload.errors,
-      }
-    case 'CLEAR_ERRORS':
-      return {
-        ...state,
-        errors: null,
       }
     default:
       return state
