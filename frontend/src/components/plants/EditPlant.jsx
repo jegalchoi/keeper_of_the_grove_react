@@ -55,7 +55,6 @@ export const EditPlant = () => {
   })
 
   useEffect(() => {
-    console.log(originalImageId)
     if (originalImageId === -1) {
       return
     }
@@ -67,7 +66,7 @@ export const EditPlant = () => {
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         editPlantDispatch({
           type:
             response.data.status !== 400 ||

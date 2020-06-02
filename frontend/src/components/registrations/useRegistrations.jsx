@@ -7,10 +7,7 @@ export const registrationsReducer = (state, action) => {
       }
     case 'AUTH_FAILURE':
       return {
-        username: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
+        ...state,
         errors: action.payload.errors,
       }
     case 'AUTH_LOGIN_FAILURE':
