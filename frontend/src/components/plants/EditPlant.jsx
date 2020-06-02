@@ -13,6 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
 import enUS from 'date-fns/locale/en-US'
+import { parseISO, format } from 'date-fns'
 
 export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(PlantContext)
@@ -41,7 +42,7 @@ export const EditPlant = () => {
     id: plantDetail.id,
     name: plantDetail.name,
     notes: plantDetail.notes,
-    water: plantDetail.water,
+    water: new Date(plantDetail.water),
     hidden: plantDetail.hidden,
     imageUrl: '',
     imageId: '',
