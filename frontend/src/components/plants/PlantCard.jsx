@@ -12,7 +12,7 @@ export const PlantCard = ({ plant }) => {
 
   const [{ userId }, dispatch] = useContext(GroveContext)
 
-  const [{ plantIsLoading }, plantDispatch] = useReducer(
+  const [{ plantIsLoading }, plantCardDispatch] = useReducer(
     plantsReducer,
     {
       plantIsLoading: false,
@@ -22,7 +22,7 @@ export const PlantCard = ({ plant }) => {
   const waterPlant = () => {
     console.log('watering plant')
 
-    plantDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
+    plantCardDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
 
     const plant = {
       water: new Date(),
@@ -38,7 +38,7 @@ export const PlantCard = ({ plant }) => {
             type: 'PLANT_NEED_REFRESH',
           })
           history.push('/')
-          plantDispatch({ type: 'PLANT_DETAIL_DONE_LOADING' })
+          plantCardDispatch({ type: 'PLANT_DETAIL_FINISH_LOADING' })
         }
       })
       .catch((error) =>

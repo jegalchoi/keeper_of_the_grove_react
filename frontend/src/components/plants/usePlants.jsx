@@ -53,23 +53,10 @@ export const plantsReducer = (state, action) => {
         ...state,
         plantIsLoading: true,
       }
-    case 'PLANT_DONE_LOADING':
+    case 'PLANT_FINISH_LOADING':
       return {
         ...state,
         plantIsLoading: false,
-      }
-    case 'PLANT_SET_IMAGE_STATE':
-      return {
-        ...state,
-        [action.stateName]: action.payload,
-      }
-    case 'PLANT_CLEAR_IMAGES':
-      return {
-        ...state,
-        imageUrl: '',
-        imageId: '',
-        imagePublicId: '',
-        images: [],
       }
     case 'IMAGE_ERRORS':
       return {

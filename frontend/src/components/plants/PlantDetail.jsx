@@ -24,7 +24,7 @@ export const PlantDetail = () => {
       ownerId,
       errors,
     },
-    showPlantDispatch,
+    plantDetailDispatch,
   ] = useReducer(plantsReducer, {
     plantIsLoading: true,
     id: plantId,
@@ -60,7 +60,7 @@ export const PlantDetail = () => {
       .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
-        showPlantDispatch({
+        plantDetailDispatch({
           type:
             response.data.status !== 400 ||
             response.data.status !== 500
@@ -82,7 +82,7 @@ export const PlantDetail = () => {
     if (confirmation) {
       console.log('deleting plant from plant detail')
 
-      showPlantDispatch({ type: 'PLANT_START_LOADING' })
+      plantDetailDispatch({ type: 'PLANT_START_LOADING' })
 
       if (imageId !== null) {
         deleteImage(imageId)
@@ -119,7 +119,7 @@ export const PlantDetail = () => {
         if (response.data.status === 'destroyed') {
           console.log('image deleted from plant detail')
         } else {
-          showPlantDispatch({
+          plantDetailDispatch({
             type: 'IMAGE_ERRORS',
             payload: response.data,
           })

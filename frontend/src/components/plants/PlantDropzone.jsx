@@ -2,36 +2,6 @@ import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 
-const DropzoneWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border-width: 3px;
-  border-radius: 2px;
-  border-color: ${(props) => getColor(props)};
-  border-style: dashed;
-  background-color: #fafafa;
-  color: #bdbdbd;
-  outline: none;
-  transition: border 0.24s ease-in-out;
-  cursor: pointer;
-`
-
-const getColor = (props) => {
-  if (props.isDragActive) {
-    return '#2196f3'
-  }
-  if (props.isDragAccept) {
-    return '#00e676'
-  }
-  if (props.isDragReject) {
-    return '#ff1744'
-  }
-  return '#eeeeee'
-}
-
 export const PlantDropzone = (props) => {
   const uploadedFiles = props.uploadedFiles
 
@@ -120,4 +90,34 @@ export const PlantDropzone = (props) => {
       </DropzoneWrapper>
     </div>
   )
+}
+
+const DropzoneWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-width: 3px;
+  border-radius: 2px;
+  border-color: ${(props) => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+  cursor: pointer;
+`
+
+const getColor = (props) => {
+  if (props.isDragActive) {
+    return '#2196f3'
+  }
+  if (props.isDragAccept) {
+    return '#00e676'
+  }
+  if (props.isDragReject) {
+    return '#ff1744'
+  }
+  return '#eeeeee'
 }
