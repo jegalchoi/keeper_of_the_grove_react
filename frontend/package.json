@@ -29,7 +29,6 @@
     "bootstrap": "^4.4.1",
     "date-fns": "^2.14.0",
     "dotenv": "^8.2.0",
-    "html-webpack-plugin": "^4.3.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "popper.js": "^1.16.1",
@@ -41,7 +40,6 @@
     "react-router-dom": "^5.1.2",
     "react-timeago": "^4.4.0",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "styled-components": "^5.0.1",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"

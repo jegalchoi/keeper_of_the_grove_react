@@ -8,6 +8,7 @@ const initialState = {
   permissions: 'NOT_LOGGED_IN',
   userId: '',
   username: '',
+  userEmail: '',
   plantsPublic: [],
   plantsUser: [],
   plantDetail: {},
@@ -41,6 +42,7 @@ const reducer = (state, action) => {
         permissions: 'LOGGED_IN',
         userId: action.payload.user.id,
         username: action.payload.user.username,
+        userEmail: action.payload.user.email,
       }
     case 'AUTH_NOT_LOGGED_IN':
       return {
@@ -49,6 +51,7 @@ const reducer = (state, action) => {
         permissions: 'NOT_LOGGED_IN',
         userId: '',
         username: '',
+        userEmail: '',
       }
     case 'AUTH_LOGOUT':
       return {
@@ -58,6 +61,7 @@ const reducer = (state, action) => {
         permissions: 'NOT_LOGGED_IN',
         userId: '',
         username: '',
+        userEmail: '',
         plantsUser: [],
         plantDetail: {},
         displayUserPlants: false,
@@ -102,11 +106,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         plantDetail: action.payload,
-      }
-    case 'CLEAR_ERRORS':
-      return {
-        ...state,
-        errors: null,
       }
     default:
       return state

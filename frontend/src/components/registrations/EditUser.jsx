@@ -6,9 +6,10 @@ import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
 
 export const EditUser = () => {
-  const [{ formIsLoading, userId }, dispatch] = useContext(
-    GroveContext
-  )
+  const [
+    { formIsLoading, userId, username, userEmail },
+    dispatch,
+  ] = useContext(GroveContext)
 
   const [
     {
@@ -21,8 +22,8 @@ export const EditUser = () => {
     },
     editUserDispatch,
   ] = useReducer(registrationsReducer, {
-    username: '',
-    email: '',
+    username,
+    email: userEmail,
     password: '',
     passwordConfirmation: '',
     loading: false,
