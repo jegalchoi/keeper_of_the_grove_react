@@ -12,14 +12,7 @@ export const EditUser = () => {
   ] = useContext(GroveContext)
 
   const [
-    {
-      username,
-      email,
-      password,
-      passwordConfirmation,
-      loading,
-      errors,
-    },
+    { email, password, passwordConfirmation, loading, errors },
     editUserDispatch,
   ] = useReducer(registrationsReducer, {
     username,
