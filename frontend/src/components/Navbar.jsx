@@ -25,7 +25,7 @@ export const Navbar = () => {
         dispatch({ type: 'AUTH_LOGOUT' })
         history.push('/')
       })
-      .catch((error) => console.log(error))
+    // .catch((error) => console.log(error))
   }
 
   const history = useHistory()

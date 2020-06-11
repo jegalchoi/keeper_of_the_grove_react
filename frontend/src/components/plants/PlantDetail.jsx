@@ -69,9 +69,9 @@ export const PlantDetail = () => {
           payload: response.data,
         })
       })
-      .catch((errors) =>
-        // console.log('PlantDetail/useEffect api errors:', errors)
-      )
+    // .catch((errors) =>
+    //   // console.log('PlantDetail/useEffect api errors:', errors)
+    // )
   }, [])
 
   const deletePlant = () => {
@@ -101,9 +101,9 @@ export const PlantDetail = () => {
             history.push('/')
           }
         })
-        .catch((error) =>
-          // console.log('PlantDetail/deletePlant api errors:', error)
-        )
+      // .catch((error) =>
+      //   // console.log('PlantDetail/deletePlant api errors:', error)
+      // )
     }
   }
 
@@ -125,9 +125,9 @@ export const PlantDetail = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('PlantDetail/deleteImage api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('PlantDetail/deleteImage api errors:', error)
+    // )
   }
 
   const history = useHistory()

@@ -74,9 +74,9 @@ export const NewPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('NewPlant/handleSubmit api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('NewPlant/handleSubmit api errors:', error)
+    // )
 
     e.target.reset()
     e.preventDefault()
@@ -106,9 +106,9 @@ export const NewPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('NewPlant/uploadImage api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('NewPlant/uploadImage api errors:', error)
+    // )
   }
 
   const setImageForPlant = (plantId, imageUrl, imageId) => {
@@ -136,9 +136,9 @@ export const NewPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('NewPlant/setImageForPlant api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('NewPlant/setImageForPlant api errors:', error)
+    // )
   }
 
   const newPlantSetUploadedFiles = (files) => {

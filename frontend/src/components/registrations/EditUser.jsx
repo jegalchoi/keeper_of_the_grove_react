@@ -53,9 +53,9 @@ export const EditUser = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('EditUser/handleSubmit api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('EditUser/handleSubmit api errors:', error)
+    // )
 
     e.preventDefault()
   }
@@ -83,9 +83,9 @@ export const EditUser = () => {
             history.push('/')
           }
         })
-        .catch((error) =>
-          // console.log('EditUser/deleteUser api errors:', error)
-        )
+      // .catch((error) =>
+      //   // console.log('EditUser/deleteUser api errors:', error)
+      // )
     }
   }
 

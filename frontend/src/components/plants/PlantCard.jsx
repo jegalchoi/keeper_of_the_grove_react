@@ -41,9 +41,9 @@ export const PlantCard = ({ plant }) => {
           plantCardDispatch({ type: 'PLANT_DETAIL_FINISH_LOADING' })
         }
       })
-      .catch((error) =>
-        // console.log('PlantCard/waterPlant api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('PlantCard/waterPlant api errors:', error)
+    // )
   }
 
   const history = useHistory()

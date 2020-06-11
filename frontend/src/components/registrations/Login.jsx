@@ -46,9 +46,9 @@ export const Login = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('Login/handleSubmit api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('Login/handleSubmit api errors:', error)
+    // )
 
     e.preventDefault()
   }

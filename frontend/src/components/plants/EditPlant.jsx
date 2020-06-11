@@ -80,9 +80,9 @@ export const EditPlant = () => {
           payload: response.data,
         })
       })
-      .catch((errors) =>
-        // console.log('editPlant/useEffect api errors:', errors)
-      )
+    // .catch((errors) =>
+    //   console.log('editPlant/useEffect api errors:', errors)
+    // )
   }, [])
 
   const handleSubmit = (e) => {
@@ -128,9 +128,9 @@ export const EditPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('editPlant/handleSubmit api errors:', error)
-      )
+    // .catch((error) =>
+    //   console.log('editPlant/handleSubmit api errors:', error)
+    // )
 
     e.target.reset()
     e.preventDefault()
@@ -160,9 +160,9 @@ export const EditPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('editPlant/uploadImage api errors:', error)
-      )
+    // .catch((error) =>
+    //   console.log('editPlant/uploadImage api errors:', error)
+    // )
   }
 
   const setImageForPlant = (plantId, imageUrl, imageId) => {
@@ -190,9 +190,9 @@ export const EditPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('Editplant/setImageForPlant api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('Editplant/setImageForPlant api errors:', error)
+    // )
   }
 
   const deletePlant = () => {
@@ -218,9 +218,9 @@ export const EditPlant = () => {
             history.push('/')
           }
         })
-        .catch((error) =>
-          // console.log('EditPlant/deletePlant api errors:', error)
-        )
+      // .catch((error) =>
+      //   // console.log('EditPlant/deletePlant api errors:', error)
+      // )
     }
   }
 
@@ -242,9 +242,9 @@ export const EditPlant = () => {
           })
         }
       })
-      .catch((error) =>
-        // console.log('EditPlant/deleteImage api errors:', error)
-      )
+    // .catch((error) =>
+    //   // console.log('EditPlant/deleteImage api errors:', error)
+    // )
   }
 
   const editPlantSetUploadedFiles = (files) => {

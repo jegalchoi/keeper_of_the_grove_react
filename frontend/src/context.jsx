@@ -120,9 +120,9 @@ export const GroveProvider = (props) => {
           payload: response.data,
         })
       })
-      .catch((errors) =>
-        // console.log('fetch login api errors:', errors)
-      )
+    // .catch((errors) =>
+    //   // console.log('fetch login api errors:', errors)
+    // )
   }, [])
 
   useEffect(() => {
@@ -150,9 +150,9 @@ export const GroveProvider = (props) => {
           payload: response.data,
         })
       })
-      .catch((errors) =>
-        // console.log('fetch plants api errors:', errors)
-      )
+    // .catch((errors) =>
+    //   // console.log('fetch plants api errors:', errors)
+    // )
   }, [plantsNeedRefresh, displayUserPlants])
 
   return (
