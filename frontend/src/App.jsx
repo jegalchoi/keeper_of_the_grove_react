@@ -12,7 +12,7 @@ import { EditPlant } from './components/plants/EditPlant'
 import { Default } from './components/Default.jsx'
 
 export const App = () => {
-  console.log('app')
+  // console.log('app')
 
   const [{ siteIsLoading, permissions }] = useContext(GroveContext)
 

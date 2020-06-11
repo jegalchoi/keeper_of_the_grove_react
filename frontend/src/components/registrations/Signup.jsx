@@ -28,7 +28,7 @@ export const Signup = () => {
   })
 
   const handleSubmit = (e) => {
-    console.log('signing up')
+    // console.log('signing up')
 
     signupDispatch({ type: 'AUTH_START_LOADING' })
 
@@ -57,7 +57,7 @@ export const Signup = () => {
           })
         }
       })
-      .catch((error) => console.log('Signup api errors:', error))
+    // .catch((error) => console.log('Signup api errors:', error))
 
     e.preventDefault()
   }
@@ -65,7 +65,7 @@ export const Signup = () => {
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -81,7 +81,7 @@ export const Signup = () => {
     )
   }
 
-  console.log('signup')
+  // console.log('signup')
 
   return (
     <ContainerWrapper>

@@ -9,7 +9,7 @@ export const PlantList = () => {
   ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
-  console.log('plantlist')
+  // console.log('plantlist')
 
   return (
     <div className='py-3'>

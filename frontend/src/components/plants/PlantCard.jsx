@@ -20,7 +20,7 @@ export const PlantCard = ({ plant }) => {
   )
 
   const waterPlant = () => {
-    console.log('watering plant')
+    // console.log('watering plant')
 
     plantCardDispatch({ type: 'PLANT_DETAIL_START_LOADING' })
 
@@ -42,7 +42,7 @@ export const PlantCard = ({ plant }) => {
         }
       })
       .catch((error) =>
-        console.log('PlantCard/waterPlant api errors:', error)
+        // console.log('PlantCard/waterPlant api errors:', error)
       )
   }
 

@@ -19,7 +19,7 @@ export const Login = () => {
   })
 
   const handleSubmit = (e) => {
-    console.log('logging in')
+    // console.log('logging in')
 
     loginDispatch({ type: 'AUTH_START_LOADING' })
 
@@ -47,7 +47,7 @@ export const Login = () => {
         }
       })
       .catch((error) =>
-        console.log('Login/handleSubmit api errors:', error)
+        // console.log('Login/handleSubmit api errors:', error)
       )
 
     e.preventDefault()
@@ -56,7 +56,7 @@ export const Login = () => {
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -72,7 +72,7 @@ export const Login = () => {
     )
   }
 
-  console.log('login')
+  // console.log('login')
 
   return (
     <ContainerWrapper>

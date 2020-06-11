@@ -63,7 +63,7 @@ export const EditPlant = () => {
       return
     }
 
-    console.log('fetching image info')
+    // console.log('fetching image info')
 
     // const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
     const urlImageGet = `/api/v1/images/${originalImageId}`
@@ -76,17 +76,17 @@ export const EditPlant = () => {
             response.data.status !== 400 ||
             response.data.status !== 500
               ? 'IMAGE_DETAIL_FETCH_SUCCESS'
-              : 'IMAGE_DETAIL_FETCH_FAILURE',
+              : 'IMAGE_ERRORS',
           payload: response.data,
         })
       })
       .catch((errors) =>
-        console.log('editPlant/useEffect api errors:', errors)
+        // console.log('editPlant/useEffect api errors:', errors)
       )
   }, [])
 
   const handleSubmit = (e) => {
-    console.log('editing plant')
+    // console.log('editing plant')
 
     editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
@@ -123,13 +123,13 @@ export const EditPlant = () => {
           }
         } else {
           editPlantDispatch({
-            type: 'PLANT_UPDATE_FAILURE',
+            type: 'PLANT_ERRORS',
             payload: response.data,
           })
         }
       })
       .catch((error) =>
-        console.log('editPlant/handleSubmit api errors:', error)
+        // console.log('editPlant/handleSubmit api errors:', error)
       )
 
     e.target.reset()
@@ -137,7 +137,7 @@ export const EditPlant = () => {
   }
 
   const uploadImage = (plantId) => {
-    console.log('uploading image')
+    // console.log('uploading image')
 
     let image = new FormData()
     image.append('file', uploadedFiles[0])
@@ -161,12 +161,12 @@ export const EditPlant = () => {
         }
       })
       .catch((error) =>
-        console.log('editPlant/uploadImage api errors:', error)
+        // console.log('editPlant/uploadImage api errors:', error)
       )
   }
 
   const setImageForPlant = (plantId, imageUrl, imageId) => {
-    console.log('setting image for plant')
+    // console.log('setting image for plant')
 
     let plant = {
       image: imageUrl,
@@ -185,13 +185,13 @@ export const EditPlant = () => {
           history.push(`/details/${plantId}`)
         } else {
           editPlantDispatch({
-            type: 'PLANT_UPDATE_FAILURE',
+            type: 'PLANT_ERRORS',
             payload: response.data,
           })
         }
       })
       .catch((error) =>
-        console.log('Editplant/setImageForPlant api errors:', error)
+        // console.log('Editplant/setImageForPlant api errors:', error)
       )
   }
 
@@ -201,7 +201,7 @@ export const EditPlant = () => {
     )
 
     if (confirmation) {
-      console.log('deleting plant from edit plant')
+      // console.log('deleting plant from edit plant')
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
@@ -219,13 +219,13 @@ export const EditPlant = () => {
           }
         })
         .catch((error) =>
-          console.log('EditPlant/deletePlant api errors:', error)
+          // console.log('EditPlant/deletePlant api errors:', error)
         )
     }
   }
 
   const deleteImage = (imageId) => {
-    console.log('deleting image from edit plant')
+    // console.log('deleting image from edit plant')
 
     // const urlImageDestroy = `http://localhost:3001/api/v1/images/${imageId}`
     const urlImageDestroy = `/api/v1/images/${imageId}`
@@ -234,7 +234,7 @@ export const EditPlant = () => {
       .then((response) => {
         // console.log(response.data)
         if (response.data.status === 'destroyed') {
-          console.log('image deleted from edit plant')
+          // console.log('image deleted from edit plant')
         } else {
           editPlantDispatch({
             type: 'IMAGE_ERRORS',
@@ -243,7 +243,7 @@ export const EditPlant = () => {
         }
       })
       .catch((error) =>
-        console.log('EditPlant/deleteImage api errors:', error)
+        // console.log('EditPlant/deleteImage api errors:', error)
       )
   }
 
@@ -254,7 +254,7 @@ export const EditPlant = () => {
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -274,7 +274,7 @@ export const EditPlant = () => {
   //   return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;')
   // }
 
-  console.log('edit plant')
+  // console.log('edit plant')
 
   return (
     <ContainerWrapper>

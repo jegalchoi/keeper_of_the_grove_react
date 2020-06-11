@@ -12,7 +12,7 @@ export const Navbar = () => {
   ] = useContext(GroveContext)
 
   const handleLogout = () => {
-    console.log('logging out')
+    // console.log('logging out')
 
     dispatch({ type: 'SITE_START_LOADING' })
     // const urlLoginStatus = 'http://localhost:3001/logout'
@@ -38,11 +38,7 @@ export const Navbar = () => {
 
   return (
     <nav className='navbar navbar-expand-sm px-sm-5 sticky-top bg-success'>
-      <Link
-        to='/'
-        className='navbar-brand'
-        onClick={() => dispatch({ type: 'CLEAR_ERRORS' })}
-      >
+      <Link to='/' className='navbar-brand'>
         <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
       </Link>
       {siteIsLoading ? null : (

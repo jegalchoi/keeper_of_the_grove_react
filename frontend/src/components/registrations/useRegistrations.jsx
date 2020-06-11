@@ -21,11 +21,6 @@ export const registrationsReducer = (state, action) => {
         ...state,
         loading: false,
       }
-    case 'CLEAR_ERRORS':
-      return {
-        ...state,
-        errors: null,
-      }
     default:
       return state
   }

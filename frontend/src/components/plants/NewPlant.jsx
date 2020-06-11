@@ -40,7 +40,7 @@ export const NewPlant = () => {
   })
 
   const handleSubmit = (e) => {
-    console.log('creating plant')
+    // console.log('creating plant')
 
     newPlantDispatch({ type: 'PLANT_START_LOADING' })
 
@@ -75,7 +75,7 @@ export const NewPlant = () => {
         }
       })
       .catch((error) =>
-        console.log('NewPlant/handleSubmit api errors:', error)
+        // console.log('NewPlant/handleSubmit api errors:', error)
       )
 
     e.target.reset()
@@ -83,7 +83,7 @@ export const NewPlant = () => {
   }
 
   const uploadImage = (plantId) => {
-    console.log('uploading image')
+    // console.log('uploading image')
 
     let image = new FormData()
     image.append('file', uploadedFiles[0])
@@ -107,12 +107,12 @@ export const NewPlant = () => {
         }
       })
       .catch((error) =>
-        console.log('NewPlant/uploadImage api errors:', error)
+        // console.log('NewPlant/uploadImage api errors:', error)
       )
   }
 
   const setImageForPlant = (plantId, imageUrl, imageId) => {
-    console.log('setting image for plant')
+    // console.log('setting image for plant')
 
     let plant = {
       image: imageUrl,
@@ -131,13 +131,13 @@ export const NewPlant = () => {
           history.push(`/details/${plantId}`)
         } else {
           newPlantDispatch({
-            type: 'PLANT_UPDATE_FAILURE',
+            type: 'PLANT_ERRORS',
             payload: response.data,
           })
         }
       })
       .catch((error) =>
-        console.log('NewPlant/setImageForPlant api errors:', error)
+        // console.log('NewPlant/setImageForPlant api errors:', error)
       )
   }
 
@@ -148,7 +148,7 @@ export const NewPlant = () => {
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -166,7 +166,7 @@ export const NewPlant = () => {
   //   setUploadedFiles(newFiles)
   // }
 
-  console.log('create plant')
+  // console.log('create plant')
 
   return (
     <ContainerWrapper>

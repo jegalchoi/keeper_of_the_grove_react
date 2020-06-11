@@ -29,11 +29,6 @@ const reducer = (state, action) => {
         ...state,
         formIsLoading: true,
       }
-    case 'FORM_DONE_LOADING':
-      return {
-        ...state,
-        formIsLoading: false,
-      }
     case 'AUTH_LOGGED_IN':
       return {
         ...state,
@@ -43,15 +38,6 @@ const reducer = (state, action) => {
         userId: action.payload.user.id,
         username: action.payload.user.username,
         userEmail: action.payload.user.email,
-      }
-    case 'AUTH_NOT_LOGGED_IN':
-      return {
-        ...state,
-        siteIsLoading: false,
-        permissions: 'NOT_LOGGED_IN',
-        userId: '',
-        username: '',
-        userEmail: '',
       }
     case 'AUTH_LOGOUT':
       return {
@@ -113,13 +99,13 @@ const reducer = (state, action) => {
 }
 
 export const GroveProvider = (props) => {
-  console.log('context')
+  // console.log('context')
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { userId, displayUserPlants, plantsNeedRefresh } = state
 
   useEffect(() => {
-    console.log('fetching login status')
+    // console.log('fetching login status')
 
     // const urlLoginStatus = 'http://localhost:3001/logged_in'
     const urlLoginStatus = '/logged_in'
@@ -135,12 +121,12 @@ export const GroveProvider = (props) => {
         })
       })
       .catch((errors) =>
-        console.log('fetch login api errors:', errors)
+        // console.log('fetch login api errors:', errors)
       )
   }, [])
 
   useEffect(() => {
-    console.log('fetching plants')
+    // console.log('fetching plants')
 
     // const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
     const urlUserPlants = `/api/v1/users/${userId}/plants/`
@@ -165,7 +151,7 @@ export const GroveProvider = (props) => {
         })
       })
       .catch((errors) =>
-        console.log('fetch plants api errors:', errors)
+        // console.log('fetch plants api errors:', errors)
       )
   }, [plantsNeedRefresh, displayUserPlants])
 

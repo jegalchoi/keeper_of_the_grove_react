@@ -52,7 +52,7 @@ export const PlantDetail = () => {
   }
 
   useEffect(() => {
-    console.log('fetching plant detail')
+    // console.log('fetching plant detail')
 
     // const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
     const urlPlantGet = `/api/v1/plants/${plantId}`
@@ -65,12 +65,12 @@ export const PlantDetail = () => {
             response.data.status !== 400 ||
             response.data.status !== 500
               ? 'PLANT_DETAIL_FETCH_SUCCESS'
-              : 'PLANT_DETAIL_FETCH_FAILURE',
+              : 'PLANT_ERRORS',
           payload: response.data,
         })
       })
       .catch((errors) =>
-        console.log('PlantDetail/useEffect api errors:', errors)
+        // console.log('PlantDetail/useEffect api errors:', errors)
       )
   }, [])
 
@@ -80,7 +80,7 @@ export const PlantDetail = () => {
     )
 
     if (confirmation) {
-      console.log('deleting plant from plant detail')
+      // console.log('deleting plant from plant detail')
 
       plantDetailDispatch({ type: 'PLANT_START_LOADING' })
 
@@ -102,13 +102,13 @@ export const PlantDetail = () => {
           }
         })
         .catch((error) =>
-          console.log('PlantDetail/deletePlant api errors:', error)
+          // console.log('PlantDetail/deletePlant api errors:', error)
         )
     }
   }
 
   const deleteImage = (id) => {
-    console.log('deleting image from plant detail')
+    // console.log('deleting image from plant detail')
 
     // const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
     const urlImageDestroy = `/api/v1/images/${id}`
@@ -117,7 +117,7 @@ export const PlantDetail = () => {
       .then((response) => {
         // console.log(response.data)
         if (response.data.status === 'destroyed') {
-          console.log('image deleted from plant detail')
+          // console.log('image deleted from plant detail')
         } else {
           plantDetailDispatch({
             type: 'IMAGE_ERRORS',
@@ -126,14 +126,14 @@ export const PlantDetail = () => {
         }
       })
       .catch((error) =>
-        console.log('PlantDetail/deleteImage api errors:', error)
+        // console.log('PlantDetail/deleteImage api errors:', error)
       )
   }
 
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -172,7 +172,7 @@ export const PlantDetail = () => {
     )
   }
 
-  console.log('plant detail')
+  // console.log('plant detail')
 
   return (
     <React.Fragment>

@@ -10,7 +10,7 @@ export const PlantDropzone = (props) => {
       return null
     }
 
-    console.log('queuing images for upload')
+    // console.log('queuing images for upload')
 
     props.setUploadedFiles(acceptedFiles)
   }, [])

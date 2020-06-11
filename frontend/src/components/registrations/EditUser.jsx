@@ -24,7 +24,7 @@ export const EditUser = () => {
   })
 
   const handleSubmit = (e) => {
-    console.log('editing account')
+    // console.log('editing account')
 
     editUserDispatch({ type: 'AUTH_START_LOADING' })
 
@@ -54,7 +54,7 @@ export const EditUser = () => {
         }
       })
       .catch((error) =>
-        console.log('EditUser/handleSubmit api errors:', error)
+        // console.log('EditUser/handleSubmit api errors:', error)
       )
 
     e.preventDefault()
@@ -66,7 +66,7 @@ export const EditUser = () => {
     )
 
     if (confirmation) {
-      console.log('user deletion submitted')
+      // console.log('user deletion submitted')
 
       dispatch({ type: 'FORM_START_LOADING' })
 
@@ -84,7 +84,7 @@ export const EditUser = () => {
           }
         })
         .catch((error) =>
-          console.log('EditUser/deleteUser api errors:', error)
+          // console.log('EditUser/deleteUser api errors:', error)
         )
     }
   }
@@ -92,7 +92,7 @@ export const EditUser = () => {
   const history = useHistory()
 
   const handleErrors = () => {
-    console.log('rendering errors')
+    // console.log('rendering errors')
     return (
       <div className='text-center'>
         <ul className='p-0'>
@@ -108,7 +108,7 @@ export const EditUser = () => {
     )
   }
 
-  console.log('edit user')
+  // console.log('edit user')
 
   return (
     <ContainerWrapper>
