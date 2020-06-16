@@ -55,7 +55,7 @@ export const PlantDetail = () => {
   useEffect(() => {
     // console.log('fetching plant detail')
 
-    const urlPlantGet = config.url.API_URL_PLANT_GET
+    const urlPlantGet = config.url.API_URL_PLANT_GET + `${plantId}`
     axios
       .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
@@ -88,7 +88,9 @@ export const PlantDetail = () => {
         deleteImage(imageId)
       }
 
-      const urlPlantDestroy = config.url.API_URL_PLANT_DESTROY
+      const urlPlantDestroy =
+        config.url.API_URL_PLANT_DESTROY +
+        `${userId}/plants/${plantId}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -109,7 +111,8 @@ export const PlantDetail = () => {
   const deleteImage = (imageId) => {
     // console.log('deleting image from plant detail')
 
-    const urlImageDestroy = config.url.API_URL_IMAGE_DESTROY
+    const urlImageDestroy =
+      config.url.API_URL_IMAGE_DESTROY + `${imageId}`
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {

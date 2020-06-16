@@ -117,7 +117,8 @@ export const NewPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    const urlPlantEdit = config.url.API_URL_PLANT_EDIT
+    const urlPlantEdit =
+      config.url.API_URL_PLANT_EDIT + `${userId}/plants/${plantId}`
     axios
       .patch(urlPlantEdit, { plant }, { withCredentials: true })
       .then((response) => {

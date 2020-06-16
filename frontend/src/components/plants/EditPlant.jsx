@@ -66,7 +66,8 @@ export const EditPlant = () => {
 
     // console.log('fetching image info')
 
-    const urlImageGet = config.url.API_URL_IMAGE_GET
+    const urlImageGet =
+      config.url.API_URL_IMAGE_GET + `${originalImageId}`
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
@@ -97,7 +98,8 @@ export const EditPlant = () => {
       hidden,
       user_id: userId,
     }
-    const urlPlantEdit = config.url.API_URL_PLANT_EDIT
+    const urlPlantEdit =
+      config.url.API_URL_PLANT_EDIT + `${userId}/plants/${plantId}`
 
     if (
       imageId !== '' &&
@@ -170,7 +172,8 @@ export const EditPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    const urlPlantPatch = config.url.API_URL_PLANT_PATCH
+    const urlPlantPatch =
+      config.url.API_URL_PLANT_PATCH + `${userId}/plants/${plantId}`
     axios
       .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
@@ -202,7 +205,9 @@ export const EditPlant = () => {
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
-      const urlPlantDestroy = config.url.API_URL_PLANT_DESTROY
+      const urlPlantDestroy =
+        config.url.API_URL_PLANT_DESTROY +
+        `${userId}/plants/${plantId}`
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -223,7 +228,8 @@ export const EditPlant = () => {
   const deleteImage = (imageId) => {
     // console.log('deleting image from edit plant')
 
-    const urlImageDestroy = config.url.API_URL_IMAGE_DESTROY
+    const urlImageDestroy =
+      config.url.API_URL_IMAGE_DESTROY + `${imageId}`
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {

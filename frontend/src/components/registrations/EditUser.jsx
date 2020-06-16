@@ -35,7 +35,7 @@ export const EditUser = () => {
       password,
       passwordConfirmation,
     }
-    const urlUserPatch = config.url.API_URL_USER_PATCH
+    const urlUserPatch = config.url.API_URL_USER_PATCH + `${userId}`
     axios
       .patch(urlUserPatch, { user }, { withCredentials: true })
       .then((response) => {
@@ -70,7 +70,8 @@ export const EditUser = () => {
 
       dispatch({ type: 'FORM_START_LOADING' })
 
-      const urlUserDestroy = config.url.API_URL_USER_DESTROY
+      const urlUserDestroy =
+        config.url.API_URL_USER_DESTROY + `${userId}`
       axios
         .delete(urlUserDestroy, { withCredentials: true })
         .then((response) => {
