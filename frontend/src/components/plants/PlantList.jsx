@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useReducer } from 'react'
 import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import { Title } from '../Title'
@@ -49,8 +49,11 @@ export const PlantList = () => {
         <PlantSearch
           setFilteredPlants={plantListSetFilteredPlants}
           filteredPlants={filteredPlants}
-          setLoading={plantSearchDispatch({
+          startLoading={plantSearchDispatch({
             type: 'PLANT_START_LOADING',
+          })}
+          finishLoading={plantSearchDispatch({
+            type: 'PLANT_FINISH_LOADING',
           })}
           loading={loading}
         />
