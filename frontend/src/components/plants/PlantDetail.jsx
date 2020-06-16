@@ -4,6 +4,7 @@ import { Link, useHistory, useParams } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import TimeAgo from 'react-timeago'
+import { config } from '../../Constants'
 
 export const PlantDetail = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
@@ -54,8 +55,7 @@ export const PlantDetail = () => {
   useEffect(() => {
     // console.log('fetching plant detail')
 
-    // const urlPlantGet = `http://localhost:3001/api/v1/plants/${plantId}`
-    const urlPlantGet = `/api/v1/plants/${plantId}`
+    const urlPlantGet = config.url.API_URL_PLANT_GET
     axios
       .get(urlPlantGet, { withCredentials: true })
       .then((response) => {
@@ -88,8 +88,7 @@ export const PlantDetail = () => {
         deleteImage(imageId)
       }
 
-      // const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
-      const urlPlantDestroy = `/api/v1/users/${userId}/plants/${plantId}`
+      const urlPlantDestroy = config.url.API_URL_PLANT_DESTROY
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -107,11 +106,10 @@ export const PlantDetail = () => {
     }
   }
 
-  const deleteImage = (id) => {
+  const deleteImage = (imageId) => {
     // console.log('deleting image from plant detail')
 
-    // const urlImageDestroy = `http://localhost:3001/api/v1/images/${id}`
-    const urlImageDestroy = `/api/v1/images/${id}`
+    const urlImageDestroy = config.url.API_URL_IMAGE_DESTROY
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {

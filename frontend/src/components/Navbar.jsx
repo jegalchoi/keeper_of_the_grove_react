@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { GroveContext } from '../context'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faOilCan } from '@fortawesome/free-solid-svg-icons'
+import { config } from '../Constants'
 
 export const Navbar = () => {
   const [
@@ -15,8 +16,7 @@ export const Navbar = () => {
     // console.log('logging out')
 
     dispatch({ type: 'SITE_START_LOADING' })
-    // const urlLoginStatus = 'http://localhost:3001/logout'
-    const urlLogout = '/api/v1/logout'
+    const urlLogout = config.url.API_URL_LOGOUT
     axios
       .delete(urlLogout, {
         withCredentials: true,

@@ -46,7 +46,7 @@ export const PlantList = () => {
           name='grove guardian'
           description='keeping your plants properly watered'
         />
-        <PlantSearch
+        {/* <PlantSearch
           setFilteredPlants={plantListSetFilteredPlants}
           filteredPlants={filteredPlants}
           startLoading={plantSearchDispatch({
@@ -56,7 +56,7 @@ export const PlantList = () => {
             type: 'PLANT_FINISH_LOADING',
           })}
           loading={loading}
-        />
+        /> */}
         <div className='row'>
           {filteredPlants.map((plant) => (
             <PlantCard key={plant.id} plant={plant} />

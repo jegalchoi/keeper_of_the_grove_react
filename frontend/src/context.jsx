@@ -1,6 +1,7 @@
 import React, { useReducer, createContext, useEffect } from 'react'
 import axios from 'axios'
 export const GroveContext = createContext()
+import { config } from './Constants'
 
 const initialState = {
   siteIsLoading: true,
@@ -107,8 +108,7 @@ export const GroveProvider = (props) => {
   useEffect(() => {
     // console.log('fetching login status')
 
-    // const urlLoginStatus = 'http://localhost:3001/logged_in'
-    const urlLoginStatus = '/api/v1/logged_in'
+    const urlLoginStatus = config.url.API_URL_LOGIN_STATUS
     axios
       .get(urlLoginStatus, { withCredentials: true })
       .then((response) => {
@@ -128,10 +128,8 @@ export const GroveProvider = (props) => {
   useEffect(() => {
     // console.log('fetching plants')
 
-    // const urlUserPlants = `http://localhost:3001/api/v1/users/${userId}/plants/`
-    const urlUserPlants = `/api/v1/users/${userId}/plants/`
-    // const urlAllPlants = `http://localhost:3001/api/v1/plants/`
-    const urlAllPlants = `/api/v1/plants/`
+    const urlUserPlants = config.url.API_URL_USER_PLANTS
+    const urlAllPlants = config.url.API_URL_ALL_PLANTS
     const urlPlantsGet = displayUserPlants
       ? urlUserPlants
       : urlAllPlants

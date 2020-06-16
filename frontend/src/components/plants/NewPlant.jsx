@@ -9,6 +9,7 @@ import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
 import enUS from 'date-fns/locale/en-US'
 import { parseISO, format } from 'date-fns'
+import { config } from '../../Constants'
 
 export const NewPlant = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
@@ -51,8 +52,7 @@ export const NewPlant = () => {
       hidden,
       user_id: userId,
     }
-    // const urlPlantCreate = 'http://localhost:3001/api/v1/plants'
-    const urlPlantCreate = '/api/v1/plants'
+    const urlPlantCreate = config.url.API_URL_PLANT_CREATE
     axios
       .post(urlPlantCreate, { plant }, { withCredentials: true })
       .then((response) => {
@@ -89,8 +89,7 @@ export const NewPlant = () => {
     image.append('file', uploadedFiles[0])
     image.append('user_id', userId)
     image.append('plant_id', plantId)
-    // const urlImageCreate = 'http://localhost:3001/api/v1/images'
-    const urlImageCreate = '/api/v1/images'
+    const urlImageCreate = config.url.API_URL_IMAGE_CREATE
     axios
       .post(urlImageCreate, image, { withCredentials: true })
       .then((response) => {
@@ -118,8 +117,7 @@ export const NewPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    // const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
-    const urlPlantEdit = `/api/v1/users/${userId}/plants/${plantId}`
+    const urlPlantEdit = config.url.API_URL_PLANT_EDIT
     axios
       .patch(urlPlantEdit, { plant }, { withCredentials: true })
       .then((response) => {

@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
+import { config } from '../../Constants'
 
 export const Login = () => {
   const [{}, dispatch] = useContext(GroveContext)
@@ -27,8 +28,7 @@ export const Login = () => {
       username,
       password,
     }
-    // const urlLogin = 'http://localhost:3001/login'
-    const urlLogin = '/api/v1/login'
+    const urlLogin = config.url.API_URL_LOGIN
     axios
       .post(urlLogin, { user }, { withCredentials: true })
       .then((response) => {

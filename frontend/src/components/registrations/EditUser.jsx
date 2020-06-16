@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { registrationsReducer } from './useRegistrations'
 import { ContainerWrapper } from '../ContainerWrapper'
+import { config } from '../../Constants'
 
 export const EditUser = () => {
   const [
@@ -34,8 +35,7 @@ export const EditUser = () => {
       password,
       passwordConfirmation,
     }
-    // const urlUserPatch = `http://localhost:3001/users/${userId}`
-    const urlUserPatch = `/api/v1/users/${userId}`
+    const urlUserPatch = config.url.API_URL_USER_PATCH
     axios
       .patch(urlUserPatch, { user }, { withCredentials: true })
       .then((response) => {
@@ -70,8 +70,7 @@ export const EditUser = () => {
 
       dispatch({ type: 'FORM_START_LOADING' })
 
-      // const urlUserDestroy = `http://localhost:3001/users/${userId}`
-      const urlUserDestroy = `/api/v1/users/${userId}`
+      const urlUserDestroy = config.url.API_URL_USER_DESTROY
       axios
         .delete(urlUserDestroy, { withCredentials: true })
         .then((response) => {

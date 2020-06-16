@@ -5,10 +5,12 @@ import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import TimeAgo from 'react-timeago'
 import styled from 'styled-components'
+import { config } from '../../Constants'
 
 export const PlantCard = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
   const ownerId = user_id
+  const plantId = id
 
   const [{ userId }, dispatch] = useContext(GroveContext)
 
@@ -24,8 +26,7 @@ export const PlantCard = ({ plant }) => {
     const plant = {
       water: new Date(),
     }
-    // const urlPlantPatch = `http://localhost:3001/api/v1/users/${user_id}/plants/${id}`
-    const urlPlantPatch = `/api/v1/users/${user_id}/plants/${id}`
+    const urlPlantPatch = config.url.API_URL_PLANT_PATCH
     axios
       .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
@@ -63,7 +64,7 @@ export const PlantCard = ({ plant }) => {
     <PlantWrapper className='col-9 mx-auto col-md-6 col-lg-3 my-3 text-center'>
       <div className='card'>
         <div className='img-container'>
-          <Link to={`/details/${id}`}>
+          <Link to={`/details/${plantId}`}>
             <img
               src={image}
               alt={name}
@@ -98,7 +99,7 @@ export const PlantCard = ({ plant }) => {
         <div className='card-footer container'>
           <div className='row justify-content-center'>
             <p className='mb-0 d-inline-block text-truncate'>
-              <Link to={`/details/${id}`}>
+              <Link to={`/details/${plantId}`}>
                 <strong>{name}</strong>
               </Link>
             </p>

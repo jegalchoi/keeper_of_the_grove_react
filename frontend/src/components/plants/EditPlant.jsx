@@ -14,6 +14,7 @@ import { PlantDropzone } from './PlantDropzone'
 import { ContainerWrapper } from '../ContainerWrapper'
 import enUS from 'date-fns/locale/en-US'
 import { parseISO, format } from 'date-fns'
+import { config } from '../../Constants'
 
 export const EditPlant = () => {
   const [{ userId, plantDetail }, dispatch] = useContext(GroveContext)
@@ -26,7 +27,7 @@ export const EditPlant = () => {
   const [
     {
       loading,
-      id,
+      plantId,
       name,
       notes,
       water,
@@ -43,7 +44,7 @@ export const EditPlant = () => {
     editPlantDispatch,
   ] = useReducer(plantsReducer, {
     loading: false,
-    id: plantDetail.id,
+    plantId: plantDetail.id,
     name: plantDetail.name,
     notes: plantDetail.notes,
     water: plantWater,
@@ -65,8 +66,7 @@ export const EditPlant = () => {
 
     // console.log('fetching image info')
 
-    // const urlImageGet = `http://localhost:3001/api/v1/images/${originalImageId}`
-    const urlImageGet = `/api/v1/images/${originalImageId}`
+    const urlImageGet = config.url.API_URL_IMAGE_GET
     axios
       .get(urlImageGet, { withCredentials: true })
       .then((response) => {
@@ -97,8 +97,7 @@ export const EditPlant = () => {
       hidden,
       user_id: userId,
     }
-    // const urlPlantEdit = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
-    const urlPlantEdit = `/api/v1/users/${userId}/plants/${id}`
+    const urlPlantEdit = config.url.API_URL_PLANT_EDIT
 
     if (
       imageId !== '' &&
@@ -114,12 +113,12 @@ export const EditPlant = () => {
         // console.log(response.data)
         if (response.data.status === 'updated') {
           if (uploadedFiles.length > 0) {
-            uploadImage(id)
+            uploadImage(plantId)
           } else {
             dispatch({
               type: 'PLANT_NEED_REFRESH',
             })
-            history.push(`/details/${id}`)
+            history.push(`/details/${plantId}`)
           }
         } else {
           editPlantDispatch({
@@ -143,8 +142,7 @@ export const EditPlant = () => {
     image.append('file', uploadedFiles[0])
     image.append('user_id', userId)
     image.append('plant_id', plantId)
-    // const urlImageCreate = 'http://localhost:3001/api/v1/images'
-    const urlImageCreate = '/api/v1/images'
+    const urlImageCreate = config.url.API_URL_IMAGE_CREATE
     axios
       .post(urlImageCreate, image, { withCredentials: true })
       .then((response) => {
@@ -172,8 +170,7 @@ export const EditPlant = () => {
       image: imageUrl,
       image_id: imageId,
     }
-    // const urlPlantPatch = `http://localhost:3001/api/v1/users/${userId}/plants/${plantId}`
-    const urlPlantPatch = `/api/v1/users/${userId}/plants/${plantId}`
+    const urlPlantPatch = config.url.API_URL_PLANT_PATCH
     axios
       .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
@@ -205,8 +202,7 @@ export const EditPlant = () => {
 
       editPlantDispatch({ type: 'PLANT_START_LOADING' })
 
-      // const urlPlantDestroy = `http://localhost:3001/api/v1/users/${userId}/plants/${id}`
-      const urlPlantDestroy = `/api/v1/users/${userId}/plants/${id}`
+      const urlPlantDestroy = config.url.API_URL_PLANT_DESTROY
       axios
         .delete(urlPlantDestroy, { withCredentials: true })
         .then((response) => {
@@ -227,8 +223,7 @@ export const EditPlant = () => {
   const deleteImage = (imageId) => {
     // console.log('deleting image from edit plant')
 
-    // const urlImageDestroy = `http://localhost:3001/api/v1/images/${imageId}`
-    const urlImageDestroy = `/api/v1/images/${imageId}`
+    const urlImageDestroy = config.url.API_URL_IMAGE_DESTROY
     axios
       .delete(urlImageDestroy, { withCredentials: true })
       .then((response) => {
