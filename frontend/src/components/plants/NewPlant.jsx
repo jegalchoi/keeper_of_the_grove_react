@@ -16,7 +16,7 @@ export const NewPlant = () => {
 
   const [
     {
-      plantIsLoading,
+      loading,
       name,
       notes,
       water,
@@ -28,7 +28,7 @@ export const NewPlant = () => {
     },
     newPlantDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: false,
+    loading: false,
     name: '',
     notes: '',
     water: '',
@@ -179,7 +179,7 @@ export const NewPlant = () => {
             <input
               type='text'
               placeholder='Name'
-              disabled={plantIsLoading}
+              disabled={loading}
               value={name}
               onChange={(e) =>
                 newPlantDispatch({
@@ -188,7 +188,7 @@ export const NewPlant = () => {
                   payload: e.target.value,
                 })
               }
-              required={!plantIsLoading}
+              required={!loading}
             />
           </div>
           <br />
@@ -197,7 +197,7 @@ export const NewPlant = () => {
               <DatePicker
                 inline
                 showTimeSelect
-                disabled={plantIsLoading}
+                disabled={loading}
                 selected={water}
                 onChange={(date) => {
                   // console.log(date)
@@ -218,7 +218,7 @@ export const NewPlant = () => {
             <div className='col'>
               <textarea
                 placeholder='Notes'
-                disabled={plantIsLoading}
+                disabled={loading}
                 value={notes}
                 onChange={(e) =>
                   newPlantDispatch({
@@ -238,7 +238,7 @@ export const NewPlant = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
-                disabled={plantIsLoading}
+                disabled={loading}
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
@@ -266,7 +266,7 @@ export const NewPlant = () => {
               setUploadedFiles={newPlantSetUploadedFiles}
               uploadedFiles={uploadedFiles}
             />
-            {!plantIsLoading && uploadedFiles.length > 0 && (
+            {!loading && uploadedFiles.length > 0 && (
               <input
                 type='button'
                 className='btn btn-outline-danger mt-3 text-uppercase'
@@ -275,7 +275,7 @@ export const NewPlant = () => {
               />
             )}
           </div>
-          {plantIsLoading ? (
+          {loading ? (
             <div className='row justify-content-center'>
               <button
                 disabled

@@ -12,12 +12,9 @@ export const PlantCard = ({ plant }) => {
 
   const [{ userId }, dispatch] = useContext(GroveContext)
 
-  const [{ plantIsLoading }, plantCardDispatch] = useReducer(
-    plantsReducer,
-    {
-      plantIsLoading: false,
-    }
-  )
+  const [{ loading }, plantCardDispatch] = useReducer(plantsReducer, {
+    loading: false,
+  })
 
   const waterPlant = () => {
     // console.log('watering plant')
@@ -74,7 +71,7 @@ export const PlantCard = ({ plant }) => {
             />
           </Link>
           {userId === ownerId &&
-            (plantIsLoading ? (
+            (loading ? (
               <button className='water-btn' disabled>
                 <span className='badge badge-info text-capitalize'>
                   processing

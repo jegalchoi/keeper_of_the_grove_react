@@ -9,7 +9,7 @@ export const plantsReducer = (state, action) => {
       const plant = action.payload.plant
       return {
         ...state,
-        plantIsLoading: false,
+        loading: false,
         name: plant.name,
         notes: plant.notes,
         water: plant.water,
@@ -22,13 +22,13 @@ export const plantsReducer = (state, action) => {
       return {
         ...state,
         image: '',
-        plantIsLoading: false,
+        loading: false,
         errors: action.payload.errors,
       }
     case 'PLANT_ERRORS':
       return {
         ...state,
-        plantIsLoading: false,
+        loading: false,
         errors: action.payload.errors,
       }
     case 'IMAGE_DETAIL_FETCH_SUCCESS':
@@ -39,18 +39,18 @@ export const plantsReducer = (state, action) => {
     case 'IMAGE_ERRORS':
       return {
         ...state,
-        plantIsLoading: false,
+        loading: false,
         errors: action.payload.errors,
       }
     case 'PLANT_START_LOADING':
       return {
         ...state,
-        plantIsLoading: true,
+        loading: true,
       }
     case 'PLANT_FINISH_LOADING':
       return {
         ...state,
-        plantIsLoading: false,
+        loading: false,
       }
     default:
       return state

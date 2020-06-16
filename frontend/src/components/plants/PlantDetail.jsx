@@ -12,7 +12,7 @@ export const PlantDetail = () => {
 
   const [
     {
-      plantIsLoading,
+      loading,
       id,
       name,
       notes,
@@ -26,7 +26,7 @@ export const PlantDetail = () => {
     },
     plantDetailDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: true,
+    loading: true,
     id: plantId,
     name: '',
     notes: '',
@@ -176,7 +176,7 @@ export const PlantDetail = () => {
 
   return (
     <React.Fragment>
-      {errors || plantIsLoading ? null : (
+      {errors || loading ? null : (
         <div className='container'>
           {/* {title} */}
           <div className='row'>
@@ -214,7 +214,7 @@ export const PlantDetail = () => {
                 </React.Fragment>
               )}
               {/* {buttons} */}
-              {plantIsLoading ? (
+              {loading ? (
                 <button className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'>
                   processing
                 </button>

@@ -25,7 +25,7 @@ export const EditPlant = () => {
 
   const [
     {
-      plantIsLoading,
+      loading,
       id,
       name,
       notes,
@@ -42,7 +42,7 @@ export const EditPlant = () => {
     },
     editPlantDispatch,
   ] = useReducer(plantsReducer, {
-    plantIsLoading: false,
+    loading: false,
     id: plantDetail.id,
     name: plantDetail.name,
     notes: plantDetail.notes,
@@ -287,7 +287,7 @@ export const EditPlant = () => {
             <input
               type='text'
               placeholder='Name'
-              disabled={plantIsLoading}
+              disabled={loading}
               value={name}
               onChange={(e) =>
                 editPlantDispatch({
@@ -296,7 +296,7 @@ export const EditPlant = () => {
                   payload: e.target.value,
                 })
               }
-              required={!plantIsLoading}
+              required={!loading}
             />
           </div>
           <br />
@@ -305,7 +305,7 @@ export const EditPlant = () => {
               <DatePicker
                 inline
                 showTimeSelect
-                disabled={plantIsLoading}
+                disabled={loading}
                 selected={water}
                 onChange={(date) => {
                   // console.log(date)
@@ -326,7 +326,7 @@ export const EditPlant = () => {
             <div className='col'>
               <textarea
                 placeholder='Notes'
-                disabled={plantIsLoading}
+                disabled={loading}
                 value={notes}
                 onChange={(e) =>
                   editPlantDispatch({
@@ -346,7 +346,7 @@ export const EditPlant = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
-                disabled={plantIsLoading}
+                disabled={loading}
                 checked={hidden}
                 id='plantHidden'
                 onChange={(e) =>
@@ -374,7 +374,7 @@ export const EditPlant = () => {
               setUploadedFiles={editPlantSetUploadedFiles}
               uploadedFiles={uploadedFiles}
             />
-            {!plantIsLoading && uploadedFiles.length > 0 && (
+            {!loading && uploadedFiles.length > 0 && (
               <input
                 type='button'
                 className='btn btn-outline-danger mt-3 text-uppercase'
@@ -383,7 +383,7 @@ export const EditPlant = () => {
               />
             )}
           </div>
-          {plantIsLoading
+          {loading
             ? null
             : userId === ownerId && (
                 <div className='row justify-content-center'>
@@ -398,7 +398,7 @@ export const EditPlant = () => {
               )}
         </div>
       </form>
-      {plantIsLoading
+      {loading
         ? null
         : userId === ownerId && (
             <React.Fragment>
@@ -423,7 +423,7 @@ export const EditPlant = () => {
               </div>
             </React.Fragment>
           )}
-      {!plantIsLoading ? null : (
+      {!loading ? null : (
         <div className='row justify-content-center'>
           <button
             disabled
