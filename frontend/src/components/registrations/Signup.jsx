@@ -39,7 +39,7 @@ export const Signup = () => {
       password_confirmation: passwordConfirmation,
     }
     // const urlSignup = 'http://localhost:3001/users'
-    const urlSignup = '/users'
+    const urlSignup = '/api/v1/users'
     axios
       .post(urlSignup, { user }, { withCredentials: true })
       .then((response) => {

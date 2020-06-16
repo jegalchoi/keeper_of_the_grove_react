@@ -16,7 +16,7 @@ export const Navbar = () => {
 
     dispatch({ type: 'SITE_START_LOADING' })
     // const urlLoginStatus = 'http://localhost:3001/logout'
-    const urlLogout = '/logout'
+    const urlLogout = '/api/v1/logout'
     axios
       .delete(urlLogout, {
         withCredentials: true,

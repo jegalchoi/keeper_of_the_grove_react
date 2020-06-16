@@ -108,7 +108,7 @@ export const GroveProvider = (props) => {
     // console.log('fetching login status')
 
     // const urlLoginStatus = 'http://localhost:3001/logged_in'
-    const urlLoginStatus = '/logged_in'
+    const urlLoginStatus = '/api/v1/logged_in'
     axios
       .get(urlLoginStatus, { withCredentials: true })
       .then((response) => {
