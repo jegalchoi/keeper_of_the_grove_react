@@ -7,7 +7,7 @@ export const PlantSearch = (props) => {
   const { setQuery, query } = props
 
   return (
-    <ContainerWrapper>
+    <PlantSearchWrapper>
       <div className='container'>
         <label className='search-label'>
           <input
@@ -26,14 +26,15 @@ export const PlantSearch = (props) => {
           />
         </label>
       </div>
-    </ContainerWrapper>
+    </PlantSearchWrapper>
   )
 }
 
-const ContainerWrapper = styled.div`
+const PlantSearchWrapper = styled.div`
   .container {
-    width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
   }
   .search-label {
     position: relative;
