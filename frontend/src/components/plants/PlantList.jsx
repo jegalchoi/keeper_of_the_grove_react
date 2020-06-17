@@ -16,7 +16,7 @@ export const PlantList = () => {
   ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
-  const [filteredPlants, setFilteredPlants] = useState([])
+  const [filteredPlants, setFilteredPlants] = useState(plants)
 
   const [
     { query, loading, errors },
