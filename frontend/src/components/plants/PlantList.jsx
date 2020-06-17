@@ -34,7 +34,7 @@ export const PlantList = () => {
     } else {
       setFilteredPlants(plants)
     }
-  }, [query])
+  }, [query, plants])
 
   const filterPlants = (plants, query) => {
     return plants.filter((plant) => {
