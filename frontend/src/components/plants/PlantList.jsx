@@ -29,7 +29,7 @@ export const PlantList = () => {
 
   useEffect(() => {
     if (query !== '') {
-      // startLoading()
+      plantSearchDispatch({ type: 'PLANT_START_LOADING' })
       setFilteredPlants(filterPlants(plants, query))
     } else {
       setFilteredPlants(plants)
@@ -37,10 +37,11 @@ export const PlantList = () => {
   }, [query, plants])
 
   const filterPlants = (plants, query) => {
-    return plants.filter((plant) => {
-      return plant.name.toLowerCase().includes(query.toLowerCase())
-    })
-    // finishLoading()
+    const searchResults = plants.filter((plant) =>
+      plant.name.toLowerCase().includes(query.toLowerCase())
+    )
+    plantSearchDispatch({ type: 'PLANT_FINISH_LOADING' })
+    return searchResults
   }
 
   const plantListSetQuery = (payload) => {
@@ -73,7 +74,11 @@ export const PlantList = () => {
           name='grove guardian'
           description='keeping your plants properly watered'
         />
-        <PlantSearch setQuery={plantListSetQuery} query={query} />
+        <PlantSearch
+          setQuery={plantListSetQuery}
+          query={query}
+          loading={loading}
+        />
         <div className='row'>
           {filteredPlants.map((plant) => (
             <PlantCard key={plant.id} plant={plant} />
