@@ -1,7 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { faTree } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faTree } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 export const PlantSearch = (props) => {
@@ -30,7 +29,7 @@ export const PlantSearch = (props) => {
         {!loading ? null : (
           <FontAwesomeIcon
             icon={faTree}
-            size='5x'
+            size='4x'
             className='search-loading'
             alt='loading-icon'
           />
