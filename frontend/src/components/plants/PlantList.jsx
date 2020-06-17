@@ -24,7 +24,7 @@ export const PlantList = () => {
   ] = useReducer(plantsReducer, {
     query: '',
     loading: false,
-    errors: null,
+    // errors: null,
   })
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export const PlantList = () => {
           ))}
         </div>
       </div>
-      <div>{errors && handleErrors()}</div>
+      {/* <div>{errors && handleErrors()}</div> */}
     </div>
   )
 }
