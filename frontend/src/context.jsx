@@ -128,7 +128,8 @@ export const GroveProvider = (props) => {
   useEffect(() => {
     // console.log('fetching plants')
 
-    const urlUserPlants = config.url.API_URL_USER_PLANTS
+    const urlUserPlants =
+      config.url.API_URL_USER_PLANTS + `${userId}/plants/`
     const urlAllPlants = config.url.API_URL_ALL_PLANTS
     const urlPlantsGet = displayUserPlants
       ? urlUserPlants
