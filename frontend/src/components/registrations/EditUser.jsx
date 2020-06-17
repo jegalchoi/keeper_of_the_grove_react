@@ -181,49 +181,52 @@ export const EditUser = () => {
               required={!formIsLoading || !loading}
             />
           </div>
-          {formIsLoading || loading ? (
+          {loading ? null : (
             <div className='row justify-content-center'>
               <button
-                disabled
+                type='submit'
+                placeholder='submit'
                 className='btn-success btn-lg mt-3 text-capitalize'
               >
-                processing
+                <strong>update account</strong>
               </button>
             </div>
-          ) : (
-            <React.Fragment>
-              <div className='row justify-content-center'>
-                <button
-                  type='submit'
-                  placeholder='submit'
-                  className='btn-success btn-lg mt-3 text-capitalize'
-                >
-                  <strong>update account</strong>
-                </button>
-              </div>
-              <div className='row justify-content-center'>
-                <button
-                  placeholder='delete'
-                  className='btn-danger btn-lg mt-3 text-uppercase'
-                  onClick={deleteUser}
-                >
-                  <strong>delete account</strong>
-                </button>
-              </div>
-              <div className='row justify-content-center'>
-                <Link to='/'>
-                  <button
-                    placeholder='home'
-                    className='btn-primary btn-lg mt-3 text-capitalize'
-                  >
-                    <strong>home</strong>
-                  </button>
-                </Link>
-              </div>
-            </React.Fragment>
           )}
         </div>
       </form>
+      {formIsLoading || loading ? null : (
+        <React.Fragment>
+          <div className='row justify-content-center'>
+            <button
+              placeholder='delete'
+              className='btn-danger btn-lg mt-3 text-uppercase'
+              onClick={deleteUser}
+            >
+              <strong>delete account</strong>
+            </button>
+          </div>
+          <div className='row justify-content-center'>
+            <Link to='/'>
+              <button
+                placeholder='home'
+                className='btn-primary btn-lg mt-3 text-capitalize'
+              >
+                <strong>home</strong>
+              </button>
+            </Link>
+          </div>
+        </React.Fragment>
+      )}
+      {!formIsLoading || !loading ? null : (
+        <div className='row justify-content-center'>
+          <button
+            disabled
+            className='btn-success btn-lg mt-3 text-capitalize'
+          >
+            processing
+          </button>
+        </div>
+      )}
       <br />
       <div>{errors && handleErrors()}</div>
     </ContainerWrapper>
