@@ -7,16 +7,16 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create(
-    username: "jaychoi",
-    email: 'jaychoi@gmail.com',
+    username: "camchoi",
+    email: 'camchoi@gmail.com',
     password: '123456'
   )
 
-9.times do |i|
+99.times do |i|
   Plant.create(
     name: "Plant #{i + 1}",
     notes: "notes for plant #{i + 1}",
-    user_id: 1,
+    user_id: User.find_by(username: 'camchoi').id,
     hidden: false
   )
 end

@@ -1,10 +1,11 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faTree } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 export const PlantSearch = (props) => {
-  const { setQuery, query } = props
+  const { setQuery, query, loading } = props
 
   return (
     <PlantSearchWrapper>
@@ -23,8 +24,17 @@ export const PlantSearch = (props) => {
             icon={faSearch}
             size='1x'
             className='search-icon'
+            alt='search-icon'
           />
         </label>
+        {!loading ? null : (
+          <FontAwesomeIcon
+            icon={faTree}
+            size='5x'
+            className='search-loading'
+            alt='loading-icon'
+          />
+        )}
       </div>
     </PlantSearchWrapper>
   )
@@ -53,5 +63,12 @@ const PlantSearchWrapper = styled.div`
     top: 25px;
     right: 18px;
     color: #555;
+  }
+  .search-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: #444;
   }
 `
