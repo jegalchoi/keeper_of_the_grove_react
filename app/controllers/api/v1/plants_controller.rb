@@ -38,19 +38,6 @@ class Api::V1::PlantsController < ApplicationController
     end
   end
 
-  def authorized_show
-    if @plant
-      render json: {
-        plant: @plant
-      }
-    else
-      render json: {
-        status: 500,
-        errors: ['Could not locate plant']
-      }
-    end
-  end
-
   def show
     if @plant
       render json: {

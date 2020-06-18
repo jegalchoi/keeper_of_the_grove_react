@@ -98,8 +98,8 @@ export const EditPlant = () => {
       hidden,
       user_id: userId,
     }
-    const urlPlantEdit =
-      config.url.API_URL_PLANT_EDIT + `${userId}/plants/${plantId}`
+    const urlPlantPatch =
+      config.url.API_URL_PLANT_PATCH + `${userId}/plants/${plantId}`
 
     if (
       imageId !== '' &&
@@ -110,7 +110,7 @@ export const EditPlant = () => {
     }
 
     axios
-      .patch(urlPlantEdit, { plant }, { withCredentials: true })
+      .patch(urlPlantPatch, { plant }, { withCredentials: true })
       .then((response) => {
         // console.log(response.data)
         if (response.data.status === 'updated') {
