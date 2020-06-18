@@ -2,11 +2,10 @@ Rails.application.routes.draw do
   defaults format: :json do
     namespace :api do
       namespace :v1 do
-        resources :users, only: [:show, :create, :update, :destroy]
+        resources :users, only: [:create, :update, :destroy]
 
         resources :users do
           get '/plants', to: 'plants#authorized_index'
-          get '/plants/:id', to: 'plants#authorized_show'
           delete '/plants/:id', to: 'plants#destroy'
           patch '/plants/:id', to: 'plants#update'
         end
