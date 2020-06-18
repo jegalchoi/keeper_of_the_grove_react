@@ -1,7 +1,7 @@
 {
   "name": "grove_guardian",
   "version": "1.0.0",
-  "description": "plant watering tracker",
+  "description": "plant manager and tracker",
   "main": "index.js",
   "proxy": "http://localhost:3001",
   "scripts": {

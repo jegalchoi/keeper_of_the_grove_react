@@ -1,5 +1,5 @@
 {
-  "name": "keeper_of_the_grove_react",
+  "name": "grove_guardian",
   "private": true,
   "engines": {
     "node": "12.7.0",
@@ -28,13 +28,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jegalchoi/keeper_of_the_grove_react.git"
+    "url": "git+https://github.com/jegalchoi/grove_guardian.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jegalchoi/keeper_of_the_grove_react/issues"
+    "url": "https://github.com/jegalchoi/grove_guardian/issues"
   },
-  "homepage": "https://github.com/jegalchoi/keeper_of_the_grove_react#readme"
+  "homepage": "https://github.com/jegalchoi/grove_guardian#readme"
 }
