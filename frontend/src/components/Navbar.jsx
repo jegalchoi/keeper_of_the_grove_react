@@ -58,8 +58,8 @@ export const Navbar = () => {
                     }
                   >
                     {displayUserPlants
-                      ? 'show all plants'
-                      : 'show only your plants'}
+                      ? 'view public portfolio'
+                      : 'view your portfolio'}
                   </button>
                 </Link>
               </li>
