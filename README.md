@@ -27,14 +27,14 @@ Create and show off pictures of your plants with option to make plant public (pr
 
 
 ## Technologies
-- Rails - backend  
-- React w/webpack - frontend  
-- React Context API w/hooks - state management  
-- PostgreSQL - database  
-- HTTP cookies and Rails session data - authentication system  
-- BCrypt - encryption  
-- Cloudinary - image storage  
-- Heroku - site deployment  
+- backend - Rails  
+- frontend - React w/webpack  
+- state management - React Context API w/hooks  
+- database - PostgreSQL  
+- authentication system - HTTP cookies & Rails session data  
+- password encryption - BCrypt  
+- image storage - Cloudinary  
+- site deployment - Heroku  
 
 
 ## Future
