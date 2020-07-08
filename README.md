@@ -38,5 +38,5 @@ Create and show off pictures of your plants with option to make plant public (pr
 
 
 ## Future
-- pagation/inifinte scroll  
+- pagination/infinite scroll  
 - upload multiple images  
