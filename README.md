@@ -2,7 +2,7 @@
 
 [groveguardian.club](http://www.groveguardian.club)
 
-Grove Guardian is a website that helps manage your plants and their watering.  It keeps track of when your plants were last watered.
+Grove Guardian is a site that helps manage your plants and their watering.  It keeps track of when your plants were last watered.
 
 ## Features
 Easily manage your plants by uploading images, keeping notes and tracking date last watered.  
