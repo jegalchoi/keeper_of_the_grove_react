@@ -1,13 +1,10 @@
-# README
-
-## Grove Guardian
+# Grove Guardian
 
 [groveguardian.club](http://www.groveguardian.club)
 
 Grove Guardian is a website that helps manage your plants and their watering.  It keeps track of when your plants were last watered.
 
-### Features
----
+## Features
 Easily manage your plants by uploading images, keeping notes and tracking date last watered.  
 <img src="https://res.cloudinary.com/diekjezbk/image/upload/v1594160035/grove%20guardian%20readme/plant_detailed_view.png"
       alt="plant detailed view" />
@@ -29,8 +26,7 @@ Create and show off pictures of your plants with option to make plant public (pr
       alt="new plant" />
 
 
-### Technologies
----
+## Technologies
 - Rails - backend  
 - React w/webpack - frontend  
 - React Context API w/hooks - state management  
@@ -41,7 +37,6 @@ Create and show off pictures of your plants with option to make plant public (pr
 - Heroku - site deployment  
 
 
-### Future
----
+## Future
 - pagation/inifinte scroll  
 - upload multiple images  
