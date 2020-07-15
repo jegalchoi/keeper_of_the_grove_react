@@ -9,10 +9,11 @@ import { plantsReducer } from './usePlants'
 import { Title } from '../Title'
 import { PlantSearch } from './PlantSearch'
 import { PlantCard } from './PlantCard.jsx'
+import { PlantPortfolioLink } from './PlantPortfolioLink'
 
 export const PlantList = () => {
   const [
-    { plantsPublic, plantsUser, displayUserPlants },
+    { permissions, plantsPublic, plantsUser, displayUserPlants },
   ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
@@ -79,6 +80,7 @@ export const PlantList = () => {
           query={query}
           loading={loading}
         />
+        <PlantPortfolioLink />
         <div className='row'>
           {filteredPlants.map((plant) => (
             <PlantCard key={plant.id} plant={plant} />

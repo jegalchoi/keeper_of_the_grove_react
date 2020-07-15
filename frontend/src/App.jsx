@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { GroveContext } from './context'
-import { Navbar } from './components/Navbar.jsx'
+import { Navbar } from './components/navbar/Navbar.jsx'
 import { Login } from './components/registrations/Login.jsx'
 import { Signup } from './components/registrations/Signup.jsx'
 import { EditUser } from './components/registrations/EditUser.jsx'

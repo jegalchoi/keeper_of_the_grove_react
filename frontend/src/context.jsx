@@ -1,7 +1,7 @@
 import React, { useReducer, createContext, useEffect } from 'react'
 import axios from 'axios'
-export const GroveContext = createContext()
 import { config } from './Constants'
+export const GroveContext = createContext()
 
 const initialState = {
   siteIsLoading: true,
