@@ -13,11 +13,7 @@ import { PlantPortfolioLink } from './PlantPortfolioLink'
 
 export const PlantList = () => {
   const [
-<<<<<<< HEAD
     { permissions, plantsPublic, plantsUser, displayUserPlants },
-=======
-    { plantsPublic, plantsUser, displayUserPlants },
->>>>>>> 844dd0c06228f34ef20da2a89059c9fe4fafae4f
   ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 
@@ -84,10 +80,7 @@ export const PlantList = () => {
           query={query}
           loading={loading}
         />
-<<<<<<< HEAD
         <PlantPortfolioLink />
-=======
->>>>>>> 844dd0c06228f34ef20da2a89059c9fe4fafae4f
         <div className='row'>
           {filteredPlants.map((plant) => (
             <PlantCard key={plant.id} plant={plant} />
