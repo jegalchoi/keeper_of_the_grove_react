@@ -33,6 +33,7 @@
     "moment": "^2.24.0",
     "popper.js": "^1.16.1",
     "react": "0.0.0-experimental-e5d06e34b",
+    "react-cookie": "^4.0.3",
     "react-datepicker": "^2.14.1",
     "react-dom": "0.0.0-experimental-e5d06e34b",
     "react-dropzone": "^10.2.2",

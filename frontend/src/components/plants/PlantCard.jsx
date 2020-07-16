@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
+import { useCookies } from 'react-cookie'
 import TimeAgo from 'react-timeago'
 import styled from 'styled-components'
 import { config } from '../../Constants'
@@ -11,6 +12,7 @@ export const PlantCard = ({ plant }) => {
   const { id, name, notes, water, hidden, image, user_id } = plant
   const ownerId = user_id
   const plantId = id
+  const [cookies, setCookie] = useCookies(['plantId'])
 
   const [{ userId }, dispatch] = useContext(GroveContext)
 
@@ -65,11 +67,14 @@ export const PlantCard = ({ plant }) => {
     <PlantWrapper className='col-9 mx-auto col-md-6 col-lg-3 my-3 text-center'>
       <div className='card'>
         <div className='img-container'>
-          <Link to={`/details/${plantId}`}>
+          <Link to={`/details`}>
             <img
               src={image}
               alt={name}
               className='card-img-top rounded pt-5'
+              onClick={() =>
+                setCookie('plantId', plantId, { path: '/' })
+              }
             />
           </Link>
           {userId === ownerId &&

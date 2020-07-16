@@ -3,13 +3,14 @@ import axios from 'axios'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
+import { useCookies } from 'react-cookie'
 import TimeAgo from 'react-timeago'
 import { config } from '../../Constants'
 
 export const PlantDetail = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
-
-  let { plantId } = useParams()
+  const [cookies, setCookie] = useCookies(['plantId'])
+  const plantId = cookies.plantId
 
   const [
     {
