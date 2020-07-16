@@ -12,7 +12,6 @@ const initialState = {
   userEmail: '',
   plantsPublic: [],
   plantsUser: [],
-  plantDetail: {},
   displayUserPlants: false,
   plantsNeedRefresh: false,
   errors: null,
@@ -88,11 +87,6 @@ const reducer = (state, action) => {
         ...state,
         formIsLoading: false,
         plantsNeedRefresh: true,
-      }
-    case 'SET_PLANT_DETAIL':
-      return {
-        ...state,
-        plantDetail: action.payload,
       }
     default:
       return state

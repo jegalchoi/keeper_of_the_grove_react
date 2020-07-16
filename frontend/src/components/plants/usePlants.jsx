@@ -18,6 +18,18 @@ export const plantsReducer = (state, action) => {
         image: plant.image,
         imageId: plant.image_id,
       }
+    case 'EDIT_PLANT_FETCH_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        name: plant.name,
+        notes: plant.notes,
+        water: plant.water,
+        hidden: plant.hidden,
+        originalImageUrl: plant.image,
+        originalImageId: plant.image_id,
+        ownerId: plant.user_id,
+      }
     case 'PLANT_CREATE_FAILURE':
       return {
         ...state,

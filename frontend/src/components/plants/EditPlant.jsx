@@ -11,18 +11,19 @@ import { plantsReducer } from './usePlants'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
+import { useCookies } from 'react-cookie'
 import { ContainerWrapper } from '../ContainerWrapper'
 import enUS from 'date-fns/locale/en-US'
 import { parseISO, format } from 'date-fns'
 import { config } from '../../Constants'
 
 export const EditPlant = () => {
-  const [{ userId, plantDetail }, dispatch] = useContext(GroveContext)
+  const [{ userId }, dispatch] = useContext(GroveContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
-
-  const plantWater = plantDetail.water
-    ? new Date(plantDetail.water)
-    : null
+  const [cookies] = useCookies(['plantId'])
+  // const plantWater = plantDetail.water
+  //   ? new Date(plantDetail.water)
+  //   : null
 
   const [
     {
@@ -44,23 +45,40 @@ export const EditPlant = () => {
     editPlantDispatch,
   ] = useReducer(plantsReducer, {
     loading: false,
-    plantId: plantDetail.id,
-    name: plantDetail.name,
-    notes: plantDetail.notes,
-    water: plantWater,
-    hidden: plantDetail.hidden,
+    plantId: cookies.plantId,
+    name: '',
+    notes: '',
+    water: '',
+    hidden: '',
     imageUrl: '',
     imageId: '',
     imagePublicId: '',
-    originalImageUrl: plantDetail.image,
-    originalImageId: plantDetail.imageId,
+    originalImageUrl: '',
+    originalImageId: '',
     originalImagePublicId: '',
-    ownerId: plantDetail.ownerId,
+    ownerId: '',
     errors: null,
   })
 
   useEffect(() => {
-    if (originalImageId === -1) {
+    const urlPlantGet = config.url.API_URL_PLANT_GET + `${plantId}`
+    axios
+      .get(urlPlantGet, { withCredentials: true })
+      .then((response) => {
+        // console.log(response.data)
+        editPlantDispatch({
+          type:
+            response.data.status !== 400 ||
+            response.data.status !== 500
+              ? 'PLANT_DETAIL_FETCH_SUCCESS'
+              : 'PLANT_ERRORS',
+          payload: response.data,
+        })
+      })
+  }, [])
+
+  useEffect(() => {
+    if (originalImageId === '') {
       return
     }
 
@@ -84,7 +102,7 @@ export const EditPlant = () => {
     // .catch((errors) =>
     //   console.log('editPlant/useEffect api errors:', errors)
     // )
-  }, [])
+  }, [originalImageId])
 
   const handleSubmit = (e) => {
     // console.log('editing plant')
@@ -120,7 +138,7 @@ export const EditPlant = () => {
             dispatch({
               type: 'PLANT_NEED_REFRESH',
             })
-            history.push(`/details/${plantId}`)
+            history.push(`/details`)
           }
         } else {
           editPlantDispatch({
@@ -182,7 +200,7 @@ export const EditPlant = () => {
           dispatch({
             type: 'PLANT_NEED_REFRESH',
           })
-          history.push(`/details/${plantId}`)
+          history.push(`/details`)
         } else {
           editPlantDispatch({
             type: 'PLANT_ERRORS',

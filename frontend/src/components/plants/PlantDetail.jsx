@@ -41,18 +41,6 @@ export const PlantDetail = () => {
     errors: null,
   })
 
-  const plant = {
-    id,
-    name,
-    notes,
-    water,
-    hidden,
-    image,
-    imageId,
-    imagePublicId,
-    ownerId,
-  }
-
   useEffect(() => {
     // console.log('fetching plant detail')
 
@@ -228,12 +216,6 @@ export const PlantDetail = () => {
                         <button
                           placeholder='edit'
                           className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-                          onClick={() =>
-                            dispatch({
-                              type: 'SET_PLANT_DETAIL',
-                              payload: plant,
-                            })
-                          }
                         >
                           <strong>edit plant</strong>
                         </button>

@@ -10,14 +10,11 @@ import { PlantDetail } from './components/plants/PlantDetail'
 import { NewPlant } from './components/plants/NewPlant'
 import { EditPlant } from './components/plants/EditPlant'
 import { Default } from './components/Default.jsx'
-import { withCookies } from 'react-cookie'
 
 export const App = () => {
   // console.log('app')
 
-  const [{ siteIsLoading, permissions, cookies }] = useContext(
-    GroveContext
-  )
+  const [{ siteIsLoading, permissions }] = useContext(GroveContext)
 
   // console.log(state)
 
@@ -26,11 +23,7 @@ export const App = () => {
       <Navbar />
       {siteIsLoading ? null : (
         <Switch>
-          <Route
-            exact
-            path='/'
-            render={() => <PlantList cookies={cookies} />}
-          />
+          <Route exact path='/' render={() => <PlantList />} />
           <Route
             exact
             path='/login'
@@ -80,7 +73,7 @@ export const App = () => {
             path='/edit'
             render={() =>
               permissions === 'LOGGED_IN' ? (
-                <EditPlant cookies={cookies} />
+                <EditPlant />
               ) : (
                 <Redirect to='/login' />
               )
