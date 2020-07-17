@@ -117,7 +117,7 @@ export const EditUser = () => {
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='text'
               placeholder='Username'
@@ -133,7 +133,7 @@ export const EditUser = () => {
               required={!formIsLoading || !loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='email'
               placeholder='Email'
@@ -149,7 +149,7 @@ export const EditUser = () => {
               required={!formIsLoading || !loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='password'
               placeholder='Password'
@@ -165,7 +165,7 @@ export const EditUser = () => {
               required={!formIsLoading || !loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='password'
               placeholder='Confirm Password'
@@ -187,6 +187,7 @@ export const EditUser = () => {
                 type='submit'
                 placeholder='submit'
                 className='btn-success btn-lg mt-3 text-capitalize'
+                style={{ width: '200px' }}
               >
                 <strong>update account</strong>
               </button>
@@ -199,8 +200,9 @@ export const EditUser = () => {
           <div className='row justify-content-center'>
             <button
               placeholder='delete'
-              className='btn-danger btn-lg mt-3 text-uppercase'
+              className='btn-danger btn-lg mt-3 text-capitalize'
               onClick={deleteUser}
+              style={{ width: '200px' }}
             >
               <strong>delete account</strong>
             </button>
@@ -210,6 +212,7 @@ export const EditUser = () => {
               <button
                 placeholder='home'
                 className='btn-primary btn-lg mt-3 text-capitalize'
+                style={{ width: '200px' }}
               >
                 <strong>home</strong>
               </button>

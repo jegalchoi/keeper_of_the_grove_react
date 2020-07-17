@@ -290,6 +290,7 @@ export const NewPlant = () => {
                   type='submit'
                   placeholder='submit'
                   className='btn-success btn-lg mt-3 text-capitalize'
+                  style={{ width: '200px' }}
                 >
                   <strong>add plant</strong>
                 </button>
@@ -299,6 +300,7 @@ export const NewPlant = () => {
                   <button
                     placeholder='home'
                     className='btn-primary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>home</strong>
                   </button>

@@ -90,7 +90,7 @@ export const Signup = () => {
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='text'
               placeholder='Username'
@@ -106,7 +106,7 @@ export const Signup = () => {
               required={!loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='email'
               placeholder='Email'
@@ -122,7 +122,7 @@ export const Signup = () => {
               required={!loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group input-group-lg form-control-lg'>
             <input
               type='password'
               placeholder='Password'
@@ -138,7 +138,7 @@ export const Signup = () => {
               required={!loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group input-group-lg form-control-lg'>
             <input
               type='password'
               placeholder='Confirm Password'
@@ -159,6 +159,7 @@ export const Signup = () => {
               <button
                 disabled
                 className='btn-success btn-lg mt-3 text-capitalize'
+                style={{ width: '200px' }}
               >
                 processing
               </button>
@@ -170,6 +171,7 @@ export const Signup = () => {
                   type='submit'
                   placeholder='submit'
                   className='btn-success btn-lg mt-3 text-capitalize'
+                  style={{ width: '200px' }}
                 >
                   <strong>create account</strong>
                 </button>
@@ -179,6 +181,7 @@ export const Signup = () => {
                   <button
                     placeholder='login'
                     className='btn-secondary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>login</strong>
                   </button>
@@ -189,6 +192,7 @@ export const Signup = () => {
                   <button
                     placeholder='home'
                     className='btn-primary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>home</strong>
                   </button>

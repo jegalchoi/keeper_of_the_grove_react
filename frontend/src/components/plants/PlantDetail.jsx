@@ -216,6 +216,7 @@ export const PlantDetail = () => {
                         <button
                           placeholder='edit'
                           className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                          style={{ width: '200px' }}
                         >
                           <strong>edit plant</strong>
                         </button>
@@ -224,6 +225,7 @@ export const PlantDetail = () => {
                         placeholder='delete'
                         className='btn-danger btn-lg mt-3 text-uppercase position-relative mx-auto d-block'
                         onClick={deletePlant}
+                        style={{ width: '200px' }}
                       >
                         <strong>delete plant</strong>
                       </button>
@@ -233,6 +235,7 @@ export const PlantDetail = () => {
                     <button
                       placeholder='home'
                       className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                      style={{ width: '200px' }}
                     >
                       <strong>home</strong>
                     </button>

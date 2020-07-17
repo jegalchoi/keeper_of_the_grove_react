@@ -36,31 +36,31 @@ export default function NavbarUser() {
     <React.Fragment>
       {permissions === 'LOGGED_IN' && (
         <React.Fragment>
-          <Link to='/account'>
-            <h5 className='text-light'>
+          <div>
+            <Link className='text-light' to='/account'>
               <strong>{truncString(username, 20)}</strong>
-            </h5>
-          </Link>
-          <Link
-            to='/'
-            className='text-capitalize'
-            onClick={handleLogout}
-          >
-            <h5 className='text-light'>
+            </Link>
+          </div>
+          <div>
+            <Link
+              to='/'
+              className='text-capitalize text-light'
+              onClick={handleLogout}
+            >
               <strong>log out</strong>
-            </h5>
-          </Link>
+            </Link>
+          </div>
         </React.Fragment>
       )}
       {permissions === 'NOT_LOGGED_IN' && (
-        <div className='text-capitalize text-light'>
+        <div className='text-capitalize'>
           <div>
-            <Link to='/login'>
+            <Link className='text-light' to='/login'>
               <strong>log in</strong>
             </Link>
           </div>
           <div>
-            <Link to='/signup'>
+            <Link className='text-light' to='/signup'>
               <strong>sign up</strong>
             </Link>
           </div>

@@ -81,7 +81,7 @@ export const Login = () => {
       </h1>
       <form onSubmit={handleSubmit}>
         <div className='container'>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='text'
               placeholder='Username'
@@ -97,7 +97,7 @@ export const Login = () => {
               required={!loading}
             />
           </div>
-          <div className='row justify-content-center form-group'>
+          <div className='row justify-content-center form-group form-control-lg'>
             <input
               type='password'
               placeholder='Password'
@@ -118,6 +118,7 @@ export const Login = () => {
               <button
                 disabled
                 className='btn-success btn-lg mt-3 text-capitalize'
+                style={{ width: '200px' }}
               >
                 processing
               </button>
@@ -129,6 +130,7 @@ export const Login = () => {
                   type='submit'
                   placeholder='submit'
                   className='btn-success btn-lg mt-3 text-capitalize'
+                  style={{ width: '200px' }}
                 >
                   <strong>log in</strong>
                 </button>
@@ -138,6 +140,7 @@ export const Login = () => {
                   <button
                     placeholder='create account'
                     className='btn-secondary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>sign up</strong>
                   </button>
@@ -148,6 +151,7 @@ export const Login = () => {
                   <button
                     placeholder='home'
                     className='btn-primary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>home</strong>
                   </button>
