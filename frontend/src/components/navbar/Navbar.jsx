@@ -13,9 +13,9 @@ export const Navbar = () => {
   const [{ permissions }, dispatch] = useContext(GroveContext)
 
   return (
-    <nav className='navbar navbar-expand-sm px-sm-5 sticky-top bg-success'>
+    <div className='navbar navbar-dark bg-dark shadow-sm navbar-expand-sm px-sm-5 sticky-top'>
       <Link to='/' className='navbar-brand'>
-        <FontAwesomeIcon icon={faOilCan} size='3x' color='black' />
+        <FontAwesomeIcon icon={faOilCan} size='3x' color='seagreen' />
       </Link>
       <ul className='navbar-nav align-items-center'>
         {permissions === 'LOGGED_IN' && (
@@ -29,6 +29,6 @@ export const Navbar = () => {
           <NavbarUser />
         </Suspense>
       </div>
-    </nav>
+    </div>
   )
 }
