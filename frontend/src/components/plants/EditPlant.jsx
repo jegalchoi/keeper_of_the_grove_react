@@ -407,6 +407,7 @@ export const EditPlant = () => {
                     type='submit'
                     placeholder='submit'
                     className='btn-success btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>update plant</strong>
                   </button>
@@ -423,6 +424,7 @@ export const EditPlant = () => {
                   placeholder='delete'
                   className='btn-danger btn-lg mt-3 text-uppercase'
                   onClick={deletePlant}
+                  style={{ width: '200px' }}
                 >
                   <strong>delete plant</strong>
                 </button>
@@ -432,6 +434,7 @@ export const EditPlant = () => {
                   <button
                     placeholder='home'
                     className='btn-primary btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
                   >
                     <strong>home</strong>
                   </button>
@@ -444,6 +447,7 @@ export const EditPlant = () => {
           <button
             disabled
             className='btn-success btn-lg mt-3 text-capitalize'
+            style={{ width: '200px' }}
           >
             processing
           </button>

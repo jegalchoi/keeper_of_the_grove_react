@@ -225,6 +225,7 @@ export const EditUser = () => {
           <button
             disabled
             className='btn-success btn-lg mt-3 text-capitalize'
+            style={{ width: '200px' }}
           >
             processing
           </button>

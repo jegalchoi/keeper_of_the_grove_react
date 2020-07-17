@@ -205,41 +205,53 @@ export const PlantDetail = () => {
               )}
               {/* {buttons} */}
               {loading ? (
-                <button className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'>
-                  processing
-                </button>
+                <div className='row justify-content-center'>
+                  <button
+                    disabled
+                    className='btn-success btn-lg mt-3 text-capitalize'
+                    style={{ width: '200px' }}
+                  >
+                    processing
+                  </button>
+                </div>
               ) : (
                 <React.Fragment>
                   {userId === ownerId && (
                     <React.Fragment>
-                      <Link to='/edit'>
+                      <div className='row justify-content-center'>
+                        <Link to='/edit'>
+                          <button
+                            placeholder='edit'
+                            className='btn-success btn-lg mt-3 text-capitalize'
+                            style={{ width: '200px' }}
+                          >
+                            <strong>edit plant</strong>
+                          </button>
+                        </Link>
+                      </div>
+                      <div className='row justify-content-center'>
                         <button
-                          placeholder='edit'
-                          className='btn-success btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
+                          placeholder='delete'
+                          className='btn-danger btn-lg mt-3 text-uppercase'
+                          onClick={deletePlant}
                           style={{ width: '200px' }}
                         >
-                          <strong>edit plant</strong>
+                          <strong>delete plant</strong>
                         </button>
-                      </Link>
-                      <button
-                        placeholder='delete'
-                        className='btn-danger btn-lg mt-3 text-uppercase position-relative mx-auto d-block'
-                        onClick={deletePlant}
-                        style={{ width: '200px' }}
-                      >
-                        <strong>delete plant</strong>
-                      </button>
+                      </div>
                     </React.Fragment>
                   )}
-                  <Link to='/'>
-                    <button
-                      placeholder='home'
-                      className='btn-primary btn-lg mt-3 text-capitalize position-relative mx-auto d-block'
-                      style={{ width: '200px' }}
-                    >
-                      <strong>home</strong>
-                    </button>
-                  </Link>
+                  <div className='row justify-content-center'>
+                    <Link to='/'>
+                      <button
+                        placeholder='home'
+                        className='btn-primary btn-lg mt-3 text-capitalize'
+                        style={{ width: '200px' }}
+                      >
+                        <strong>home</strong>
+                      </button>
+                    </Link>
+                  </div>
                 </React.Fragment>
               )}
             </div>
