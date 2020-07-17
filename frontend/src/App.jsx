@@ -1,27 +1,55 @@
-import React, { useContext } from 'react'
+import React, { useContext, Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { GroveContext } from './context'
 import { Navbar } from './components/navbar/Navbar.jsx'
-import { Login } from './components/registrations/Login.jsx'
-import { Signup } from './components/registrations/Signup.jsx'
-import { EditUser } from './components/registrations/EditUser.jsx'
-import { PlantList } from './components/plants/PlantList'
-import { PlantDetail } from './components/plants/PlantDetail'
-import { NewPlant } from './components/plants/NewPlant'
-import { EditPlant } from './components/plants/EditPlant'
 import { Default } from './components/Default.jsx'
 
 export const App = () => {
   // console.log('app')
 
-  const [{ siteIsLoading, permissions }] = useContext(GroveContext)
+  const [{ permissions }] = useContext(GroveContext)
+  const Login = lazy(() =>
+    import('./components/registrations/Login.jsx').then((module) => ({
+      default: module.Login,
+    }))
+  )
+  const Signup = lazy(() =>
+    import(
+      './components/registrations/Signup.jsx'
+    ).then((module) => ({ default: module.Signup }))
+  )
+  const EditUser = lazy(() =>
+    import(
+      './components/registrations/EditUser.jsx'
+    ).then((module) => ({ default: module.EditUser }))
+  )
+  const PlantList = lazy(() =>
+    import('./components/plants/PlantList').then((module) => ({
+      default: module.PlantList,
+    }))
+  )
+  const PlantDetail = lazy(() =>
+    import('./components/plants/PlantDetail').then((module) => ({
+      default: module.PlantDetail,
+    }))
+  )
+  const NewPlant = lazy(() =>
+    import('./components/plants/NewPlant').then((module) => ({
+      default: module.NewPlant,
+    }))
+  )
+  const EditPlant = lazy(() =>
+    import('./components/plants/EditPlant').then((module) => ({
+      default: module.EditPlant,
+    }))
+  )
 
   // console.log(state)
 
   return (
     <React.Fragment>
       <Navbar />
-      {siteIsLoading ? null : (
+      <Suspense fallback={null}>
         <Switch>
           <Route exact path='/' render={() => <PlantList />} />
           <Route
@@ -86,7 +114,7 @@ export const App = () => {
           />
           <Route component={Default} />
         </Switch>
-      )}
+      </Suspense>
     </React.Fragment>
   )
 }

@@ -4,7 +4,6 @@ import { config } from './Constants'
 export const GroveContext = createContext()
 
 const initialState = {
-  siteIsLoading: true,
   formIsLoading: false,
   permissions: 'NOT_LOGGED_IN',
   userId: '',
@@ -19,11 +18,6 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'SITE_START_LOADING':
-      return {
-        ...state,
-        siteIsLoading: true,
-      }
     case 'FORM_START_LOADING':
       return {
         ...state,
@@ -32,7 +26,6 @@ const reducer = (state, action) => {
     case 'AUTH_LOGGED_IN':
       return {
         ...state,
-        siteIsLoading: false,
         formIsLoading: false,
         permissions: 'LOGGED_IN',
         userId: action.payload.user.id,
@@ -43,7 +36,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         formIsLoading: false,
-        siteIsLoading: false,
         permissions: 'NOT_LOGGED_IN',
         userId: '',
         username: '',
@@ -57,21 +49,18 @@ const reducer = (state, action) => {
     case 'PLANTS_PUBLIC_FETCH_SUCCESS':
       return {
         ...state,
-        siteIsLoading: false,
         plantsPublic: action.payload.plants,
         plantsNeedRefresh: false,
       }
     case 'PLANTS_USER_FETCH_SUCCESS':
       return {
         ...state,
-        siteIsLoading: false,
         plantsUser: action.payload.plants,
         plantsNeedRefresh: false,
       }
     case 'PLANT_FETCH_FAILURE':
       return {
         ...state,
-        siteIsLoading: false,
         plantsPublic: [],
         plantsUser: [],
         plantsNeedRefresh: false,
