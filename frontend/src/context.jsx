@@ -5,7 +5,7 @@ export const GroveContext = createContext()
 
 const initialState = {
   formIsLoading: false,
-  permissions: 'NOT_LOGGED_IN',
+  permissions: 'LOADING',
   userId: '',
   username: '',
   userEmail: '',
