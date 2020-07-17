@@ -6,6 +6,7 @@ import { plantsReducer } from './usePlants'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { PlantDropzone } from './PlantDropzone'
+import { useCookies } from 'react-cookie'
 import { ContainerWrapper } from '../ContainerWrapper'
 import enUS from 'date-fns/locale/en-US'
 import { parseISO, format } from 'date-fns'
@@ -14,6 +15,7 @@ import { config } from '../../Constants'
 export const NewPlant = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
+  const [cookies, setCookie] = useCookies(['plantId'])
 
   const [
     {
@@ -65,7 +67,8 @@ export const NewPlant = () => {
             dispatch({
               type: 'PLANT_NEED_REFRESH',
             })
-            history.push(`/details/${plantId}`)
+            setCookie('plantId', plantId, { path: '/' })
+            history.push(`/details`)
           }
         } else {
           newPlantDispatch({
@@ -127,7 +130,8 @@ export const NewPlant = () => {
           dispatch({
             type: 'PLANT_NEED_REFRESH',
           })
-          history.push(`/details/${plantId}`)
+          setCookie('plantId', plantId, { path: '/' })
+          history.push(`/details`)
         } else {
           newPlantDispatch({
             type: 'PLANT_ERRORS',

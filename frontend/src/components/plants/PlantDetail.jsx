@@ -9,7 +9,7 @@ import { config } from '../../Constants'
 
 export const PlantDetail = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
-  const [cookies, setCookie] = useCookies(['plantId'])
+  const [cookies] = useCookies(['plantId'])
   const plantId = cookies.plantId
 
   const [

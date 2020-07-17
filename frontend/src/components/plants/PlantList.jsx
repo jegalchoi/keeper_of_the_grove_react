@@ -13,7 +13,7 @@ import { PlantPortfolioLink } from './PlantPortfolioLink'
 
 export const PlantList = () => {
   const [
-    { permissions, plantsPublic, plantsUser, displayUserPlants },
+    { plantsPublic, plantsUser, displayUserPlants },
   ] = useContext(GroveContext)
   const plants = displayUserPlants ? plantsUser : plantsPublic
 

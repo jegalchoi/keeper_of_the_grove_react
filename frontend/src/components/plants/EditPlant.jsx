@@ -416,34 +416,7 @@ export const EditPlant = () => {
               )}
         </div>
       </form>
-      {loading
-        ? null
-        : userId === ownerId && (
-            <React.Fragment>
-              <div className='row justify-content-center'>
-                <button
-                  placeholder='delete'
-                  className='btn-danger btn-lg mt-3 text-uppercase'
-                  onClick={deletePlant}
-                  style={{ width: '200px' }}
-                >
-                  <strong>delete plant</strong>
-                </button>
-              </div>
-              <div className='row justify-content-center'>
-                <Link to='/'>
-                  <button
-                    placeholder='home'
-                    className='btn-primary btn-lg mt-3 text-capitalize'
-                    style={{ width: '200px' }}
-                  >
-                    <strong>home</strong>
-                  </button>
-                </Link>
-              </div>
-            </React.Fragment>
-          )}
-      {!loading ? null : (
+      {loading ? (
         <div className='row justify-content-center'>
           <button
             disabled
@@ -453,6 +426,32 @@ export const EditPlant = () => {
             processing
           </button>
         </div>
+      ) : (
+        userId === ownerId && (
+          <React.Fragment>
+            <div className='row justify-content-center'>
+              <button
+                placeholder='delete'
+                className='btn-danger btn-lg mt-3 text-uppercase'
+                onClick={deletePlant}
+                style={{ width: '200px' }}
+              >
+                <strong>delete plant</strong>
+              </button>
+            </div>
+            <div className='row justify-content-center'>
+              <Link to='/'>
+                <button
+                  placeholder='home'
+                  className='btn-primary btn-lg mt-3 text-capitalize'
+                  style={{ width: '200px' }}
+                >
+                  <strong>home</strong>
+                </button>
+              </Link>
+            </div>
+          </React.Fragment>
+        )
       )}
       <br />
       <div>{errors && handleErrors()}</div>

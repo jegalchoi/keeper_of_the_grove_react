@@ -41,7 +41,6 @@ const reducer = (state, action) => {
         username: '',
         userEmail: '',
         plantsUser: [],
-        plantDetail: {},
         displayUserPlants: false,
         plantsNeedRefresh: true,
         errors: null,

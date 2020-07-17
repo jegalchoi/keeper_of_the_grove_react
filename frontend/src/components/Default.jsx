@@ -18,8 +18,9 @@ export const Default = () => {
           </h3>
           <Link to='/'>
             <button
-              placeholder='login'
-              className='btn-primary btn-lg text-capitalize'
+              placeholder='home'
+              className='btn-primary btn-lg mt-3 text-capitalize'
+              style={{ width: '200px' }}
             >
               <strong>home</strong>
             </button>
