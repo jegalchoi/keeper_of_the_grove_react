@@ -37,7 +37,7 @@ export default function NavbarUser() {
       {permissions === 'LOGGED_IN' && (
         <React.Fragment>
           <Link to='/account'>
-            <h5>
+            <h5 className='text-light'>
               <strong>{truncString(username, 20)}</strong>
             </h5>
           </Link>
@@ -46,12 +46,14 @@ export default function NavbarUser() {
             className='text-capitalize'
             onClick={handleLogout}
           >
-            log out
+            <h5 className='text-light'>
+              <strong>log out</strong>
+            </h5>
           </Link>
         </React.Fragment>
       )}
       {permissions === 'NOT_LOGGED_IN' && (
-        <div className='text-capitalize'>
+        <div className='text-capitalize text-light'>
           <div>
             <Link to='/login'>
               <strong>log in</strong>

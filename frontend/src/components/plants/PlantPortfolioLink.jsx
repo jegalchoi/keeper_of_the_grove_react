@@ -13,7 +13,7 @@ export const PlantPortfolioLink = () => {
         <Link to='/' className='nav-link'>
           <button
             style={{ width: '200px' }}
-            className='btn btn-outline-primary text-capitalize'
+            className='btn btn-outline-success text-capitalize'
             disabled={permissions === 'NOT_LOGGED_IN'}
             onClick={() =>
               dispatch({
@@ -22,11 +22,13 @@ export const PlantPortfolioLink = () => {
               })
             }
           >
-            {permissions === 'LOGGED_IN'
-              ? displayUserPlants
-                ? 'browse public plants'
-                : 'browse your portfolio'
-              : 'public plants'}
+            <strong>
+              {permissions === 'LOGGED_IN'
+                ? displayUserPlants
+                  ? 'browse public plants'
+                  : 'browse your portfolio'
+                : 'public plants'}
+            </strong>
           </button>
         </Link>
       </div>

@@ -105,7 +105,7 @@ export const PlantCard = ({ plant }) => {
         <div className='card-footer container'>
           <div className='row justify-content-center'>
             <p className='mb-0 d-inline-block text-truncate'>
-              <Link to={`/details/${plantId}`}>
+              <Link to={`/details`}>
                 <strong>{name}</strong>
               </Link>
             </p>

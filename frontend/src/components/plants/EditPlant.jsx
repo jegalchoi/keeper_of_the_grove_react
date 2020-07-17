@@ -21,9 +21,6 @@ export const EditPlant = () => {
   const [{ userId }, dispatch] = useContext(GroveContext)
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [cookies] = useCookies(['plantId'])
-  // const plantWater = plantDetail.water
-  //   ? new Date(plantDetail.water)
-  //   : null
 
   const [
     {
