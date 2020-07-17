@@ -351,6 +351,7 @@ export const EditPlant = () => {
                     payload: e.target.value,
                   })
                 }
+                style={{ width: '300px' }}
               />
               <small id='notesHelp' className='form-text text-muted'>
                 Separate each note with a comma.
