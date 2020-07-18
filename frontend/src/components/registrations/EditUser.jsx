@@ -181,7 +181,7 @@ export const EditUser = () => {
               required={!formIsLoading || !loading}
             />
           </div>
-          {loading ? null : (
+          {formIsLoading || loading ? null : (
             <div className='row justify-content-center'>
               <button
                 type='submit'
@@ -220,7 +220,7 @@ export const EditUser = () => {
           </div>
         </React.Fragment>
       )}
-      {!formIsLoading || !loading ? null : (
+      {(formIsLoading || loading) && (
         <div className='row justify-content-center'>
           <button
             disabled
