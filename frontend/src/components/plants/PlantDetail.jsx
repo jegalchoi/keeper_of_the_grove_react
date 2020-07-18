@@ -73,10 +73,6 @@ export const PlantDetail = () => {
 
       plantDetailDispatch({ type: 'PLANT_START_LOADING' })
 
-      if (imageId !== null) {
-        deleteImage(imageId)
-      }
-
       const urlPlantDestroy =
         config.url.API_URL_PLANT_DESTROY +
         `${userId}/plants/${plantId}`
@@ -89,6 +85,9 @@ export const PlantDetail = () => {
               type: 'PLANT_NEED_REFRESH',
             })
             history.push('/')
+            if (imageId !== null) {
+              deleteImage(imageId)
+            }
           }
         })
       // .catch((error) =>
