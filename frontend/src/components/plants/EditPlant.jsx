@@ -67,39 +67,32 @@ export const EditPlant = () => {
           type:
             response.data.status !== 400 ||
             response.data.status !== 500
-              ? 'PLANT_DETAIL_FETCH_SUCCESS'
+              ? 'EDIT_PLANT_FETCH_SUCCESS'
               : 'PLANT_ERRORS',
           payload: response.data,
         })
+        if (response.data.plant.image_id !== -1) {
+          const urlImageGet =
+            config.url.API_URL_IMAGE_GET + `${originalImageId}`
+          axios
+            .get(urlImageGet, { withCredentials: true })
+            .then((response) => {
+              // console.log(response.data)
+              editPlantDispatch({
+                type:
+                  response.data.status !== 400 ||
+                  response.data.status !== 500
+                    ? 'IMAGE_DETAIL_FETCH_SUCCESS'
+                    : 'IMAGE_ERRORS',
+                payload: response.data,
+              })
+            })
+          // .catch((errors) =>
+          //   console.log('editPlant/useEffect api errors:', errors)
+          // )
+        }
       })
   }, [])
-
-  useEffect(() => {
-    if (originalImageId === '') {
-      return
-    }
-
-    // console.log('fetching image info')
-
-    const urlImageGet =
-      config.url.API_URL_IMAGE_GET + `${originalImageId}`
-    axios
-      .get(urlImageGet, { withCredentials: true })
-      .then((response) => {
-        // console.log(response.data)
-        editPlantDispatch({
-          type:
-            response.data.status !== 400 ||
-            response.data.status !== 500
-              ? 'IMAGE_DETAIL_FETCH_SUCCESS'
-              : 'IMAGE_ERRORS',
-          payload: response.data,
-        })
-      })
-    // .catch((errors) =>
-    //   console.log('editPlant/useEffect api errors:', errors)
-    // )
-  }, [originalImageId])
 
   const handleSubmit = (e) => {
     // console.log('editing plant')

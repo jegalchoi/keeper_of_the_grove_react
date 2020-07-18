@@ -19,16 +19,21 @@ export const plantsReducer = (state, action) => {
         imageId: plant.image_id,
       }
     case 'EDIT_PLANT_FETCH_SUCCESS':
+      const plantEdit = action.payload.plant
+      const plantEditWater =
+        plantEdit.water !== undefined
+          ? new Date(plantEdit.water)
+          : null
       return {
         ...state,
         loading: false,
-        name: plant.name,
-        notes: plant.notes,
-        water: plant.water,
-        hidden: plant.hidden,
-        originalImageUrl: plant.image,
-        originalImageId: plant.image_id,
-        ownerId: plant.user_id,
+        name: plantEdit.name,
+        notes: plantEdit.notes,
+        water: plantEditWater,
+        hidden: plantEdit.hidden,
+        originalImageUrl: plantEdit.image,
+        originalImageId: plantEdit.image_id,
+        ownerId: plantEdit.user_id,
       }
     case 'PLANT_CREATE_FAILURE':
       return {

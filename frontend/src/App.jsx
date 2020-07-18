@@ -2,6 +2,7 @@ import React, { useContext, Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { GroveContext } from './context'
 import { Navbar } from './components/navbar/Navbar.jsx'
+import { PlantList } from './components/plants/PlantList'
 import { Default } from './components/Default.jsx'
 
 export const App = () => {
@@ -23,11 +24,11 @@ export const App = () => {
       './components/registrations/EditUser.jsx'
     ).then((module) => ({ default: module.EditUser }))
   )
-  const PlantList = lazy(() =>
-    import('./components/plants/PlantList').then((module) => ({
-      default: module.PlantList,
-    }))
-  )
+  // const PlantList = lazy(() =>
+  //   import('./components/plants/PlantList').then((module) => ({
+  //     default: module.PlantList,
+  //   }))
+  // )
   const PlantDetail = lazy(() =>
     import('./components/plants/PlantDetail').then((module) => ({
       default: module.PlantDetail,
@@ -49,9 +50,9 @@ export const App = () => {
   return (
     <React.Fragment>
       <Navbar />
-      <Suspense fallback={null}>
-        <Switch>
-          <Route exact path='/' render={() => <PlantList />} />
+      <Route exact path='/' render={() => <PlantList />} />
+      <Switch>
+        <Suspense fallback={null}>
           <Route
             exact
             path='/login'
@@ -112,9 +113,9 @@ export const App = () => {
             path='/details'
             render={() => <PlantDetail />}
           />
-          <Route component={Default} />
-        </Switch>
-      </Suspense>
+        </Suspense>
+        <Route component={Default} />
+      </Switch>
     </React.Fragment>
   )
 }

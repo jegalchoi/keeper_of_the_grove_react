@@ -38,8 +38,6 @@ export const PlantCard = ({ plant }) => {
           dispatch({
             type: 'PLANT_NEED_REFRESH',
           })
-          history.push('/')
-          plantCardDispatch({ type: 'PLANT_DETAIL_FINISH_LOADING' })
         }
       })
     // .catch((error) =>
