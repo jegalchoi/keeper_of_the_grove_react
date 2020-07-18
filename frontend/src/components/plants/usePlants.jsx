@@ -20,10 +20,9 @@ export const plantsReducer = (state, action) => {
       }
     case 'EDIT_PLANT_FETCH_SUCCESS':
       const plantEdit = action.payload.plant
-      const plantEditWater =
-        plantEdit.water !== undefined
-          ? new Date(plantEdit.water)
-          : null
+      const plantEditWater = plantEdit.water
+        ? new Date(plantEdit.water)
+        : null
       return {
         ...state,
         loading: false,
