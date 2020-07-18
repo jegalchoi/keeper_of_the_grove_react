@@ -105,7 +105,12 @@ export const PlantCard = ({ plant }) => {
         <div className='card-footer container'>
           <div className='row justify-content-center'>
             <p className='mb-0 d-inline-block text-truncate'>
-              <Link to={`/details`}>
+              <Link
+                to={`/details`}
+                onClick={() =>
+                  setCookie('plantId', plantId, { path: '/' })
+                }
+              >
                 <strong>{name}</strong>
               </Link>
             </p>
