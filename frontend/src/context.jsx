@@ -32,6 +32,12 @@ const reducer = (state, action) => {
         username: action.payload.user.username,
         userEmail: action.payload.user.email,
       }
+    case 'AUTH_NOT_LOGGED_IN':
+      return {
+        ...state,
+        formIsLoading: false,
+        permissions: 'NOT_LOGGED_IN',
+      }
     case 'AUTH_LOGOUT':
       return {
         ...state,
@@ -69,6 +75,22 @@ const reducer = (state, action) => {
       return {
         ...state,
         displayUserPlants: action.payload,
+      }
+    case 'PLANT_ADD_NEW_USER_PORTFOLIO':
+      return {
+        ...state,
+        formIsLoading: false,
+        plantsUser: [...state.plantsUser, ...action.payload.plant],
+      }
+    case 'PLANT_ADD_NEW_USER_AND_PUBLIC_PORTFOLIO':
+      return {
+        ...state,
+        formIsLoading: false,
+        plantsUser: [...state.plantsUser, ...action.payload.plant],
+        plantsPublic: [
+          ...state.plantsPublic,
+          ...action.payload.plant,
+        ],
       }
     case 'PLANT_NEED_REFRESH':
       return {

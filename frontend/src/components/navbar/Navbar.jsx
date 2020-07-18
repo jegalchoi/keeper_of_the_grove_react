@@ -18,7 +18,7 @@ export const Navbar = () => {
       <ul className='navbar-nav align-items-center'>
         {permissions === 'LOGGED_IN' && <NavbarCreatePlantLink />}
       </ul>
-      <div className='ml-auto text-right'>
+      <div className='ml-auto text-right text-light'>
         <Suspense fallback={<div>Loading...</div>}>
           <NavbarUser />
         </Suspense>

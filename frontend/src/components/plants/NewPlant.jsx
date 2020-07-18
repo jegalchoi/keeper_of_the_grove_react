@@ -127,10 +127,10 @@ export const NewPlant = () => {
       .then((response) => {
         // console.log(response.data)
         if (response.data.status === 'updated') {
+          setCookie('plantId', plantId, { path: '/' })
           dispatch({
             type: 'PLANT_NEED_REFRESH',
           })
-          setCookie('plantId', plantId, { path: '/' })
           history.push(`/details`)
         } else {
           newPlantDispatch({
