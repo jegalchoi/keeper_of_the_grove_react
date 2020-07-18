@@ -73,7 +73,8 @@ export const EditPlant = () => {
         })
         if (response.data.plant.image_id !== -1) {
           const urlImageGet =
-            config.url.API_URL_IMAGE_GET + `${originalImageId}`
+            config.url.API_URL_IMAGE_GET +
+            `${response.data.plant.image_id}`
           axios
             .get(urlImageGet, { withCredentials: true })
             .then((response) => {

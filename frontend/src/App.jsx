@@ -57,6 +57,7 @@ export const App = () => {
             exact
             path='/login'
             render={() =>
+              permissions !== 'LOADING' &&
               permissions !== 'LOGGED_IN' ? (
                 <Login />
               ) : (
@@ -68,6 +69,7 @@ export const App = () => {
             exact
             path='/signup'
             render={() =>
+              permissions !== 'LOADING' &&
               permissions !== 'LOGGED_IN' ? (
                 <Signup />
               ) : (
@@ -79,6 +81,7 @@ export const App = () => {
             exact
             path='/account'
             render={() =>
+              permissions !== 'LOADING' &&
               permissions === 'LOGGED_IN' ? (
                 <EditUser />
               ) : (
@@ -90,6 +93,7 @@ export const App = () => {
             exact
             path='/new'
             render={() =>
+              permissions !== 'LOADING' &&
               permissions === 'LOGGED_IN' ? (
                 <NewPlant />
               ) : (
@@ -101,6 +105,7 @@ export const App = () => {
             exact
             path='/edit'
             render={() =>
+              permissions !== 'LOADING' &&
               permissions === 'LOGGED_IN' ? (
                 <EditPlant />
               ) : (
