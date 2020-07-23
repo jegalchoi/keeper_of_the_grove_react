@@ -76,22 +76,6 @@ const reducer = (state, action) => {
         ...state,
         displayUserPlants: action.payload,
       }
-    case 'PLANT_ADD_NEW_USER_PORTFOLIO':
-      return {
-        ...state,
-        formIsLoading: false,
-        plantsUser: [...state.plantsUser, ...action.payload.plant],
-      }
-    case 'PLANT_ADD_NEW_USER_AND_PUBLIC_PORTFOLIO':
-      return {
-        ...state,
-        formIsLoading: false,
-        plantsUser: [...state.plantsUser, ...action.payload.plant],
-        plantsPublic: [
-          ...state.plantsPublic,
-          ...action.payload.plant,
-        ],
-      }
     case 'PLANT_NEED_REFRESH':
       return {
         ...state,
@@ -109,27 +93,29 @@ export const GroveProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { userId, displayUserPlants, plantsNeedRefresh } = state
 
-  useEffect(() => {
+  const fetchLoginStatus = () => {
     // console.log('fetching login status')
 
     const urlLoginStatus = config.url.API_URL_LOGIN_STATUS
     axios
-      .get(urlLoginStatus, { withCredentials: true })
+      .get(urlLoginStatus, {
+        withCredentials: true,
+      })
       .then((response) => {
         // console.log(response.data)
+        const authStatus = response.data.logged_in
         dispatch({
-          type: response.data.logged_in
-            ? 'AUTH_LOGGED_IN'
-            : 'AUTH_NOT_LOGGED_IN',
+          type: authStatus ? 'AUTH_LOGGED_IN' : 'AUTH_NOT_LOGGED_IN',
           payload: response.data,
         })
+        fetchPlants()
       })
     // .catch((errors) =>
     //   // console.log('fetch login api errors:', errors)
     // )
-  }, [])
+  }
 
-  useEffect(() => {
+  const fetchPlants = () => {
     // console.log('fetching plants')
 
     const urlUserPlants =
@@ -140,7 +126,9 @@ export const GroveProvider = (props) => {
       : urlAllPlants
     // console.log(urlPlantsGet)
     axios
-      .get(urlPlantsGet, { withCredentials: true })
+      .get(urlPlantsGet, {
+        withCredentials: true,
+      })
       .then((response) => {
         // console.log(response.data)
         dispatch({
@@ -156,6 +144,10 @@ export const GroveProvider = (props) => {
     // .catch((errors) =>
     //   // console.log('fetch plants api errors:', errors)
     // )
+  }
+
+  useEffect(() => {
+    fetchLoginStatus()
   }, [plantsNeedRefresh, displayUserPlants])
 
   return (
