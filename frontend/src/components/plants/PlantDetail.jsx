@@ -191,7 +191,7 @@ export const PlantDetail = () => {
             <div className='col-10 mx-auto col-md-6 my-3'>
               <img src={image} alt={name} className='img-fluid' />
             </div>
-            <div className='col-10 mx-auto col-md-6 my-3 text-center'>
+            <div className='col-10 mx-auto col-md-6 text-center'>
               {userId === ownerId &&
                 (water !== null ? (
                   <h4>
@@ -207,13 +207,21 @@ export const PlantDetail = () => {
                 ))}
               {userId === ownerId && (
                 <React.Fragment>
-                  <p className='text-muted m-3 text-capitalize'>
-                    <strong>{hidden ? 'private' : 'public'}</strong>
-                  </p>
                   <p className='font-weight-bold mt-3 mb-0 text-capitalize'>
                     notes:
                   </p>
                   <div>{formatNotes(notes)}</div>
+                  <p>
+                    <strong className='text-muted text-capitalize'>
+                      {hidden ? 'private' : 'public'}
+                    </strong>
+                    <br />
+                    <small className='text-muted'>
+                      {hidden
+                        ? 'Only you can view this plant.'
+                        : 'Everyone can view this plant.'}
+                    </small>
+                  </p>
                 </React.Fragment>
               )}
               {/* {buttons} */}
