@@ -4,7 +4,6 @@ import { Link, useHistory, useParams } from 'react-router-dom'
 import { GroveContext } from '../../context'
 import { plantsReducer } from './usePlants'
 import { useCookies } from 'react-cookie'
-import TimeAgo from 'react-timeago'
 import { config } from '../../Constants'
 
 export const PlantDetail = () => {
@@ -161,6 +160,20 @@ export const PlantDetail = () => {
     )
   }
 
+  const getWeekDay = (date) => {
+    const weekdays = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ]
+    const day = date.getDay()
+    return weekdays[day]
+  }
+
   // console.log('plant detail')
 
   return (
@@ -183,7 +196,8 @@ export const PlantDetail = () => {
                 (water !== null ? (
                   <h4>
                     <strong>
-                      watered <TimeAgo date={water} />
+                      last watered {getWeekDay(new Date(water))},{' '}
+                      {new Date(water).toLocaleDateString()}
                     </strong>
                   </h4>
                 ) : (
